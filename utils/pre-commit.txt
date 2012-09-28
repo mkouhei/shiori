@@ -1,0 +1,8 @@
+#!/bin/sh
+
+which py.test || exit 1
+(
+cd $(git rev-parse --show-toplevel)
+py.test || exit 1
+python setup.py check -r || exit 1
+)
