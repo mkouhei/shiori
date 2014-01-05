@@ -38,7 +38,7 @@ class Bookmark(BaseObject):
     tags = models.ManyToManyField(Tag, through='BookmarkTag')
     registered_datetime = models.DateTimeField(auto_now=True,
                                                auto_now_add=True)
-    updated_datetime = models.DateTimeField()
+    last_modified = models.DateTimeField()
     description = models.TextField(blank=True)
     owner = models.ForeignKey(User)
     is_hide = models.BooleanField(default=False)
