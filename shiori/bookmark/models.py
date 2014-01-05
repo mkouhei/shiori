@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.db import models
+from django.contrib.auth.models import User
 from shortuuidfield import ShortUUIDField
 
 
@@ -39,6 +40,8 @@ class Bookmark(BaseObject):
                                                auto_now_add=True)
     updated_datetime = models.DateTimeField()
     description = models.TextField(blank=True)
+    owner = models.ForeignKey(User)
+    is_hide = models.BooleanField(default=False)
 
     class Meta:
         db_table = 'bookmark'
