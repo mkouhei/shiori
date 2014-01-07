@@ -7,7 +7,6 @@ find shiori -name '*.pyc' -delete
 py.test -v shiori* || exit 1
 py.test-3 -v shiori* || exit 1
 (
-cd src
 pychecker -X -s shiori/*.py || exit 1
 pychecker -X -s shiori_tests/*.py || exit 1
 )
