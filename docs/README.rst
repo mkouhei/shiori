@@ -14,7 +14,11 @@ Requirements
 ------------
 
 * Python 2.7
-* python-oauth2
+* Django
+* Django REST framework
+* django-shortuuidfield
+* django_openid_auth
+* South
 
 
 Setup
@@ -23,9 +27,10 @@ Setup
 Install Debian packages that Shiori depends on
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Shiori depends on python-oauth2, and Python2.7. Install these packages.::
+Shiori depends on as following:
 
-  $ sudo apt-get install python-oauth2
+  $ sudo apt-get install python-django python-djangorestframework \
+  python-django-shortuuidfield python-django-south
 
 
 Install Shiori
@@ -64,9 +69,9 @@ You copy pre-commit hook scripts after git clone.::
 
   $ cp -f utils/pre-commit.txt .git/hooks/pre-commit
 
-Next install python 2.7 later and setuptools, pytest, pep8, python-oauth2. Below way is for Debian GNU/Linux Sid system.::
+Next install python 2.7 later and setuptools, pytest, pep8. Below way is for Debian GNU/Linux Sid system.::
 
-  $ sudo apt-get install python python-oauth2 python-setuptools python-pytest pep8
+  $ sudo apt-get install python python-setuptools python-pytest pep8
 
 Then checkout 'devel' branch for development, commit your changes. Before pull request, execute git rebase.
 

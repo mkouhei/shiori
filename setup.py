@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-    Copyright (C) 2013 Kouhei Maeda <mkouhei@palmtb.net>
+    Copyright (C) 2013, 2014 Kouhei Maeda <mkouhei@palmtb.net>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -35,7 +35,8 @@ long_description = \
     open(os.path.join("docs", "HISTORY.rst")).read() + \
     open(os.path.join("docs", "TODO.rst")).read()
 
-requires = ['setuptools', 'oauth2']
+requires = ['setuptools', 'djangorestframework',
+            'django_shortuuidfield', 'South']
 
 setup(name='shiori',
       version='0.1',
