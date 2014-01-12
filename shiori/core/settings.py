@@ -41,6 +41,7 @@ INSTALLED_APPS = (
     'rest_framework',
     'rest_framework.authtoken',
     'south',
+    'django_openid_auth',
     'bookmark',
     'api',
 )
@@ -52,6 +53,11 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+)
+
+AUTHENTICATION_BACKENDS = (
+    'django_openid_auth.auth.OpenIDBackend',
+    'django.contrib.auth.backends.ModelBackend',
 )
 
 ROOT_URLCONF = 'core.urls'
@@ -82,6 +88,10 @@ USE_L10N = True
 
 USE_TZ = True
 
+TEMPLATE_DIRS = (
+    os.path.join(BASE_DIR, 'templates'),
+)
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
@@ -104,3 +114,14 @@ REST_FRAMEWORK = {
         #'rest_framework.permissions.IsAdminUser',
         ],
     'PAGINATE_BY': 20}
+
+
+OPENID_CREATE_USERS = True
+OPENID_UPDATE_DETAILS_FROM_SREG = True
+LOGIN_URL = '/openid/login/'
+LOGIN_REDIRECT_URL = '/'
+
+# Modify temporarily the session serializer because the json serializer in
+# Django 1.6 can't serialize openid.yadis.manager.YadisServiceManager objects
+# http://bazaar.launchpad.net/~strycore/django-openid-auth/trunk/revision/115
+SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
