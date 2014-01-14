@@ -121,7 +121,7 @@ OPENID_UPDATE_DETAILS_FROM_SREG = True
 LOGIN_URL = '/openid/login/'
 LOGIN_REDIRECT_URL = '/'
 OPENID_STRICT_USERNAMES = True
-#OPENID_USE_EMAIL_FOR_USERNAME = True
+OPENID_USE_EMAIL_FOR_USERNAME = True
 
 
 # Modify temporarily the session serializer because the json serializer in
