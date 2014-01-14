@@ -120,6 +120,9 @@ OPENID_CREATE_USERS = True
 OPENID_UPDATE_DETAILS_FROM_SREG = True
 LOGIN_URL = '/openid/login/'
 LOGIN_REDIRECT_URL = '/'
+OPENID_STRICT_USERNAMES = True
+#OPENID_USE_EMAIL_FOR_USERNAME = True
+
 
 # Modify temporarily the session serializer because the json serializer in
 # Django 1.6 can't serialize openid.yadis.manager.YadisServiceManager objects
