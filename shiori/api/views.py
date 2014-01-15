@@ -26,6 +26,9 @@ class BookmarkViewSet(viewsets.ModelViewSet):
     serializer_class = BookmarkSerializer
     permission_classes = (IsAuthenticatedOrReadOnly,)
 
+    def pre_save(self, obj):
+        obj.owner = self.request.user
+
 
 class BookmarkTagViewSet(viewsets.ModelViewSet):
     queryset = BookmarkTag.objects.all()

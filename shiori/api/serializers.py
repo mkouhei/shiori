@@ -22,6 +22,7 @@ class BookmarkSerializer(serializers.ModelSerializer):
     catogory = serializers.SlugRelatedField(many=False, slug_field='category')
     tags = serializers.SlugRelatedField(many=True, slug_field='tag',
                                         read_only=True)
+    owner = serializers.Field(source='owner.username')
 
     class Meta:
         model = Bookmark
