@@ -30,7 +30,7 @@ Install Debian packages that Shiori depends on
 Shiori depends on as following:
 
   $ sudo apt-get install python-django python-djangorestframework \
-  python-django-shortuuidfield python-django-south
+  python-django-shortuuidfield python-django-south python-django-auth-openid
 
 
 Install Shiori
@@ -78,6 +78,7 @@ Then checkout 'devel' branch for development, commit your changes. Before pull r
 See also
 --------
 
+* `django-openid-auth README <http://bazaar.launchpad.net/~django-openid-auth/django-openid-auth/trunk/view/head:/README.txt>`_
 * `Tumblr API <http://www.tumblr.com/docs/en/api/v2>`_
 
 See also these documents.
