@@ -97,6 +97,10 @@ TEMPLATE_DIRS = (
 
 STATIC_URL = '/static/'
 
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
+
 
 REST_FRAMEWORK = {
     'DEFAULT_MODEL_SERIALIZER_CLASS': 'rest_framework.serializers.'
@@ -118,6 +122,7 @@ OPENID_CREATE_USERS = True
 OPENID_UPDATE_DETAILS_FROM_SREG = True
 LOGIN_URL = '/openid/login/'
 LOGIN_REDIRECT_URL = '/shiori'
+OPENID_USE_AS_ADMIN_LOGIN = False
 OPENID_STRICT_USERNAMES = True
 OPENID_USE_EMAIL_FOR_USERNAME = True
 
