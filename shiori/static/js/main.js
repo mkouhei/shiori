@@ -36,7 +36,7 @@ $(function() {
 			$(this.el)
 				.append('<table class="table table-striped table-bordered table-condensed">');
 			$('table', this.el)
-				.append('<thead><tr><th>title</th><th>uri</th><th>category</th></tr></thead>');
+				.append('<thead><tr><th>title</th><th>uri</th><th>category</th><th>tags</th></tr></thead>');
 			$('table', this.el)
 				.append('<tbody>');
 			this.collection.each(function(item) {
@@ -46,7 +46,7 @@ $(function() {
 		},
 		appendItem: function(item) {
 			$('table', this.el)
-				.append('<tr id="' + item.id + '"><td><a href="' + item.get('url') + '">' + item.get('title') + '</a></td><td>' + item.get('url') + '</td><td>' + item.get('category') + '</td></tr>');
+				.append('<tr id="' + item.id + '"><td><a href="' + item.get('url') + '">' + item.get('title') + '</a></td><td>' + item.get('url') + '</td><td>' + item.get('category') + '</td><td>' + item.get('tags') + '</td></tr>');
 		}
 	});
 
