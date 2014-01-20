@@ -19,6 +19,7 @@ class TagViewSet(viewsets.ModelViewSet):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
     permission_classes = (IsAuthenticatedOrReadOnly,)
+    paginate_by = 50
 
 
 class BookmarkViewSet(viewsets.ModelViewSet):
