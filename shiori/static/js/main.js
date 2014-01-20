@@ -1,5 +1,48 @@
 $(function() {
 
+	var Category = Backbone.Model.extend({
+		urlRoot: '/v1/categories',
+		idAttribute: 'id',
+		defaults: {
+			'category': ''
+		}
+	});
+
+	var CategoriesList = Backbone.Collection.extend({
+		model: Category,
+		url: '/v1/categories',
+		parse: function(res) {
+			return res.results;
+		}
+	});
+
+	var CategoriesListView = Backbone.View.extend({
+		el: $('div#categories_list'),
+		initialize: function() {
+			this.collection = new CategoriesList();
+			this.listenTo(this.collection, 'add', this.appendItem);
+			this.collection.fetch();
+		},
+		render: function() {
+			$(this.el)
+				.append('<table class="table table-striped table-bordered table-condensed">');
+			$('table', this.el)
+				.append('<thead><tr><th>category</th>');
+			$('table', this.el)
+				.append('<tbody>');
+			this.collection.each(function(item) {
+				this.appendItem(item);
+			}, this);
+			return this;
+		},
+		appendItem: function(item) {
+			$('table', this.el)
+				.append('<tr id="' + item.id + '"><td><a href="' +
+						item.get('id') + '">' + item.get('category') +
+						'</a></td></tr>');
+		}
+	});
+
 	var Bookmark = Backbone.Model.extend({
 		urlRoot: '/v1/bookmarks',
 		idAttribute: 'id',
@@ -7,7 +50,6 @@ $(function() {
 			url: '',
 			title: '',
 			category: '',
-			tags: '',
 			registered_datetime: '',
 			last_modified: '',
 			description: '',
@@ -46,7 +88,12 @@ $(function() {
 		},
 		appendItem: function(item) {
 			$('table', this.el)
-				.append('<tr id="' + item.id + '"><td><a href="' + item.get('url') + '">' + item.get('title') + '</a></td><td>' + item.get('url') + '</td><td>' + item.get('category') + '</td><td>' + item.get('tags') + '</td></tr>');
+				.append('<tr id="' + item.id + '"><td><a href="' +
+						item.get('url') + '">' + item.get('title') +
+						'</a></td><td>' + item.get('url') +
+						'</td><td><a href="' + item.get('category_id') + '">' +
+						item.get('category') + '</a></td><td>' + item.get('tags') +
+						'</td></tr>');
 		}
 	});
 
@@ -55,7 +102,8 @@ $(function() {
 		events: {
 			'click a#login': 'login',
 			'click a#logout': 'logout',
-			'click a#profile': 'profile'
+			'click a#profile': 'profile',
+			'click a#categories': 'categories'
 		},
 		initialize: function() {
 		},
@@ -70,6 +118,14 @@ $(function() {
 		prifole: function() {
 			window.router.navigate('profile', true);
 			return false;
+		},
+		categories: function() {
+			window.router.navigate('categories', true);
+			return false;
+		},
+		render : function() {
+			$('div#submenu', this.el)
+				.append('<p><a id="categories">Categories</a></p>');
 		}
 	});
 
@@ -78,9 +134,11 @@ $(function() {
 			"": "index",
 			"openid/login": "login",
 			"logout": "logout",
-			"profile": "profile"
+			"profile": "profile",
+			"categories/": "categories"
 		},
 		index: function() {
+			window.App.render();
 			var bookmarkListView = new BookmarkListView();
 			bookmarkListView.render();
 		},
@@ -88,6 +146,10 @@ $(function() {
 		},
 		profile: function() {
 			var profileView = new ProfileView();
+		},
+		categories: function() {
+			var categoriesListView = new CategoriesListView();
+			categoriesListView.render();
 		}
 	});
 

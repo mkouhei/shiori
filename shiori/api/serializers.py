@@ -20,13 +20,14 @@ class TagSerializer(serializers.ModelSerializer):
 class BookmarkSerializer(serializers.ModelSerializer):
 
     category = serializers.SlugRelatedField(many=False, slug_field='category')
+    category_id = serializers.Field(source='category.id')
     tags = serializers.SlugRelatedField(many=True, slug_field='tag',
                                         read_only=True)
     owner = serializers.Field(source='owner.username')
 
     class Meta:
         model = Bookmark
-        fields = ('url', 'title', 'category',
+        fields = ('url', 'title', 'category', 'category_id',
                   'tags', 'registered_datetime',
                   'last_modified', 'description',
                   'owner', 'is_hide')

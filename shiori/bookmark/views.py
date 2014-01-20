@@ -15,3 +15,10 @@ def profile(request):
                               {'is_authenticated':
                                request.user.is_authenticated()},
                               context_instance=RequestContext(request))
+
+
+def categories(request):
+    return render_to_response('bookmark/categories.html',
+                              {'is_authenticated':
+                               request.user.is_authenticated()},
+                              context_instance=RequestContext(request))
