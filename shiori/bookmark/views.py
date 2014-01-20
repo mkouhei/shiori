@@ -22,3 +22,10 @@ def categories(request):
                               {'is_authenticated':
                                request.user.is_authenticated()},
                               context_instance=RequestContext(request))
+
+
+def tags(request):
+    return render_to_response('bookmark/tags.html',
+                              {'is_authenticated':
+                               request.user.is_authenticated()},
+                              context_instance=RequestContext(request))

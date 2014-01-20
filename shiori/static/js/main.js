@@ -43,6 +43,42 @@ $(function() {
 		}
 	});
 
+	var Tag = Backbone.Model.extend({
+		urlRoot: '/v1/tags',
+		idAttribute: 'id',
+		defaults: {
+			'tag': ''
+		}
+	});
+
+	var TagsList = Backbone.Collection.extend({
+		model: Tag,
+		url: '/v1/tags',
+		parse: function(res) {
+			return res.results;
+		}
+	});
+
+	var TagsListView = Backbone.View.extend({
+		el: $('div#tags_list'),
+		initialize: function() {
+			this.collection = new TagsList();
+			this.listenTo(this.collection, 'add', this.appendItem);
+			this.collection.fetch();
+		},
+		render: function() {
+			this.collection.each(function(item) {
+				this.appendItem(item);
+			}, this);
+			return this;
+		},
+		appendItem: function(item) {
+			$(this.el)
+				.append('<a href="' +	item.get('id') + '">' +
+						item.get('tag') + '</a> ')
+		}
+	});
+
 	var Bookmark = Backbone.Model.extend({
 		urlRoot: '/v1/bookmarks',
 		idAttribute: 'id',
@@ -103,7 +139,8 @@ $(function() {
 			'click a#login': 'login',
 			'click a#logout': 'logout',
 			'click a#profile': 'profile',
-			'click a#categories': 'categories'
+			'click a#categories': 'categories',
+			'click a#tags': 'tags'
 		},
 		initialize: function() {
 		},
@@ -123,9 +160,14 @@ $(function() {
 			window.router.navigate('categories', true);
 			return false;
 		},
+		tags: function() {
+			window.router.navigate('tags', true);
+			return false;
+		},
 		render : function() {
 			$('div#submenu', this.el)
-				.append('<p><a id="categories">Categories</a></p>');
+				.append('<a id="categories">Categories</a>')
+				.append('<a id="tags">Tags</a>');
 		}
 	});
 
@@ -135,7 +177,8 @@ $(function() {
 			"openid/login": "login",
 			"logout": "logout",
 			"profile": "profile",
-			"categories/": "categories"
+			"categories/": "categories",
+			"tags/": "tags"
 		},
 		index: function() {
 			window.App.render();
@@ -148,8 +191,14 @@ $(function() {
 			var profileView = new ProfileView();
 		},
 		categories: function() {
+			window.App.render();
 			var categoriesListView = new CategoriesListView();
 			categoriesListView.render();
+		},
+		tags: function() {
+			window.App.render();
+			var tagsListView = new TagsListView();
+			tagsListView.render();
 		}
 	});
 
