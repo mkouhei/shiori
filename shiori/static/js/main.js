@@ -24,22 +24,16 @@ $(function() {
 			this.collection.fetch();
 		},
 		render: function() {
-			$(this.el)
-				.append('<table class="table table-striped table-bordered table-condensed">');
-			$('table', this.el)
-				.append('<thead><tr><th>category</th>');
-			$('table', this.el)
-				.append('<tbody>');
 			this.collection.each(function(item) {
 				this.appendItem(item);
 			}, this);
 			return this;
 		},
 		appendItem: function(item) {
-			$('table', this.el)
-				.append('<tr id="' + item.id + '"><td><a href="' +
+			$(this.el)
+				.append('<div id="' + item.id + '"><a href="' +
 						item.get('id') + '">' + item.get('category') +
-						'</a></td></tr>');
+						'</a></div>');
 		}
 	});
 
