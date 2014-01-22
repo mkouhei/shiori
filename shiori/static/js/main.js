@@ -4,7 +4,7 @@ $(function() {
 		urlRoot: '/v1/categories',
 		idAttribute: 'id',
 		defaults: {
-			'category': ''
+			'category': '',
 		}
 	});
 
@@ -34,6 +34,26 @@ $(function() {
 				.append('<div id="' + item.id + '"><a href="' +
 						item.get('id') + '">' + item.get('category') +
 						'</a></div>');
+		}
+	});
+
+	var CategoryView = Backbone.View.extend({
+		el: $('div#category_view'),
+		initialize: function() {
+			var id = location.pathname.split('/')[3];
+			this.model = new Category({id: id});
+			this.render();
+		},
+		render: function() {
+			var that = this;
+			$(this.el).append('<h4>');
+			$(this.el).append('<dl>');
+			this.model.fetch({
+				success: function() {
+					$('h4', this.el).append(that.model.get('category'));
+				}
+			});
+			return this;
 		}
 	});
 
@@ -70,6 +90,26 @@ $(function() {
 			$(this.el)
 				.append('<a href="' +	item.get('id') + '">' +
 						item.get('tag') + '</a> ')
+		}
+	});
+
+	var TagView = Backbone.View.extend({
+		el: $('div#tag_view'),
+		initialize: function() {
+			var id = location.pathname.split('/')[3];
+			this.model = new Tag({id: id});
+			this.render();
+		},
+		render: function() {
+			var that = this;
+			$(this.el).append('<h4>');
+			$(this.el).append('<dl>');
+			this.model.fetch({
+				success: function() {
+					$('h4', this.el).append(that.model.get('tag'));
+				}
+			});
+			return this;
 		}
 	});
 
@@ -121,7 +161,7 @@ $(function() {
 				.append('<tr id="' + item.id + '"><td><a href="' +
 						item.get('url') + '">' + item.get('title') +
 						'</a></td><td>' + item.get('url') +
-						'</td><td><a href="' + item.get('category_id') + '">' +
+						'</td><td><a href="categories/' + item.get('category_id') + '">' +
 						item.get('category') + '</a></td><td>' + item.get('tags') +
 						'</td></tr>');
 		}
@@ -129,8 +169,7 @@ $(function() {
 
 	var AppView = Backbone.View.extend({
 		el: 'div#main',
-		events: {
-			'click a#login': 'login',
+		events: {			'click a#login': 'login',
 			'click a#logout': 'logout',
 			'click a#profile': 'profile',
 			'click a#categories': 'categories',
@@ -154,8 +193,16 @@ $(function() {
 			window.router.navigate('categories', true);
 			return false;
 		},
+		category: function() {
+			window.router.navigate('category', true);
+			return false;
+		},
 		tags: function() {
 			window.router.navigate('tags', true);
+			return false;
+		},
+		tag: function() {
+			window.router.navigate('tag', true);
 			return false;
 		},
 		render : function() {
@@ -172,7 +219,9 @@ $(function() {
 			"logout": "logout",
 			"profile": "profile",
 			"categories/": "categories",
-			"tags/": "tags"
+			"categories/:id": "category",
+			"tags/": "tags",
+			"tags/:id": "tag"
 		},
 		index: function() {
 			window.App.render();
@@ -189,10 +238,18 @@ $(function() {
 			var categoriesListView = new CategoriesListView();
 			categoriesListView.render();
 		},
+		category: function(id) {
+			window.App.render();
+			var categoryView = new CategoryView();
+		},
 		tags: function() {
 			window.App.render();
 			var tagsListView = new TagsListView();
 			tagsListView.render();
+		},
+		tag: function() {
+			window.App.render();
+			var tagView = new TagView();
 		}
 	});
 
