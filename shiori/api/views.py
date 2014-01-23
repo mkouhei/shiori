@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from django.contrib.auth.models import AnonymousUser
 from rest_framework import viewsets
 from rest_framework.permissions import (IsAuthenticated,
                                         IsAuthenticatedOrReadOnly)
@@ -29,6 +30,14 @@ class BookmarkViewSet(viewsets.ModelViewSet):
 
     def pre_save(self, obj):
         obj.owner = self.request.user
+
+    def get_queryset(self):
+        user = self.request.user
+        print type(user)
+        if isinstance(user, AnonymousUser):
+            return Bookmark.objects.all()
+        else:
+            return Bookmark.objects.filter(owner=user)
 
 
 class BookmarkTagViewSet(viewsets.ModelViewSet):
