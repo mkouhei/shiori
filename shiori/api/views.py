@@ -33,7 +33,6 @@ class BookmarkViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        print type(user)
         if isinstance(user, AnonymousUser):
             return Bookmark.objects.all()
         else:
