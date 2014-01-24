@@ -34,7 +34,7 @@ class BookmarkViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         user = self.request.user
         if isinstance(user, AnonymousUser):
-            return Bookmark.objects.all()
+            return Bookmark.objects.filter(is_hide=False)
         else:
             return Bookmark.objects.filter(owner=user)
 
