@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from django.db.models import Q
 from django.contrib.auth.models import AnonymousUser
 from rest_framework import viewsets
 from rest_framework.permissions import (IsAuthenticated,
@@ -36,7 +37,11 @@ class BookmarkViewSet(viewsets.ModelViewSet):
         if isinstance(user, AnonymousUser):
             return Bookmark.objects.filter(is_hide=False)
         else:
-            return Bookmark.objects.filter(owner=user)
+            if self.request.QUERY_PARAMS.get('is_all') == 'true':
+                _q = Q(is_hide=False) | Q(owner=user)
+                return Bookmark.objects.filter(_q)
+            else:
+                return Bookmark.objects.filter(owner=user)
 
 
 class BookmarkTagViewSet(viewsets.ModelViewSet):
