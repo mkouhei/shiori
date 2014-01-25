@@ -57,6 +57,23 @@ $(function() {
 		}
 	});
 
+	var BookmarkTags = Backbone.Model.extend({
+		urlRoot: '/v1/bookmark_tags',
+		idAttribute: 'id',
+		defaults: {
+			'bookmark': '',
+			'tag': ''
+		}
+	});
+
+	var BookmarkTagsList = Backbone.Collection.extend({
+		model: BookmarkTags,
+		url: '/v1/bookmark_tags',
+		parse: function(res) {
+			return res.results;
+		}
+	});
+
 	var Tag = Backbone.Model.extend({
 		urlRoot: '/v1/tags',
 		idAttribute: 'id',
