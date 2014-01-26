@@ -96,8 +96,15 @@ $(function() {
 			this.collection = new TagsList();
 			this.listenTo(this.collection, 'add', this.appendItem);
 			this.collection.fetch();
+			this.bookmark_tags = new BookmarkTagsList();
 		},
 		render: function() {
+			var that = this;
+			this.bookmark_tags.fetch({
+				success: function() {
+					console.log(_.uniq(that.bookmark_tags.pluck('tag')));
+				}
+			});
 			this.collection.each(function(item) {
 				this.appendItem(item);
 			}, this);
