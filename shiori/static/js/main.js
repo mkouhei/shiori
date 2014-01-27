@@ -94,19 +94,22 @@ $(function() {
 		el: $('div#tags_list'),
 		initialize: function() {
 			this.collection = new TagsList();
-			this.listenTo(this.collection, 'add', this.appendItem);
 			this.collection.fetch();
 			this.bookmark_tags = new BookmarkTagsList();
 		},
 		render: function() {
 			var that = this;
+			var used_tags = new Array();
 			this.bookmark_tags.fetch({
 				success: function() {
-					console.log(_.uniq(that.bookmark_tags.pluck('tag')));
+					used_tags = _.uniq(that.bookmark_tags.pluck('tag'));
 				}
-			});
-			this.collection.each(function(item) {
-				this.appendItem(item);
+			}).pipe(function() {
+				that.collection.each(function(item) {
+					if (used_tags.indexOf(item.get('tag')) > -1) {
+						that.appendItem(item);
+					}
+				});
 			}, this);
 			return this;
 		},
