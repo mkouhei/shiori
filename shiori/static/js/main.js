@@ -136,7 +136,7 @@ $(function() {
 		appendItem: function(item) {
 			$(this.el)
 				.append('<a href="' +	item.get('id') + '">' +
-						item.get('tag') + '</a> ')
+						item.get('tag') + '</a> ');
 		}
 	});
 
