@@ -42,18 +42,38 @@ $(function() {
 		initialize: function() {
 			var id = location.pathname.split('/')[3];
 			this.model = new Category({id: id});
+			this.bookmarks = new BookmarkList();
 			this.render();
 		},
 		render: function() {
 			var that = this;
+			var selected_bookmarks = new Array();
 			$(this.el).append('<h4>');
-			$(this.el).append('<dl>');
+			$(this.el).append('<div>');
 			this.model.fetch({
 				success: function() {
 					$('h4', this.el).append(that.model.get('category'));
 				}
-			});
+			}, this);
+			this.bookmarks.fetch({
+				success: function() {
+					selected_bookmarks = that.bookmarks.where(
+						{'category': that.model.get('category')});
+					
+				}
+			}).pipe(function() {
+				for (var i = 0; i < selected_bookmarks.length; i++) {
+					console.log(selected_bookmarks[i].attributes);
+					that.appendItem(selected_bookmarks[i]);
+				}
+			}, this);
 			return this;
+		},
+		appendItem: function(item) {
+			$('div', this.el)
+				.append('<a id="' + item.get('id') +
+						'"><span class="label label-info">' +
+						item.get('title') + '</span></a> ');
 		}
 	});
 
