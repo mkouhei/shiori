@@ -213,9 +213,11 @@ $(function() {
 		render: function() {
 			var that = this;
 			$(this.el)
-				.append('<table class="table table-striped table-bordered table-condensed">');
+				.append('<table class="table table-striped ' +
+						'table-bordered table-condensed">');
 			$('table', this.el)
-				.append('<thead><tr><th>title</th><th>uri</th><th>category</th><th>tags</th></tr></thead>');
+				.append('<thead><tr><th>title</th><th>uri</th>' +
+						'<th>category</th><th>tags</th></tr></thead>');
 			$('table', this.el)
 				.append('<tbody>');
 			this.collection.each(function(item) {
@@ -228,15 +230,18 @@ $(function() {
 				.append('<tr id="' + item.id + '"><td><a href="' +
 						item.get('url') + '">' + item.get('title') +
 						'</a></td><td>' + item.get('url') +
-						'</td><td><a href="categories/' + item.get('category_id') + '">' +
-						item.get('category') + '</a></td><td>' + item.get('tags') +
+						'</td><td><a href="categories/' +
+						item.get('category_id') + '">' +
+						item.get('category') + '</a></td><td>' +
+						item.get('tags') +
 						'</td></tr>');
 		}
 	});
 
 	var AppView = Backbone.View.extend({
 		el: 'div#main',
-		events: {			'click a#login': 'login',
+		events: {
+			'click a#login': 'login',
 			'click a#logout': 'logout',
 			'click a#profile': 'profile',
 			'click a#categories': 'categories',
