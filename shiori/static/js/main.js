@@ -63,7 +63,6 @@ $(function() {
 				}
 			}).pipe(function() {
 				for (var i = 0; i < selected_bookmarks.length; i++) {
-					console.log(selected_bookmarks[i].attributes);
 					that.appendItem(selected_bookmarks[i]);
 				}
 			}, this);
