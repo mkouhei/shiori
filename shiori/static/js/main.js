@@ -70,9 +70,9 @@ $(function() {
 		},
 		appendItem: function(item) {
 			$('div', this.el)
-				.append('<a id="' + item.get('id') +
-						'"><span class="label label-info">' +
-						item.get('title') + '</span></a> ');
+				.append('<span class="label label-info" id="' +
+						item.get('id') + '">' +
+						item.get('title') + '</span> ');
 		}
 	});
 
@@ -174,9 +174,9 @@ $(function() {
 		},
 		appendItem: function(item) {
 			$('div', this.el)
-				.append('<a id="' + item.get('id') +
-						'"><span class="label label-info">' +
-						item.get('title') + '</span></a> ');
+				.append('<span class="label label-info" id="' +
+						item.get('id') + '">' +
+						item.get('title') + '</span> ');
 		}
 	});
 
