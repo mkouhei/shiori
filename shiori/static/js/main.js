@@ -145,18 +145,39 @@ $(function() {
 		initialize: function() {
 			var id = location.pathname.split('/')[3];
 			this.model = new Tag({id: id});
+			this.bookmarks = new BookmarkList();
 			this.render();
 		},
 		render: function() {
 			var that = this;
+			var selected_bookmarks = new Array();
 			$(this.el).append('<h4>');
-			$(this.el).append('<dl>');
+			$(this.el).append('<div>');
 			this.model.fetch({
 				success: function() {
 					$('h4', this.el).append(that.model.get('tag'));
 				}
-			});
+			}, this);
+			this.bookmarks.fetch({
+				success: function() {
+					that.bookmarks.find(function(item) {
+						if (item.get('tags').indexOf(that.model.get('tag')) > -1) {
+							selected_bookmarks.push(item);
+						}
+					});
+				}
+			}).pipe(function() {
+				for (var i = 0; i < selected_bookmarks.length; i++) {
+					that.appendItem(selected_bookmarks[i]);
+				}
+			}, this);
 			return this;
+		},
+		appendItem: function(item) {
+			$('div', this.el)
+				.append('<a id="' + item.get('id') +
+						'"><span class="label label-info">' +
+						item.get('title') + '</span></a> ');
 		}
 	});
 
