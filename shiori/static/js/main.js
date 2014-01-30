@@ -210,31 +210,40 @@ $(function() {
 			this.listenTo(this.collection, 'add', this.appendItem);
 			this.collection.fetch();
 		},
+		events: {
+			'mouseover a.btn': 'loadBookmark'
+		},
 		render: function() {
 			var that = this;
-			$(this.el)
-				.append('<table class="table table-striped ' +
-						'table-bordered table-condensed">');
-			$('table', this.el)
-				.append('<thead><tr><th>title</th><th>uri</th>' +
-						'<th>category</th><th>tags</th></tr></thead>');
-			$('table', this.el)
-				.append('<tbody>');
 			this.collection.each(function(item) {
 				this.appendItem(item);
 			}, this);
 			return this;
 		},
 		appendItem: function(item) {
-			$('table', this.el)
-				.append('<tr id="' + item.id + '"><td><a href="' +
-						item.get('url') + '">' + item.get('title') +
-						'</a></td><td>' + item.get('url') +
-						'</td><td><a href="categories/' +
-						item.get('category_id') + '">' +
-						item.get('category') + '</a></td><td>' +
-						item.get('tags') +
-						'</td></tr>');
+			$(this.el)
+				.append('<a rel="popover" class="btn btn-info" id="' +
+						item.get('id') + '">' + item.get('title') +
+						'</a> ');
+		},
+		loadBookmark: function(item) {
+			var that = this;
+			this.bookmark = new Bookmark({id: item.target.id});
+			this.bookmark.fetch({
+				success: function() {
+					that.popup(that.bookmark);
+				}
+			});
+		},
+		popup: function(item) {
+			$('a#' + item.id, this.el)
+				.popover({title: item.get('title'),
+						  content: '<p><a href="' + item.get('url') + '">' + item.get('url') + '</a>' +
+						  '</p><p>' + item.get('description') +
+						  '</p><p>' + item.get('category') +
+						  '</p><p>' + item.get('tags') + '</p>',
+						  delay: {show: 500, hide: 3000}});
+
 		}
 	});
 
