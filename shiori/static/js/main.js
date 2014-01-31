@@ -236,13 +236,29 @@ $(function() {
 			});
 		},
 		popup: function(item) {
+			var elem = function(tags, icon) {
+				if (tags.length > 0) {
+					return '<p><i class="' + icon + '"></i> ' + tags + '</p>'
+				} else {
+					return ''
+				}
+			};
+			var protect = function(state) {
+				if (state) {
+					return '<i class="icon-lock"></i> '
+				} else {
+					return ''
+				}
+			};
 			$('a#' + item.id, this.el)
-				.popover({title: item.get('title'),
-						  content: '<p><a href="' + item.get('url') + '">' + item.get('url') + '</a>' +
-						  '</p><p>' + item.get('description') +
-						  '</p><p>' + item.get('category') +
-						  '</p><p>' + item.get('tags') + '</p>',
-						  delay: {show: 500, hide: 3000}});
+				.popover({title: protect(item.get('is_hide')) + item.get('title'),
+						  content: elem('<a href="' + item.get('url') + '">' +
+										item.get('url') + '</a>',
+										'icon-share') +
+						  elem(item.get('description'), 'icon-comment') + 
+						  elem(item.get('category'), 'icon-book') +
+						  elem(item.get('tags'), 'icon-tags'),
+						  delay: {show: 0, hide: 6000}});
 
 		}
 	});
