@@ -257,12 +257,13 @@ $(function() {
 										item.get('url') + '</a>',
 										'icon-share') +
 						  elem(item.get('description'), 'icon-comment') + 
-						  elem(item.get('category'), 'icon-book') +
+						  elem('<a href="categories/' + item.get('category_id') +
+							   '">' + item.get('category') + '</a>', 'icon-book') +
 						  elem(item.get('tags'), 'icon-tags') +
 						  elem('<a href="' + short_url + '">' + short_url + '</a>',
 							   'icon-resize-small'),
-						  delay: {show: 0, hide: 60000}});
-
+						  delay: {hide: 3000}
+						 });
 		}
 	});
 
