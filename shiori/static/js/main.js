@@ -1,5 +1,24 @@
 $(function() {
 
+	function elem(tags, icon) {
+		if (tags.length > 0) {
+			return '<p><i class="' + icon + '"></i> ' + tags + '</p>';
+		} else {
+			return '';
+		}
+	}
+	function protect(state) {
+		if (state) {
+			return '<i class="icon-lock"></i> ';
+		} else {
+			return '';
+		}
+	}
+	function shorten_url(slug) {
+		var short_url = location.origin + '/' + slug;
+		return '<a href="' + short_url + '">' + short_url + '</a>';
+	}
+
 	var Category = Backbone.Model.extend({
 		urlRoot: '/v1/categories',
 		idAttribute: 'id',
@@ -45,6 +64,9 @@ $(function() {
 			this.bookmarks = new BookmarkList();
 			this.render();
 		},
+		events: {
+			'mouseover a.btn': 'loadBookmark'
+		},
 		render: function() {
 			var that = this;
 			var selected_bookmarks = new Array();
@@ -70,9 +92,30 @@ $(function() {
 		},
 		appendItem: function(item) {
 			$('div', this.el)
-				.append('<span class="label label-info" id="' +
-						item.get('id') + '">' +
-						item.get('title') + '</span> ');
+				.append('<a rel="popover" class="btn btn-info" id="' +
+						item.get('id') + '">' + item.get('title') +
+						'</a> ');
+		},
+		loadBookmark: function(item) {
+			var that = this;
+			this.bookmark = new Bookmark({id: item.target.id});
+			this.bookmark.fetch({
+				success: function() {
+					that.popup(that.bookmark);
+				}
+			});
+		},
+		popup: function(item) {
+			$('a#' + item.id, this.el)
+				.popover({title: protect(item.get('is_hide')) + item.get('title'),
+						  content: elem('<a href="' + item.get('url') + '">' +
+										item.get('url') + '</a>',
+										'icon-share') +
+						  elem(item.get('description'), 'icon-comment') +
+						  elem(item.get('tags'), 'icon-tags') +
+						  elem(shorten_url(item.get('slug')), 'icon-resize-small'),
+						  delay: {hide: 3000}
+						 });
 		}
 	});
 
@@ -236,21 +279,6 @@ $(function() {
 			});
 		},
 		popup: function(item) {
-			var elem = function(tags, icon) {
-				if (tags.length > 0) {
-					return '<p><i class="' + icon + '"></i> ' + tags + '</p>'
-				} else {
-					return ''
-				}
-			};
-			var protect = function(state) {
-				if (state) {
-					return '<i class="icon-lock"></i> '
-				} else {
-					return ''
-				}
-			};
-			var short_url = location.origin + '/' + item.get('slug');
 			$('a#' + item.id, this.el)
 				.popover({title: protect(item.get('is_hide')) + item.get('title'),
 						  content: elem('<a href="' + item.get('url') + '">' +
@@ -260,8 +288,7 @@ $(function() {
 						  elem('<a href="categories/' + item.get('category_id') +
 							   '">' + item.get('category') + '</a>', 'icon-book') +
 						  elem(item.get('tags'), 'icon-tags') +
-						  elem('<a href="' + short_url + '">' + short_url + '</a>',
-							   'icon-resize-small'),
+						  elem(shorten_url(item.get('slug')), 'icon-resize-small'),
 						  delay: {hide: 3000}
 						 });
 		}
