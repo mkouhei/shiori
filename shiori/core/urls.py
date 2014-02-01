@@ -9,6 +9,7 @@ urlpatterns = patterns('',
                        (r'^openid/', include('django_openid_auth.urls')),
                        (r'^logout/$', 'django.contrib.auth.views.logout',
                         {'template_name': 'bookmark/logout.html'}),
+                       (r'^(?P<short_uri>[\w.-]+)$', 'core.views.shorten_url'),
                        (r'^v1/', include('api.urls')),
                        (r'^shiori/', include('bookmark.urls')),
                        url(r'^admin/', include(admin.site.urls)),)

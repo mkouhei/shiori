@@ -250,6 +250,7 @@ $(function() {
 					return ''
 				}
 			};
+			var short_url = location.origin + '/' + item.get('slug');
 			$('a#' + item.id, this.el)
 				.popover({title: protect(item.get('is_hide')) + item.get('title'),
 						  content: elem('<a href="' + item.get('url') + '">' +
@@ -257,8 +258,10 @@ $(function() {
 										'icon-share') +
 						  elem(item.get('description'), 'icon-comment') + 
 						  elem(item.get('category'), 'icon-book') +
-						  elem(item.get('tags'), 'icon-tags'),
-						  delay: {show: 0, hide: 6000}});
+						  elem(item.get('tags'), 'icon-tags') +
+						  elem('<a href="' + short_url + '">' + short_url + '</a>',
+							   'icon-resize-small'),
+						  delay: {show: 0, hide: 60000}});
 
 		}
 	});
