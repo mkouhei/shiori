@@ -50,9 +50,9 @@ $(function() {
 		},
 		appendItem: function(item) {
 			$(this.el)
-				.append('<div id="' + item.id + '"><a href="' +
+				.append('<a class="btn btn-primary" href="' +
 						item.get('id') + '">' + item.get('category') +
-						'</a></div>');
+						'</a> ');
 		}
 	});
 
@@ -92,7 +92,7 @@ $(function() {
 		},
 		appendItem: function(item) {
 			$('div', this.el)
-				.append('<a rel="popover" class="btn btn-info" id="' +
+				.append('<a rel="popover" class="btn btn-success" id="' +
 						item.get('id') + '">' + item.get('title') +
 						'</a> ');
 		},
@@ -177,7 +177,8 @@ $(function() {
 		},
 		appendItem: function(item) {
 			$(this.el)
-				.append('<a href="' +	item.get('id') + '">' +
+				.append('<a class="btn btn-info" href="' +
+						item.get('id') + '">' +
 						item.get('tag') + '</a> ');
 		}
 	});
@@ -220,7 +221,7 @@ $(function() {
 		},
 		appendItem: function(item) {
 			$('div', this.el)
-				.append('<a rel="popover" class="btn btn-info" id="' +
+				.append('<a rel="popover" class="btn btn-success" id="' +
 						item.get('id') + '">' +	item.get('title') +
 						'</a> ');
 		},
@@ -289,7 +290,7 @@ $(function() {
 		},
 		appendItem: function(item) {
 			$(this.el)
-				.append('<a rel="popover" class="btn btn-info" id="' +
+				.append('<a rel="popover" class="btn btn-success" id="' +
 						item.get('id') + '">' + item.get('title') +
 						'</a> ');
 		},
