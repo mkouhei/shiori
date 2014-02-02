@@ -190,6 +190,9 @@ $(function() {
 			this.bookmarks = new BookmarkList();
 			this.render();
 		},
+		events: {
+			'mouseover a.btn': 'loadBookmark'
+		},
 		render: function() {
 			var that = this;
 			var selected_bookmarks = new Array();
@@ -217,9 +220,30 @@ $(function() {
 		},
 		appendItem: function(item) {
 			$('div', this.el)
-				.append('<span class="label label-info" id="' +
-						item.get('id') + '">' +
-						item.get('title') + '</span> ');
+				.append('<a rel="popover" class="btn btn-info" id="' +
+						item.get('id') + '">' +	item.get('title') +
+						'</a> ');
+		},
+		loadBookmark: function(item) {
+			var that = this;
+			this.bookmark = new Bookmark({id: item.target.id});
+			this.bookmark.fetch({
+				success: function() {
+					that.popup(that.bookmark);
+				}
+			});
+		},
+		popup: function(item) {
+			$('a#' + item.id, this.el)
+				.popover({title: protect(item.get('is_hide')) + item.get('title'),
+						  content: elem('<a href="' + item.get('url') + '">' +
+										item.get('url') + '</a>',
+										'icon-share') +
+						  elem(item.get('description'), 'icon-comment') +
+						  elem(item.get('category'), 'icon-book') +
+						  elem(shorten_url(item.get('slug')), 'icon-resize-small'),
+						  delay: {hide: 3000}
+						 });
 		}
 	});
 
