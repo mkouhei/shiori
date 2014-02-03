@@ -41,7 +41,6 @@ class Bookmark(BaseObject):
     description = models.TextField(blank=True)
     owner = models.ForeignKey(User)
     is_hide = models.BooleanField(default=False)
-    slug = models.SlugField(max_length=10, unique=True, db_index=True)
 
     class Meta:
         db_table = 'bookmark'

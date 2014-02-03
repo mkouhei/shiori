@@ -14,10 +14,6 @@ $(function() {
 			return '';
 		}
 	}
-	function shorten_url(slug) {
-		var short_url = location.origin + '/' + slug;
-		return '<a href="' + short_url + '">' + short_url + '</a>';
-	}
 
 	var Category = Backbone.Model.extend({
 		urlRoot: '/v1/categories',
@@ -112,8 +108,7 @@ $(function() {
 										item.get('url') + '</a>',
 										'icon-share') +
 						  elem(item.get('description'), 'icon-comment') +
-						  elem(item.get('tags'), 'icon-tags') +
-						  elem(shorten_url(item.get('slug')), 'icon-resize-small'),
+						  elem(item.get('tags'), 'icon-tags'),
 						  delay: {hide: 3000}
 						 });
 		}
@@ -241,8 +236,7 @@ $(function() {
 										item.get('url') + '</a>',
 										'icon-share') +
 						  elem(item.get('description'), 'icon-comment') +
-						  elem(item.get('category'), 'icon-book') +
-						  elem(shorten_url(item.get('slug')), 'icon-resize-small'),
+						  elem(item.get('category'), 'icon-book'),
 						  delay: {hide: 3000}
 						 });
 		}
@@ -312,8 +306,7 @@ $(function() {
 						  elem(item.get('description'), 'icon-comment') + 
 						  elem('<a href="categories/' + item.get('category_id') +
 							   '">' + item.get('category') + '</a>', 'icon-book') +
-						  elem(item.get('tags'), 'icon-tags') +
-						  elem(shorten_url(item.get('slug')), 'icon-resize-small'),
+						  elem(item.get('tags'), 'icon-tags'),
 						  delay: {hide: 3000}
 						 });
 		}

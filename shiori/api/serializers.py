@@ -29,7 +29,7 @@ class BookmarkSerializer(serializers.ModelSerializer):
         model = Bookmark
         fields = ('id', 'url', 'title', 'category', 'category_id',
                   'tags', 'registered_datetime', 'description',
-                  'owner', 'is_hide', 'slug')
+                  'owner', 'is_hide')
 
 
 class BookmarkTagSerializer(serializers.ModelSerializer):
