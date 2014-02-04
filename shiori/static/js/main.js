@@ -20,6 +20,9 @@ $(function() {
 		idAttribute: 'id',
 		defaults: {
 			'category': '',
+		},
+		validate: function(attrs) {
+			if (!attrs.category) return "required category.";
 		}
 	});
 
@@ -249,11 +252,12 @@ $(function() {
 			url: '',
 			title: '',
 			category: '',
-			registered_datetime: '',
-			last_modified: '',
 			description: '',
-			owner: '',
 			is_hide: ''
+		},
+		validate: function(attrs) {
+			if (!attrs.url) return "required url.";
+			if (!attrs.category) return "required category.";
 		}
 	});
 
@@ -312,11 +316,83 @@ $(function() {
 		}
 	});
 
+	var BookmarkView = Backbone.View.extend({
+		el: $('div#edit_view'),
+		initialize: function() {
+			this.categories = new CategoriesList();
+			this.bookmarks = new BookmarkList();
+		},
+		events: {
+			'keydown input#category': 'search',
+			'click button:submit': 'add'
+		},
+		render: function() {
+
+		},
+		search: function(item) {
+			console.log(1);
+		},
+		add: function(item) {
+			var that = this;
+			var registered_category;
+			var category = this.$('input#category').val();
+
+			this.categories.fetch({
+				success: function() {
+					registered_category = 
+						that.categories.where({'category': category});
+				}
+			}).pipe(function() {
+				if (registered_category.length == 1) {
+					that.save_bookmark(category);
+				} else {
+					that.category = new Category({
+						category: category
+					}, {collection: that.categories});
+					that.category.save(null, {
+						success: function() {
+							that.categories.add(that.category);
+						},
+						error: function(model, xhr, options) {
+							var obj = JSON.parse(xhr.responseText).category[0];
+							if (obj == "Category with this Category already exists.") {
+								console.log(xhr.responseText);
+							}
+						}
+					}).pipe(function() {
+						that.save_bookmark(category)
+					}, this);
+				}
+			}, this);
+			return this;
+		},
+		save_bookmark: function(category) {
+			var url = this.$('input#url').val();
+			var title = this.$('input#title').val();
+			var tags = this.$('input#tags').val();
+			var description = this.$('textarea#description').val();
+			if (this.$('input#is_hide').prop('checked')) {
+				var is_hide = true;
+			} else {
+				var is_hide = false;
+			}
+
+			this.bookmarks.create({
+				url: url,
+				title: title,
+				category: category,
+				description: description,
+				is_hide: is_hide
+			}, {validate: true});
+		}
+	});
+
 	var AppView = Backbone.View.extend({
 		el: 'div#main',
 		events: {
 			'click a#login': 'login',
 			'click a#logout': 'logout',
+			'click a#add': 'add',
 			'click a#profile': 'profile',
 			'click a#categories': 'categories',
 			'click a#tags': 'tags'
@@ -329,6 +405,10 @@ $(function() {
 		},
 		logout: function() {
 			window.router.navigate('index', true);
+			return false;
+		},
+		add: function() {
+			window.router.navigate('add', true);
 			return false;
 		},
 		prifole: function() {
@@ -363,6 +443,7 @@ $(function() {
 			"": "index",
 			"openid/login": "login",
 			"logout": "logout",
+			"add/": "add",
 			"profile": "profile",
 			"categories/": "categories",
 			"categories/:id": "category",
@@ -378,6 +459,11 @@ $(function() {
 		},
 		profile: function() {
 			var profileView = new ProfileView();
+		},
+		add: function() {
+			window.App.render();
+			var bookmarkView = new BookmarkView();
+			//bookmarkView.render();
 		},
 		categories: function() {
 			window.App.render();
