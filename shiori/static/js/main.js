@@ -330,7 +330,7 @@ $(function() {
 
 		},
 		search: function(item) {
-			console.log(1);
+			//console.log(1);
 		},
 		add: function(item) {
 			var that = this;
@@ -383,7 +383,24 @@ $(function() {
 				category: category,
 				description: description,
 				is_hide: is_hide
-			}, {validate: true});
+			}, {
+				validate: true,
+				success: function(_coll, _mdl, options) {
+					console.log(options.xhr.responseText);
+					$('div#flash', this.el)
+						.append('<div class="alert alert-success">' +
+								'<a class="close" data-dismiss="alert">x</a>' +
+								options.xhr.statusText + '</div>');
+				},
+				error: function(_, xhr, _) {
+					console.log(xhr.responseText);
+					$('div#flash', this.el)
+						.append('<div class="alert alert-error">' +
+								'<a class="close" data-dismiss="alert">x</a>' +
+								xhr.responseText + '</div>');
+
+				}
+			});
 		}
 	});
 

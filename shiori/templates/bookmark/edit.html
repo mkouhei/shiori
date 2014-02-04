@@ -3,6 +3,7 @@
 <div class="row">
   <div class="content" id="edit_view">
 	{% if is_authenticated %}
+	<div id="flash"></div>
 	<div class="form-horizontal">
 	  {% csrf_token %}
 	  <fieldset>
