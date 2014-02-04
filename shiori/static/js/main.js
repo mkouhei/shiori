@@ -323,14 +323,7 @@ $(function() {
 			this.bookmarks = new BookmarkList();
 		},
 		events: {
-			'keydown input#category': 'search',
 			'click button:submit': 'add'
-		},
-		render: function() {
-
-		},
-		search: function(item) {
-			//console.log(1);
 		},
 		add: function(item) {
 			var that = this;
