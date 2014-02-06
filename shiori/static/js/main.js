@@ -7,6 +7,7 @@ $(function() {
 			return '';
 		}
 	}
+
 	function protect(state) {
 		if (state) {
 			return '<i class="icon-lock"></i> ';
@@ -320,15 +321,25 @@ $(function() {
 		el: $('div#edit_view'),
 		initialize: function() {
 			this.categories = new CategoriesList();
+			this.tags = new TagsList();
 			this.bookmarks = new BookmarkList();
+			this.bookmarkTags = new BookmarkTagsList();
 		},
 		events: {
+			'keydown input#tags': 'save_tag',
 			'click button:submit': 'add'
 		},
 		add: function(item) {
 			var that = this;
 			var registered_category;
 			var category = this.$('input#category').val();
+			if (category.length == 0) {
+				$('div#flash', this.el)
+				.append('<div class="alert alert-error">' +
+						'<a class="close" data-dismiss="alert">x</a>' +
+						'required category.</div>');
+				return false;
+			}
 
 			this.categories.fetch({
 				success: function() {
@@ -359,10 +370,52 @@ $(function() {
 			}, this);
 			return this;
 		},
+		save_tag: function(event) {
+			var that = this;
+			if (event.keyCode == 13) {
+				var tags_array = $('input#tags').val().split(',');
+
+				if (tags_array.length > 0) {
+					$('input#tags', this.el)
+						.before('<span class="btn btn-mini tag ' + tags_array[0] +
+								'">' + tags_array[0] + '</span>');
+					$('input#tags').val('');
+
+					this.tags.fetch({
+						success: function() {
+							registered_tag =
+								that.tags.where({'tag': tags_array[0]});
+						}
+					}).pipe(function() {
+						if (registered_tag.length == 1) {
+							$('span.' + tags_array[0], this.el)
+								.attr('id', registered_tag[0].id);
+						} else {
+							that.tag = new Tag({
+								tag: tags_array[0]
+							}, {collection: that.tags});
+							that.tag.save(null, {
+								success: function(_coll, _mdl, options) {
+									that.tags.add(that.tag);
+									console.log(options.xhr.responseText);
+									$('span.' + tags_array[0], this.el)
+										.attr('id', _mdl.id);
+								},
+								error: function(_mdl, xhr, options) {
+									console.log(xhr.responseText);
+									var obj = JSON.parse(xhr.responseText).tag[0];
+								}
+							});
+						}	  
+					});
+				}
+			}
+		},
 		save_bookmark: function(category) {
+			var that = this;
 			var url = this.$('input#url').val();
 			var title = this.$('input#title').val();
-			var tags = this.$('input#tags').val();
+
 			var description = this.$('textarea#description').val();
 			if (this.$('input#is_hide').prop('checked')) {
 				var is_hide = true;
@@ -379,19 +432,37 @@ $(function() {
 			}, {
 				validate: true,
 				success: function(_coll, _mdl, options) {
-					console.log(options.xhr.responseText);
+					console.log(options.xhr.responseText)
+					this.$('span.tag').each(function(index, value) {
+						that.tagging_bookmark(_mdl.url, value.textContent);
+					});
+
 					$('div#flash', this.el)
 						.append('<div class="alert alert-success">' +
 								'<a class="close" data-dismiss="alert">x</a>' +
 								options.xhr.statusText + '</div>');
 				},
-				error: function(_, xhr, _) {
+				error: function(_coll, xhr, options) {
 					console.log(xhr.responseText);
 					$('div#flash', this.el)
 						.append('<div class="alert alert-error">' +
 								'<a class="close" data-dismiss="alert">x</a>' +
 								xhr.responseText + '</div>');
 
+				}
+			});
+		},
+		tagging_bookmark: function(bookmark_url, tag) {
+			this.bookmarkTags.create({
+				bookmark: bookmark_url,
+				tag: tag
+			}, {
+				validate: true,
+				success: function(_coll, _mdl, options) {
+					console.log(options.xhr.responseText);
+				},
+				error: function(_coll, xhr, options) {
+					console.log(xhr.responseText);
 				}
 			});
 		}
