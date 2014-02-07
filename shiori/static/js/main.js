@@ -93,7 +93,7 @@ $(function() {
 		appendItem: function(item) {
 			$('div', this.el)
 				.append('<a rel="popover" class="btn btn-success" id="' +
-						item.get('id') + '">' + item.get('title') +
+						escape(item.get('id')) + '">' + item.get('title') +
 						'</a> ');
 		},
 		loadBookmark: function(item) {
@@ -107,8 +107,10 @@ $(function() {
 		},
 		popup: function(item) {
 			$('a#' + item.id, this.el)
-				.popover({title: protect(item.get('is_hide')) + item.get('title'),
-						  content: elem('<a href="' + item.get('url') + '">' +
+				.popover({title: protect(escape(item.get('is_hide'))) +
+						  item.get('title'),
+						  content: elem('<a href="' + item.get('url') +
+										'">' +
 										item.get('url') + '</a>',
 										'icon-share') +
 						  elem(item.get('description'), 'icon-comment') +
@@ -221,7 +223,8 @@ $(function() {
 		appendItem: function(item) {
 			$('div', this.el)
 				.append('<a rel="popover" class="btn btn-success" id="' +
-						item.get('id') + '">' +	item.get('title') +
+						escape(item.get('id')) + '">' +
+						item.get('title') +
 						'</a> ');
 		},
 		loadBookmark: function(item) {
@@ -235,12 +238,14 @@ $(function() {
 		},
 		popup: function(item) {
 			$('a#' + item.id, this.el)
-				.popover({title: protect(item.get('is_hide')) + item.get('title'),
-						  content: elem('<a href="' + item.get('url') + '">' +
+				.popover({title: protect(item.get('is_hide')) +
+						  item.get('title'),
+						  content: elem('<a href="' + item.get('url') +
+										'">' +
 										item.get('url') + '</a>',
 										'icon-share') +
-						  elem(item.get('description'), 'icon-comment') +
-						  elem(item.get('category'), 'icon-book'),
+						  elem(escape(item.get('description')), 'icon-comment') +
+						  elem(escape(item.get('category')), 'icon-book'),
 						  delay: {hide: 3000}
 						 });
 		}
@@ -290,7 +295,7 @@ $(function() {
 		appendItem: function(item) {
 			$(this.el)
 				.append('<a rel="popover" class="btn btn-success" id="' +
-						item.get('id') + '">' + item.get('title') +
+						escape(item.get('id')) + '">' + item.get('title') +
 						'</a> ');
 		},
 		loadBookmark: function(item) {
@@ -304,14 +309,18 @@ $(function() {
 		},
 		popup: function(item) {
 			$('a#' + item.id, this.el)
-				.popover({title: protect(item.get('is_hide')) + item.get('title'),
-						  content: elem('<a href="' + item.get('url') + '">' +
+				.popover({title: protect(escape(item.get('is_hide'))) +
+						  item.get('title'),
+						  content: elem('<a href="' + item.get('url') +
+										'">' +
 										item.get('url') + '</a>',
 										'icon-share') +
-						  elem(item.get('description'), 'icon-comment') + 
-						  elem('<a href="categories/' + item.get('category_id') +
-							   '">' + item.get('category') + '</a>', 'icon-book') +
-						  elem(item.get('tags'), 'icon-tags'),
+						  elem(escape(item.get('description')), 'icon-comment') + 
+						  elem('<a href="categories/' +
+							   escape(item.get('category_id')) +
+							   '">' + escape(item.get('category')) + '</a>',
+							   'icon-book') +
+						  elem(escape(item.get('tags')), 'icon-tags'),
 						  delay: {hide: 3000}
 						 });
 		}
@@ -332,7 +341,7 @@ $(function() {
 		add: function(item) {
 			var that = this;
 			var registered_category;
-			var category = this.$('input#category').val();
+			var category = escape(this.$('input#category').val());
 			if (category.length == 0) {
 				$('div#flash', this.el)
 				.append('<div class="alert alert-error">' +
@@ -373,7 +382,7 @@ $(function() {
 		save_tag: function(event) {
 			var that = this;
 			if (event.keyCode == 13) {
-				var tags_array = $('input#tags').val().split(',');
+				var tags_array = escape($('input#tags').val()).split(',');
 
 				if (tags_array.length > 0) {
 					$('input#tags', this.el)
@@ -414,9 +423,9 @@ $(function() {
 		save_bookmark: function(category) {
 			var that = this;
 			var url = this.$('input#url').val();
-			var title = this.$('input#title').val();
+			var title = escape(this.$('input#title').val());
 
-			var description = this.$('textarea#description').val();
+			var description = escape(this.$('textarea#description').val());
 			if (this.$('input#is_hide').prop('checked')) {
 				var is_hide = true;
 			} else {
