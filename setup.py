@@ -18,16 +18,14 @@
 
 import os
 import sys
-from setuptools import setup, find_packages
-
-sys.path.insert(0, 'src')
-import shiori
+from setuptools import setup
 
 classifiers = [
     "Development Status :: 3 - Alpha",
     "License :: OSI Approved :: "
     "GNU General Public License v3 or later (GPLv3+)",
     "Programming Language :: Python",
+    "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
 ]
 
 long_description = \
@@ -48,10 +46,9 @@ setup(name='shiori',
       author='Kouhei Maeda',
       author_email='mkouhei@palmtb.net',
       url='https://github.com/mkouhei/shiori',
-      license=' GNU General Public License version 3',
+      license='GNU General Public License version 3',
       classifiers=classifiers,
-      packages=find_packages('shiori'),
-      package_dir={'': 'shiori'},
+      packages=['shiori'],
       data_files=[],
       install_requires=requires,
       include_package_data=True,
