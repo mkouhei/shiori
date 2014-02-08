@@ -42,8 +42,8 @@ requires = ['setuptools',
             'django_openid_auth']
 
 setup(name='shiori',
-      version='0.1',
-      description='bookmarking',
+      version='0.1.0',
+      description='bookmarking tool based on Web UI and JSON REST API',
       long_description=long_description,
       author='Kouhei Maeda',
       author_email='mkouhei@palmtb.net',
