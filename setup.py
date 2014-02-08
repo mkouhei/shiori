@@ -35,8 +35,11 @@ long_description = \
     open(os.path.join("docs", "HISTORY.rst")).read() + \
     open(os.path.join("docs", "TODO.rst")).read()
 
-requires = ['setuptools', 'djangorestframework',
-            'django_shortuuidfield', 'South']
+requires = ['setuptools',
+            'django',
+            'djangorestframework',
+            'django_shortuuidfield',
+            'django_openid_auth']
 
 setup(name='shiori',
       version='0.1',
