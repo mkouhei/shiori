@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.db.models import Q
+from django.utils.html import escape
 from django.contrib.auth.models import AnonymousUser
 from rest_framework import viewsets
 from rest_framework.permissions import (IsAuthenticated,
@@ -16,12 +17,18 @@ class CategoryViewSet(viewsets.ModelViewSet):
     serializer_class = CategorySerializer
     permission_classes = (IsAuthenticatedOrReadOnly,)
 
+    def pre_save(self, obj):
+        obj.category = escape(self.request.DATA.get('category'))
+
 
 class TagViewSet(viewsets.ModelViewSet):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
     permission_classes = (IsAuthenticatedOrReadOnly,)
     paginate_by = 50
+
+    def pre_save(self, obj):
+        obj.tag = escape(self.request.DATA.get('tag'))
 
 
 class BookmarkViewSet(viewsets.ModelViewSet):
@@ -31,6 +38,8 @@ class BookmarkViewSet(viewsets.ModelViewSet):
 
     def pre_save(self, obj):
         obj.owner = self.request.user
+        obj.title = escape(self.request.DATA.get('title'))
+        obj.description = escape(self.request.DATA.get('description'))
 
     def get_queryset(self):
         user = self.request.user
