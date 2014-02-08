@@ -1,4 +1,6 @@
 $(function() {
+    function urlX(url) {if(/^https?:\/\//.test(url)) {return url }}
+    function idX(id) { return id }
 
 	function elem(tags, icon) {
 		if (tags.length > 0) {
@@ -51,7 +53,8 @@ $(function() {
 		appendItem: function(item) {
 			$(this.el)
 				.append('<a class="btn btn-primary" href="' +
-						item.get('id') + '">' + item.get('category') +
+						item.get('id') + '">' +
+						html_sanitize(item.get('category'), urlX, idX) +
 						'</a> ');
 		}
 	});
@@ -93,7 +96,8 @@ $(function() {
 		appendItem: function(item) {
 			$('div', this.el)
 				.append('<a rel="popover" class="btn btn-success" id="' +
-						escape(item.get('id')) + '">' + item.get('title') +
+						html_sanitize(item.get('id'), urlX, idX) + '">' +
+						html_sanitize(item.get('title'), urlX, idX) +
 						'</a> ');
 		},
 		loadBookmark: function(item) {
@@ -107,8 +111,9 @@ $(function() {
 		},
 		popup: function(item) {
 			$('a#' + item.id, this.el)
-				.popover({title: protect(escape(item.get('is_hide'))) +
-						  item.get('title'),
+				.popover({title: protect(html_sanitize(item.get('is_hide'),
+													   urlX, idX)) +
+						  html_sanitize(item.get('title'), urlX, idX),
 						  content: elem('<a href="' + item.get('url') +
 										'">' +
 										item.get('url') + '</a>',
@@ -180,7 +185,7 @@ $(function() {
 			$(this.el)
 				.append('<a class="btn btn-info" href="' +
 						item.get('id') + '">' +
-						item.get('tag') + '</a> ');
+						html_sanitize(item.get('tag'), urlX, idX) + '</a> ');
 		}
 	});
 
@@ -223,8 +228,8 @@ $(function() {
 		appendItem: function(item) {
 			$('div', this.el)
 				.append('<a rel="popover" class="btn btn-success" id="' +
-						escape(item.get('id')) + '">' +
-						item.get('title') +
+						html_sanitize(item.get('id'), urlX, idX) + '">' +
+						html_sanitize(item.get('title'), urlX, idX) +
 						'</a> ');
 		},
 		loadBookmark: function(item) {
@@ -239,13 +244,15 @@ $(function() {
 		popup: function(item) {
 			$('a#' + item.id, this.el)
 				.popover({title: protect(item.get('is_hide')) +
-						  item.get('title'),
+						  html_sanitize(item.get('title'), urlX, idX),
 						  content: elem('<a href="' + item.get('url') +
 										'">' +
 										item.get('url') + '</a>',
 										'icon-share') +
-						  elem(escape(item.get('description')), 'icon-comment') +
-						  elem(escape(item.get('category')), 'icon-book'),
+						  elem(html_sanitize(item.get('description'), urlX, idX),
+							   'icon-comment') +
+						  elem(html_sanitize(item.get('category'), urlX, idX),
+							   'icon-book'),
 						  delay: {hide: 3000}
 						 });
 		}
@@ -295,7 +302,8 @@ $(function() {
 		appendItem: function(item) {
 			$(this.el)
 				.append('<a rel="popover" class="btn btn-success" id="' +
-						escape(item.get('id')) + '">' + item.get('title') +
+						html_sanitize(item.get('id'), urlX, idX) + '">' +
+						html_sanitize(item.get('title'), urlX, idX) +
 						'</a> ');
 		},
 		loadBookmark: function(item) {
@@ -309,18 +317,21 @@ $(function() {
 		},
 		popup: function(item) {
 			$('a#' + item.id, this.el)
-				.popover({title: protect(escape(item.get('is_hide'))) +
-						  item.get('title'),
+				.popover({title: protect(item.get('is_hide')) +
+						  html_sanitize(item.get('title'), urlX, idX),
 						  content: elem('<a href="' + item.get('url') +
 										'">' +
 										item.get('url') + '</a>',
 										'icon-share') +
-						  elem(escape(item.get('description')), 'icon-comment') + 
+						  elem(html_sanitize(item.get('description'), urlX, idX),
+							   'icon-comment') + 
 						  elem('<a href="categories/' +
-							   escape(item.get('category_id')) +
-							   '">' + escape(item.get('category')) + '</a>',
+							   html_sanitize(item.get('category_id'), urlX, idX) +
+							   '">' + html_sanitize(item.get('category'),
+													urlX, idX) + '</a>',
 							   'icon-book') +
-						  elem(escape(item.get('tags')), 'icon-tags'),
+						  elem(html_sanitize(item.get('tags'), urlX, idX),
+							   'icon-tags'),
 						  delay: {hide: 3000}
 						 });
 		}
@@ -341,7 +352,7 @@ $(function() {
 		add: function(item) {
 			var that = this;
 			var registered_category;
-			var category = escape(this.$('input#category').val());
+			var category = html_sanitize(this.$('input#category').val(), urlX, idX);
 			if (category.length == 0) {
 				$('div#flash', this.el)
 				.append('<div class="alert alert-error">' +
@@ -382,7 +393,7 @@ $(function() {
 		save_tag: function(event) {
 			var that = this;
 			if (event.keyCode == 13) {
-				var tags_array = escape($('input#tags').val()).split(',');
+				var tags_array = html_sanitize($('input#tags').val(), urlX, idX).split(',');
 
 				if (tags_array.length > 0) {
 					$('input#tags', this.el)
@@ -423,9 +434,9 @@ $(function() {
 		save_bookmark: function(category) {
 			var that = this;
 			var url = this.$('input#url').val();
-			var title = escape(this.$('input#title').val());
+			var title = html_sanitize(this.$('input#title').val(), urlX, idX);
 
-			var description = escape(this.$('textarea#description').val());
+			var description = html_sanitize(this.$('textarea#description').val(), urlX, idX);
 			if (this.$('input#is_hide').prop('checked')) {
 				var is_hide = true;
 			} else {
