@@ -38,10 +38,11 @@ requires = ['setuptools',
             'djangorestframework',
             'django-shortuuidfield',
             'python-openid',
-            'django-openid-auth']
+            'django-openid-auth',
+            'django-notification']
 
 setup(name='shiori',
-      version='0.1.0',
+      version='0.2.0a',
       description='bookmarking tool based on Web UI and JSON REST API',
       long_description=long_description,
       author='Kouhei Maeda',
