@@ -36,8 +36,9 @@ long_description = \
 requires = ['setuptools',
             'django',
             'djangorestframework',
-            'django_shortuuidfield',
-            'django_openid_auth']
+            'django-shortuuidfield',
+            'python-openid',
+            'django-openid-auth']
 
 setup(name='shiori',
       version='0.1.0',

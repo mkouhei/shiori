@@ -1,6 +1,7 @@
 pep8>=1.3
 pytest
-django
+django >= 1.6
 djangorestframework
-django_shortuuidfield
-django_openid_auth
+django-shortuuidfield
+python-openid
+django-openid-auth

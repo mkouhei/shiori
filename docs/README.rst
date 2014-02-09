@@ -22,6 +22,7 @@ Requirements
 * Django (>= 1.6)
 * Django REST framework (>= 2.3.12)
 * django-shortuuidfield (>= 0.1.2)
+* python-openid (>= 2.2.5)
 * django_openid_auth (>= 0.5)
 * jQuery (>= 1.7.2)
 * underscore.js (>= 1.5.2)
@@ -84,6 +85,38 @@ from PyPI
 
    $ pip install shiori
 
+Workaround django-auth-openid someproblems
+""""""""""""""""""""""""""""""""""""""""""
+
+django-auth-openid is not support django 1.5 over now,
+then you should use source debian package, and must apply some patches.::
+
+  $ apt-get source python-django-auth-openid
+  $ cd django-openid-auth-0.5
+  $ patch -p1 < /path/to/shiori/misc/django-openid-auth/django1.5compat.patch
+  $ patch -p1 < /path/to/shiori/misc/django-openid-auth/Change-manage-py-for-django1.6.patch
+  $ patch -p1 < /path/to/shiori/misc/django-openid-auth/Change-import-modules-in-urls-for-django1.6.patch
+  $ patch -p1 < /path/to/shiori/misc/django-openid-auth/Change-default-SESSSION_SERIALIZER.patch
+  $ python setup.py install
+
+
+Make symlinks of JavaScript Libraries
+"""""""""""""""""""""""""""""""""""""
+
+Shiori has no depended on JavaScript libraries, so make symlinks.
+Executute miscs/setup.sh script.::
+
+  $ cd /path/to/lib/python2.7/site-packages/shiori-0.x.x-py2.7.egg/shiori/static
+  $ sh ../miscs/setup.sh
+  $ ls -n
+  total 8
+  lrwxrwxrwx 1 1000 1000   30 Feb  9 09:26 backbone -> /usr/share/javascript/backbone
+  drwxr-xr-x 2 1000 1000 4096 Feb  9 06:49 css
+  lrwxrwxrwx 1 1000 1000   34 Feb  9 09:26 twbs -> /usr/share/twitter-bootstrap/files
+  lrwxrwxrwx 1 1000 1000   28 Feb  9 09:26 jquery -> /usr/share/javascript/jquery
+  drwxr-xr-x 2 1000 1000 4096 Feb  9 06:49 js
+  lrwxrwxrwx 1 1000 1000   26 Feb  9 09:26 json -> /usr/share/javascript/json
+  lrwxrwxrwx 1 1000 1000   32 Feb  9 09:26 underscore -> /usr/share/javascript/underscore
 
 Configuration
 -------------
@@ -94,6 +127,14 @@ You must change some values in shiori/core/settings.py.
 * DEBUG
 * ALLOWED_HOSTS
 * DATABASES
+
+Execute syncdb.::
+
+  $ python /path/to/shiori/manage.py syncdb
+
+Run server.::
+
+  $ python /path/to/shiori/manage.py runserver
 
 
 Development

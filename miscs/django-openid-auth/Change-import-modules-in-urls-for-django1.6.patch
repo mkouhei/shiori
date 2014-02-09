@@ -1,0 +1,45 @@
+Index: django-openid-auth-0.5/django_openid_auth/tests/urls.py
+===================================================================
+--- django-openid-auth-0.5.orig/django_openid_auth/tests/urls.py	2014-01-14 13:06:17.000000000 +0900
++++ django-openid-auth-0.5/django_openid_auth/tests/urls.py	2014-01-14 13:11:16.941615019 +0900
+@@ -27,7 +27,7 @@
+ # POSSIBILITY OF SUCH DAMAGE.
+ 
+ from django.http import HttpResponse
+-from django.conf.urls.defaults import *
++from django.conf.urls import patterns, include
+ 
+ 
+ def get_user(request):
+Index: django-openid-auth-0.5/django_openid_auth/urls.py
+===================================================================
+--- django-openid-auth-0.5.orig/django_openid_auth/urls.py	2014-01-14 13:06:17.000000000 +0900
++++ django-openid-auth-0.5/django_openid_auth/urls.py	2014-02-09 09:06:59.176515675 +0900
+@@ -27,7 +27,10 @@
+ # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ # POSSIBILITY OF SUCH DAMAGE.
+ 
+-from django.conf.urls.defaults import *
++try:
++    from django.conf.urls import patterns, url
++except:
++    from django.conf.urls.defaults import patterns, url
+ 
+ urlpatterns = patterns('django_openid_auth.views',
+     url(r'^login/$', 'login_begin', name='openid-login'),
+Index: django-openid-auth-0.5/example_consumer/urls.py
+===================================================================
+--- django-openid-auth-0.5.orig/example_consumer/urls.py	2014-01-14 13:06:17.000000000 +0900
++++ django-openid-auth-0.5/example_consumer/urls.py	2014-02-09 09:07:49.470573893 +0900
+@@ -27,7 +27,10 @@
+ # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ # POSSIBILITY OF SUCH DAMAGE.
+ 
+-from django.conf.urls.defaults import *
++try:
++    from django.conf.urls import patterns, include
++except:
++    from django.conf.urls.defaults import patterns, include
+ from django.contrib import admin
+ 
+ import views
