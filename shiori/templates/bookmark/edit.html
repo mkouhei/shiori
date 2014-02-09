@@ -1,0 +1,50 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="row">
+  <div class="content" id="edit_view">
+	{% if is_authenticated %}
+	<div id="flash"></div>
+	<div class="form-horizontal">
+	  {% csrf_token %}
+	  <fieldset>
+		<div class="control-group">
+		  <label class="control-label" for="url">url</label>
+		  <div class="controls">
+			<input id="url" name="url" type="url" placeholder="ex. http://example.org/some" required/>
+			<span class="help">required</span>
+		  </div>
+		  <label class="control-label" for="category">category</label>
+		  <div class="controls">
+			<input id="category" name="category" type="text" required />
+			<span class="help">required</span>
+		  </div>
+		  <label class="control-label" for="title">title</label>
+		  <div class="controls">
+			<input id="title" name="title" type="text" />
+			<span class="help">retrieve web page title automatically in default.</span>
+		  </div>
+		  <label class="control-label" for="tags">tags</label>
+		  <div class="controls">
+			<input id="tags" name="tags" type="text" />
+			<span class="help">add a new tag when keydown "Enter" key.</span>
+		  </div>
+		  <label class="control-label" for="description">description</label>
+		  <div class="controls">
+			<textarea id="description" name="description"></textarea>
+		  </div>
+		  <label class="control-label" for="is_hide">hide?</label>
+		  <div class="controls">
+			<input id="is_hide" name="is_hide" type="checkbox"/>
+			<span class="help">public mode when not check in default.</span>
+		  </div>
+		</div>
+		<div class="form-actions">
+		  <button type="submit" class="btn btn-primary">add</button>
+		  <button type="reset" class="btn">cancel</button>
+		</div>
+	  </fieldset>
+	</div>
+	{% endif %}
+  </div>
+</div>
+{% endblock %}

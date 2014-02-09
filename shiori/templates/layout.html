@@ -1,0 +1,53 @@
+{% load staticfiles %}<!doctype html>
+<html>
+<head>
+<title>栞</title>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script>!window.jQuery && document.write('<script src="{% static 'jquery/jquery.min.js' %}"><\/script>')</script>
+<link rel="stylesheet" type="text/css" href="{% static 'twbs/css/bootstrap.min.css' %}" />
+<script src="{% static 'twbs/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'twbs/js/bootstrap-typeahead.min.js' %}"></script>
+<script src="{% static 'twbs/js/bootstrap-tooltip.min.js' %}"></script>
+<script src="{% static 'twbs/js/bootstrap-popover.min.js' %}"></script>
+<script src="{% static 'json/json2.min.js' %}"></script>
+<script src="{% static 'underscore/underscore.min.js' %}"></script>
+<script src="{% static 'backbone/backbone.min.js' %}"></script>
+<!-- http://google-caja.googlecode.com/svn-history/r2466/trunk/src/com/google/caja/plugin/html4-defs.js -->
+<script src="{% static 'js/html4-defs.js' %}"></script>
+<!-- http://google-caja.googlecode.com/svn-history/r5661/trunk/src/com/google/caja/plugin/html-sanitizer.js -->
+<script src="{% static 'js/html-sanitizer.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
+<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}" />
+</head>
+<body>
+  <div id="main">
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner navbar-form">
+		<div class="container">
+		  <a href="/shiori"><h1 class="brand">栞</h1></a>
+		  <div class="nav-collapse">
+			<ul class="nav" id="nav">
+			  {% if is_authenticated %}
+			  <li><a id="add">add</a></li>
+			  <li class="dropdown">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ user.username }}</a>
+				<ul class="dropdown-menu">
+				  <li><a href="/shiori/profile">profile</a></li>
+				  <li><a href="/logout/">logout</a></li>
+				</ul>
+			  </li>
+			  {% else %}
+			  <li><a href="/login/">Sign in with OpenID</a></li>
+			  {% endif %}
+			</ul>
+		  </div>
+		</div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row" id="submenu"></div>
+	  {% block content %}{% endblock %}
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="row">
+  <div id="profile">
+	<dl>
+	  <dt>username<dt><dd>{{ user.username }}</dd>
+	  <dt>Full name<dt><dd>{{ user.first_name }} {{ user.last_name }}</dd>
+	  <dt>email<dt><dd>{{ user.email }}</dd>
+	  <dt>date joined<dt><dd>{{ user.date_joined }}</dd>
+	  <dt>last login<dt><dd>{{ user.last_login }}</dd>
+	</dl>
+  </div>
+</div>
+{% endblock %}

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-    Copyright (C) 2012 Kouhei Maeda <mkouhei@palmtb.net>
+    Copyright (C) 2013, 2014 Kouhei Maeda <mkouhei@palmtb.net>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,44 +18,41 @@
 
 import os
 import sys
-from setuptools import setup, find_packages
-
-sys.path.insert(0, 'src')
-import shiori
+from setuptools import setup
 
 classifiers = [
     "Development Status :: 3 - Alpha",
-    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+    "License :: OSI Approved :: "
+    "GNU General Public License v3 or later (GPLv3+)",
     "Programming Language :: Python",
+    "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
 ]
 
 long_description = \
-        open(os.path.join("docs","README.rst")).read() + \
-        open(os.path.join("docs","HISTORY.rst")).read() + \
-        open(os.path.join("docs","TODO.rst")).read()
+    open(os.path.join("docs", "README.rst")).read() + \
+    open(os.path.join("docs", "HISTORY.rst")).read() + \
+    open(os.path.join("docs", "TODO.rst")).read()
 
-requires = ['setuptools', 'oauth2']
+requires = ['setuptools',
+            'django',
+            'djangorestframework',
+            'django-shortuuidfield',
+            'python-openid',
+            'django-openid-auth']
 
 setup(name='shiori',
-      version=shiori.__version__,
-      description='bookmarking',
+      version='0.1.0',
+      description='bookmarking tool based on Web UI and JSON REST API',
       long_description=long_description,
       author='Kouhei Maeda',
       author_email='mkouhei@palmtb.net',
       url='https://github.com/mkouhei/shiori',
-      license=' GNU General Public License version 3',
+      license='GNU General Public License version 3',
       classifiers=classifiers,
-      packages=find_packages('src'),
-      package_dir={'': 'src'},
-      data_files = [],
+      packages=['shiori'],
+      data_files=[],
       install_requires=requires,
-      extras_require=dict(
-        test=['pytest', 'pep8', 'unittest'],
-        ),
+      include_package_data=True,
+      extras_require=dict(test=['pytest', 'pep8'],),
       test_suite='tests.runtest',
-      tests_require=['pytest','pep8','unittest'],
-      entry_points="""
-        [console_scripts]
-        iori = shiori.command:main
-""",
-)
+      tests_require=['pytest', 'pep8'])

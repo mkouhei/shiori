@@ -3,6 +3,12 @@
 which py.test || exit 1
 (
 cd $(git rev-parse --show-toplevel)
-py.test || exit 1
+find shiori -name '*.pyc' -delete
+py.test -v shiori* || exit 1
+py.test-3 -v shiori* || exit 1
+(
+pychecker -X -s shiori/*.py || exit 1
+pychecker -X -s shiori_tests/*.py || exit 1
+)
 python setup.py check -r || exit 1
 )

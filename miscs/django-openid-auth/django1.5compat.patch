@@ -1,0 +1,20 @@
+Description: Update template for Django 1.5
+Origin: commit, revision id: a.starr.b@gmail.com-20130618162848-teldgqvdg3w634dr
+Author: Andrew Starr-Bochicchio <a.starr.b@gmail.com>
+Last-Update: 2013-06-18
+X-Bzr-Revision-Id: a.starr.b@gmail.com-20130618162848-teldgqvdg3w634dr
+Bug: https://bugs.launchpad.net/django-openid-auth/+bug/1170355
+
+=== modified file 'django_openid_auth/templates/openid/login.html'
+--- old/django_openid_auth/templates/openid/login.html	2010-12-03 00:46:25 +0000
++++ new/django_openid_auth/templates/openid/login.html	2013-06-18 16:28:48 +0000
+@@ -5,7 +5,7 @@
+ <title>Sign in with your OpenID</title>
+ <style type="text/css">
+ input.openid {
+-    background: url({% url openid-logo %}) no-repeat;
++    background: url({% url 'openid-logo' %}) no-repeat;
+     background-position: 0 50%;
+     padding-left: 16px;
+ }
+
