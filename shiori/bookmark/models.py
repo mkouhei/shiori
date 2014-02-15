@@ -48,6 +48,9 @@ class Bookmark(BaseObject):
     def __unicode__(self):
         return self.title
 
+    def get_absolute_url(self):
+        return "/shiori/%s" % self.id
+
 
 class BookmarkTag(models.Model):
     id = models.AutoField(primary_key=True)
