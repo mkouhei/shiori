@@ -546,7 +546,7 @@ $(function() {
 			"logout": "logout",
 			"add/": "add",
 			"profile": "profile",
-			"categories/": "categories",
+			"categories": "categories",
 			"categories/:id": "category",
 			"tags/": "tags",
 			"tags/:id": "tag"
