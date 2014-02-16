@@ -1,6 +1,11 @@
 History
 -------
 
+0.2.1 (2014-02-16)
+^^^^^^^^^^^^^^^^^^
+
+* Remove django-notification from dependency
+
 0.2.0 (2014-02-16)
 ^^^^^^^^^^^^^^^^^^
 
