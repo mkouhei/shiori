@@ -52,7 +52,7 @@ $(function() {
 		},
 		appendItem: function(item) {
 			$(this.el)
-				.append('<a class="btn btn-primary" href="' +
+				.append('<a class="btn btn-primary" href="categories/' +
 						item.get('id') + '">' +
 						html_sanitize(item.get('category'), urlX, idX) +
 						'</a> ');
@@ -73,8 +73,6 @@ $(function() {
 		render: function() {
 			var that = this;
 			var selected_bookmarks = new Array();
-			$(this.el).append('<h4>');
-			$(this.el).append('<div>');
 			this.model.fetch({
 				success: function() {
 					$('h4', this.el).append(that.model.get('category'));
@@ -94,7 +92,7 @@ $(function() {
 			return this;
 		},
 		appendItem: function(item) {
-			$('div', this.el)
+			$(this.el)
 				.append('<a rel="popover" class="btn btn-success" id="' +
 						html_sanitize(item.get('id'), urlX, idX) + '">' +
 						html_sanitize(item.get('title'), urlX, idX) +
@@ -183,7 +181,7 @@ $(function() {
 		},
 		appendItem: function(item) {
 			$(this.el)
-				.append('<a class="btn btn-info" href="' +
+				.append('<a class="btn btn-info" href="tags/' +
 						item.get('id') + '">' +
 						html_sanitize(item.get('tag'), urlX, idX) + '</a> ');
 		}
