@@ -42,7 +42,7 @@ requires = ['setuptools',
             'django-notification']
 
 setup(name='shiori',
-      version='0.2.0a',
+      version='0.2.0',
       description='bookmarking tool based on Web UI and JSON REST API',
       long_description=long_description,
       author='Kouhei Maeda',
