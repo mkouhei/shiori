@@ -52,3 +52,10 @@ def tag(request, tag_id):
                               {'is_authenticated':
                                request.user.is_authenticated()},
                               context_instance=RequestContext(request))
+
+
+def bookmark(request, bookmark_id):
+    return render_to_response('bookmark/bookmark.html',
+                              {'is_authenticated':
+                               request.user.is_authenticated()},
+                              context_instance=RequestContext(request))

@@ -5,3 +5,4 @@ djangorestframework
 django-shortuuidfield
 python-openid
 django-openid-auth
+django-notification

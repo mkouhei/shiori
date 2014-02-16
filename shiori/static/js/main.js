@@ -52,7 +52,7 @@ $(function() {
 		},
 		appendItem: function(item) {
 			$(this.el)
-				.append('<a class="btn btn-primary" href="' +
+				.append('<a class="btn btn-primary" href="categories/' +
 						item.get('id') + '">' +
 						html_sanitize(item.get('category'), urlX, idX) +
 						'</a> ');
@@ -73,8 +73,6 @@ $(function() {
 		render: function() {
 			var that = this;
 			var selected_bookmarks = new Array();
-			$(this.el).append('<h4>');
-			$(this.el).append('<div>');
 			this.model.fetch({
 				success: function() {
 					$('h4', this.el).append(that.model.get('category'));
@@ -94,7 +92,7 @@ $(function() {
 			return this;
 		},
 		appendItem: function(item) {
-			$('div', this.el)
+			$(this.el)
 				.append('<a rel="popover" class="btn btn-success" id="' +
 						html_sanitize(item.get('id'), urlX, idX) + '">' +
 						html_sanitize(item.get('title'), urlX, idX) +
@@ -183,7 +181,7 @@ $(function() {
 		},
 		appendItem: function(item) {
 			$(this.el)
-				.append('<a class="btn btn-info" href="' +
+				.append('<a class="btn btn-info" href="tags/' +
 						item.get('id') + '">' +
 						html_sanitize(item.get('tag'), urlX, idX) + '</a> ');
 		}
@@ -337,7 +335,7 @@ $(function() {
 		}
 	});
 
-	var BookmarkView = Backbone.View.extend({
+	var AddBookmarkView = Backbone.View.extend({
 		el: $('div#edit_view'),
 		initialize: function() {
 			this.categories = new CategoriesList();
@@ -488,6 +486,51 @@ $(function() {
 		}
 	});
 
+	var BookmarkView = Backbone.View.extend({
+		el: $('div#bookmark_view'),
+		initialize: function() {
+			var id = location.pathname.split('/')[3];
+			this.model = new Bookmark({id: id});
+			this.render();
+		},
+		render: function() {
+			var that = this;
+			this.model.fetch({
+				success: function(item) {
+					$('h2', this.el)
+						.text(html_sanitize(item.get('title'), urlX, idX));
+					$('h4 a#url', this.el)
+						.text(html_sanitize(item.get('url'), urlX, idX));
+					$('h4 a', this.el)
+						.attr('href', html_sanitize(item.get('url'), urlX, idX));
+					$('p#desc', this.el)
+						.text(html_sanitize(item.get('description'), urlX, idX));
+					$('div#category > a.btn', this.el)
+						.text(html_sanitize(item.get('category'), urlX, idX));
+					$('div#category > a.btn', this.el)
+						.attr('href', '/shiori/categories/' +
+							  html_sanitize(item.get('category_id'), urlX, idX));
+					if (item.get('tags').length > 0) {
+						for (var i = 0; i < item.get('tags').length; i++) {
+							$('div#tags', this.el)
+								.append('<a class="btn btn-info"></a>');
+							$('div#tags > a.btn', this.el)
+								.text(html_sanitize(item.get('tags')[i]));
+						}
+					}
+
+				}
+			});
+			return this;
+		}
+	});
+
+	var ProfileView = Backbone.Router.extend({
+		el: $('div#profile'),
+		render: function() {
+		}
+	});
+
 	var AppView = Backbone.View.extend({
 		el: 'div#main',
 		events: {
@@ -544,11 +587,12 @@ $(function() {
 			"": "index",
 			"openid/login": "login",
 			"logout": "logout",
+			"b/:id": "bookmark",
 			"add/": "add",
 			"profile": "profile",
-			"categories/": "categories",
+			"categories": "categories",
 			"categories/:id": "category",
-			"tags/": "tags",
+			"tags": "tags",
 			"tags/:id": "tag"
 		},
 		index: function() {
@@ -559,12 +603,16 @@ $(function() {
 		login: function() {
 		},
 		profile: function() {
+			window.App.render();
 			var profileView = new ProfileView();
+		},
+		bookmark: function() {
+			window.App.render();
+			var bookmarkView = new BookmarkView();
 		},
 		add: function() {
 			window.App.render();
-			var bookmarkView = new BookmarkView();
-			//bookmarkView.render();
+			var addBookmarkView = new AddBookmarkView();
 		},
 		categories: function() {
 			window.App.render();

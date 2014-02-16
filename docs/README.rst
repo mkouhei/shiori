@@ -24,6 +24,7 @@ Requirements
 * django-shortuuidfield (>= 0.1.2)
 * python-openid (>= 2.2.5)
 * django_openid_auth (>= 0.5)
+* django-notification (>= 1.1.1)
 * jQuery (>= 1.7.2)
 * underscore.js (>= 1.5.2)
 * backbone.js (>= 1.1.0)
@@ -46,6 +47,7 @@ Shiori depends on as following.::
 
   $ sudo apt-get install python-django python-djangorestframework \
   python-django-shortuuidfield python-django-auth-openid \
+  python-django-notification \
   libjs-jquery libjs-underscore libjs-json libjs-twitter-bootstrap
 
 
