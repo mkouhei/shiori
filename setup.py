@@ -38,8 +38,7 @@ requires = ['setuptools',
             'djangorestframework',
             'django-shortuuidfield',
             'python-openid',
-            'django-openid-auth',
-            'django-notification']
+            'django-openid-auth']
 
 setup(name='shiori',
       version='0.2.0',
