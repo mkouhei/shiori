@@ -49,7 +49,7 @@ class Bookmark(BaseObject):
         return self.title
 
     def get_absolute_url(self):
-        return "/shiori/%s" % self.id
+        return "/shiori/b/%s" % self.id
 
 
 class BookmarkTag(models.Model):

@@ -12,5 +12,5 @@ urlpatterns = patterns('bookmark.views',
                            'category'),
                        url(r'^tags$', 'tags'),
                        url(r'^tags/(?P<tag_id>[\w.]+)$', 'tag'),
-                       url(r'^feeds/latest/$', LatestEntries()),
-                       url(r'^(?P<bookmark_id>[\w.]+)$', 'bookmark'),)
+                       url(r'^feeds$', LatestEntries()),
+                       url(r'^b/(?P<bookmark_id>[\w.]+)$', 'bookmark'),)
