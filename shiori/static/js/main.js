@@ -548,7 +548,7 @@ $(function() {
 			"profile": "profile",
 			"categories": "categories",
 			"categories/:id": "category",
-			"tags/": "tags",
+			"tags": "tags",
 			"tags/:id": "tag"
 		},
 		index: function() {
