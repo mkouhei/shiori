@@ -5,11 +5,11 @@ from django.contrib.auth.models import AnonymousUser
 from rest_framework import viewsets
 from rest_framework.permissions import (IsAuthenticated,
                                         IsAuthenticatedOrReadOnly)
-from bookmark.models import Category, Tag, Bookmark, BookmarkTag
-from api.serializers import (CategorySerializer,
-                             TagSerializer,
-                             BookmarkSerializer,
-                             BookmarkTagSerializer)
+from shiori.bookmark.models import Category, Tag, Bookmark, BookmarkTag
+from shiori.api.serializers import (CategorySerializer,
+                                    TagSerializer,
+                                    BookmarkSerializer,
+                                    BookmarkTagSerializer)
 
 
 class CategoryViewSet(viewsets.ModelViewSet):

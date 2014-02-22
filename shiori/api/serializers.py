@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from rest_framework import serializers
-from bookmark.models import Category, Tag, Bookmark, BookmarkTag
+from shiori.bookmark.models import Category, Tag, Bookmark, BookmarkTag
 
 
 class CategorySerializer(serializers.ModelSerializer):
