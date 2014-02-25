@@ -18,6 +18,40 @@ $(function() {
 		}
 	}
 
+	function get_page(url) {
+		if (url) {
+			var s = url.split('?')[1];
+		} else {
+			var s = location.search.substring(1);
+		}
+		var page;
+		if (s) {
+			var query = s.split('&');
+			if (query != '') {
+				for (var i = 0; i < query.length; i++) {
+					if (query[i].match(/^page=/)) {
+						page = query[i].split('=')[1];
+					}
+				}
+			}
+		}
+		return page;
+	}
+
+	function render_pagination(meta) {
+		var pager = '';
+		if (meta.previous) {
+			pager += ('<li><a href="?page=' +
+					  get_page(meta.previous) +
+					  '">&larr; previous</a></li>');
+		}
+		if (meta.next) {
+			pager += ('<li><a href="?page=' +
+					  get_page(meta.next) + '">next &rarr;</a></li>');
+		}
+		return pager;
+	}
+
 	var Category = Backbone.Model.extend({
 		urlRoot: '/v1/categories',
 		idAttribute: 'id',
@@ -33,6 +67,9 @@ $(function() {
 		model: Category,
 		url: '/v1/categories',
 		parse: function(res) {
+			res.results.push({'meta': {'count': res.count,
+									   'next': res.next,
+									   'previous': res.previous}});
 			return res.results;
 		}
 	});
@@ -42,20 +79,21 @@ $(function() {
 		initialize: function() {
 			this.collection = new CategoriesList();
 			this.listenTo(this.collection, 'add', this.appendItem);
-			this.collection.fetch();
-		},
-		render: function() {
-			this.collection.each(function(item) {
-				this.appendItem(item);
-			}, this);
-			return this;
+			this.collection.fetch({data: {"page": get_page()}});
 		},
 		appendItem: function(item) {
-			$(this.el)
-				.append('<a class="btn btn-primary" href="categories/' +
-						item.get('id') + '">' +
-						html_sanitize(item.get('category'), urlX, idX) +
-						'</a> ');
+			if (item.get('meta')) {
+				this.pagination(item.get('meta'));
+			} else {
+				$(this.el)
+					.append('<a class="btn btn-primary" href="categories/' +
+							item.get('id') + '">' +
+							html_sanitize(item.get('category'), urlX, idX) +
+							'</a> ');
+			}
+		},
+		pagination: function(meta) {
+			$('ul.pager').append(render_pagination(meta));
 		}
 	});
 
@@ -136,6 +174,9 @@ $(function() {
 		model: BookmarkTags,
 		url: '/v1/bookmark_tags',
 		parse: function(res) {
+			res.results.push({'meta': {'count': res.count,
+									   'next': res.next,
+									   'previous': res.previous}});
 			return res.results;
 		}
 	});
@@ -152,6 +193,9 @@ $(function() {
 		model: Tag,
 		url: '/v1/tags',
 		parse: function(res) {
+			res.results.push({'meta': {'count': res.count,
+									   'next': res.next,
+									   'previous': res.previous}});
 			return res.results;
 		}
 	});
@@ -160,7 +204,7 @@ $(function() {
 		el: $('div#tags_list'),
 		initialize: function() {
 			this.collection = new TagsList();
-			this.collection.fetch();
+			this.collection.fetch({data: {"page": get_page()}});
 			this.bookmark_tags = new BookmarkTagsList();
 		},
 		render: function() {
@@ -180,10 +224,17 @@ $(function() {
 			return this;
 		},
 		appendItem: function(item) {
-			$(this.el)
-				.append('<a class="btn btn-info" href="tags/' +
-						item.get('id') + '">' +
-						html_sanitize(item.get('tag'), urlX, idX) + '</a> ');
+			if (item.get('meta')) {
+				this.pagination(item.get('meta'));
+			} else {
+				$(this.el)
+					.append('<a class="btn btn-info" href="tags/' +
+							item.get('id') + '">' +
+							html_sanitize(item.get('tag'), urlX, idX) + '</a> ');
+			}
+		},
+		pagination: function(meta) {
+			$('ul.pager').append(render_pagination(meta));
 		}
 	});
 
@@ -276,6 +327,9 @@ $(function() {
 		model: Bookmark,
 		url: '/v1/bookmarks',
 		parse: function(res) {
+			res.results.push({'meta': {'count': res.count,
+									   'next': res.next,
+									   'previous': res.previous}});
 			return res.results;
 		}
 	});
@@ -285,11 +339,12 @@ $(function() {
 		initialize: function() {
 			this.collection = new BookmarkList();
 			this.listenTo(this.collection, 'add', this.appendItem);
-			this.collection.fetch();
+			this.collection.fetch({data: {"page": get_page()}});
 		},
 		events: {
 			'mouseover a.btn': 'loadBookmark'
 		},
+		/*
 		render: function() {
 			var that = this;
 			this.collection.each(function(item) {
@@ -297,12 +352,20 @@ $(function() {
 			}, this);
 			return this;
 		},
+		*/
 		appendItem: function(item) {
-			$(this.el)
-				.append('<a rel="popover" class="btn btn-success" id="' +
-						html_sanitize(item.get('id'), urlX, idX) + '">' +
-						html_sanitize(item.get('title'), urlX, idX) +
-						'</a> ');
+			if (item.get('meta')) {
+				this.pagination(item.get('meta'));
+			} else {
+				$(this.el)
+					.append('<a rel="popover" class="btn btn-success" id="' +
+							html_sanitize(item.get('id'), urlX, idX) + '">' +
+							html_sanitize(item.get('title'), urlX, idX) +
+							'</a> ');
+			}
+		},
+		pagination: function(meta) {
+			$('ul.pager').append(render_pagination(meta));
 		},
 		loadBookmark: function(item) {
 			var that = this;
