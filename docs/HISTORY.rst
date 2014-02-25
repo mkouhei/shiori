@@ -1,10 +1,16 @@
 History
 -------
 
+0.2.3 (2014-02-26)
+^^^^^^^^^^^^^^^^^^
+
+* Add pagination
+* Remove patches of django-openid-auth why fixed at python-django-auth-openid 0.5-2
+
 0.2.2 (2014-02-22)
 ^^^^^^^^^^^^^^^^^^
 
-* Fix importing modules.
+* Fix importing modules
 
 0.2.1 (2014-02-16)
 ^^^^^^^^^^^^^^^^^^
