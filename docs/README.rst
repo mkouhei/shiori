@@ -94,10 +94,6 @@ then you should use source debian package, and must apply some patches.::
 
   $ apt-get source python-django-auth-openid
   $ cd django-openid-auth-0.5
-  $ patch -p1 < /path/to/shiori/misc/django-openid-auth/django1.5compat.patch
-  $ patch -p1 < /path/to/shiori/misc/django-openid-auth/Change-manage-py-for-django1.6.patch
-  $ patch -p1 < /path/to/shiori/misc/django-openid-auth/Change-import-modules-in-urls-for-django1.6.patch
-  $ patch -p1 < /path/to/shiori/misc/django-openid-auth/Change-default-SESSSION_SERIALIZER.patch
   $ python setup.py install
 
 
