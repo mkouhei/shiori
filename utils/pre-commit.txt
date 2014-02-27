@@ -6,6 +6,7 @@ cd $(git rev-parse --show-toplevel)
 find shiori -name '*.pyc' -delete
 py.test -v shiori* || exit 1
 py.test-3 -v shiori* || exit 1
+python shiori/manage.py test
 (
 pychecker -X -s shiori/*.py || exit 1
 pychecker -X -s shiori_tests/*.py || exit 1
