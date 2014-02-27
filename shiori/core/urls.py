@@ -8,7 +8,6 @@ admin.autodiscover()
 urlpatterns = patterns('',
                        (r'', include('django_openid_auth.urls')),
                        (r'^$', RedirectView.as_view(url='/shiori/')),
-                       (r'^openid/', include('django_openid_auth.urls')),
                        (r'^logout/$', 'django.contrib.auth.views.logout',
                         {'template_name': 'bookmark/logout.html'}),
                        (r'^v1/', include('api.urls')),
