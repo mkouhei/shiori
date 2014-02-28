@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.core.urlresolvers import resolve
 from django.test import TestCase
-from api.views import CategoryViewSet
+from shiori.api.views import CategoryViewSet
 
 
 class APITest(TestCase):

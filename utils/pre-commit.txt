@@ -4,9 +4,8 @@ which py.test || exit 1
 (
 cd $(git rev-parse --show-toplevel)
 find shiori -name '*.pyc' -delete
-py.test -v shiori/tests/test_pep8.py || exit 1
-py.test-3 -v shiori/tests/test_pep8.py || exit 1
-python shiori/manage.py test
+python setup.py test || exit 1
+#python3 setup.py test || exit 1
 (
 pychecker -X -s shiori/*.py || exit 1
 pychecker -X -s shiori_tests/*.py || exit 1

@@ -3,7 +3,7 @@ from django.conf.urls import patterns, include, url
 from shiori.bookmark.feeds import LatestEntries
 
 
-urlpatterns = patterns('bookmark.views',
+urlpatterns = patterns('shiori.bookmark.views',
                        url(r'^$', 'index'),
                        url(r'^profile/$', 'profile'),
                        url(r'^add/$', 'add'),

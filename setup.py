@@ -53,6 +53,4 @@ setup(name='shiori',
       data_files=[],
       install_requires=requires,
       include_package_data=True,
-      extras_require=dict(test=['pytest', 'pep8'],),
-      test_suite='shiori.tests.runtest',
-      tests_require=['pytest', 'pep8'])
+      test_suite='shiori_tests.runtests.runtests',)

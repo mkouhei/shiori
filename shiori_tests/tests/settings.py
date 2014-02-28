@@ -40,8 +40,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'rest_framework',
     'django_openid_auth',
-    'shiori.bookmark',
-    'shiori.api',
+    'bookmark',
+    'api',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -58,9 +58,9 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
-ROOT_URLCONF = 'shiori.core.urls'
+ROOT_URLCONF = 'core.urls'
 
-WSGI_APPLICATION = 'shiori.core.wsgi.application'
+WSGI_APPLICATION = 'core.wsgi.application'
 
 
 # Database
