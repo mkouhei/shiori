@@ -14,8 +14,13 @@ The user registeration and login of this tool uses OpenID.
 It is written "栞" in Kanji, this caracter is 0x681E in Unicode.
 
 
+.. image:: https://secure.travis-ci.org/mkouhei/shiori.png?branch=devel
+   :target: http://travis-ci.org/mkouhei/shiori
 .. image:: https://coveralls.io/repos/mkouhei/shiori/badge.png
    :target: https://coveralls.io/r/mkouhei/shiori
+.. image:: https://pypip.in/v/shiori/badge.png
+   :target: https://crate.io/packages/shiori
+
 
 Requirements
 ------------
