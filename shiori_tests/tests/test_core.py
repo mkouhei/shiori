@@ -7,6 +7,7 @@ import django.contrib.auth.views
 
 
 class CoreTest(TestCase):
+
     def test_root_url_resolve(self):
         response = self.client.get('/')
         self.assertRedirects(response, '/shiori/',
