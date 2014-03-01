@@ -5,4 +5,4 @@ shiori/static/json
 shiori/static/twbs
 shiori/static/underscore
 .tox
-
+.coverage
