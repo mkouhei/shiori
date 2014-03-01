@@ -19,14 +19,35 @@
 import os
 import sys
 from setuptools import setup
+from setuptools.command.test import test as TestCommand
+import multiprocessing
+
+
+class Tox(TestCommand):
+    def finalize_options(self):
+        TestCommand.finalize_options(self)
+        self.test_args = []
+        self.test_suite = True
+
+    def run_tests(self):
+        import tox
+        errno = tox.cmdline(self.test_args)
+        sys.exit(errno)
+
 
 classifiers = [
     "Development Status :: 3 - Alpha",
     "License :: OSI Approved :: "
     "GNU General Public License v3 or later (GPLv3+)",
     "Programming Language :: Python",
+    "Programming Language :: Python :: 2.7",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+    "Topic :: Internet",
+    "Topic :: Internet :: WWW/HTTP",
     "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
 ]
+
 
 long_description = \
     open(os.path.join("docs", "README.rst")).read() + \
@@ -41,7 +62,7 @@ requires = ['setuptools',
             'django-openid-auth']
 
 setup(name='shiori',
-      version='0.2.3',
+      version='0.2.4',
       description='bookmarking tool based on Web UI and JSON REST API',
       long_description=long_description,
       author='Kouhei Maeda',
@@ -53,6 +74,5 @@ setup(name='shiori',
       data_files=[],
       install_requires=requires,
       include_package_data=True,
-      extras_require=dict(test=['pytest', 'pep8'],),
-      test_suite='tests.runtest',
-      tests_require=['pytest', 'pep8'])
+      tests_require=['tox'],
+      cmdclass={'test': Tox},)

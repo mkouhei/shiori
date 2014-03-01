@@ -1,6 +1,16 @@
 History
 -------
 
+0.2.4 (2014-03-01)
+^^^^^^^^^^^^^^^^^^
+
+* Redirect root to /shiori/
+* Add test code of routing, bookmark view, REST API
+* Use django test in setup.py test
+* Use tox
+* Use travis-ci
+* Use coverage and coverall.io
+
 0.2.3 (2014-02-26)
 ^^^^^^^^^^^^^^^^^^
 

@@ -9,6 +9,6 @@ router.register(r'tags', views.TagViewSet)
 router.register(r'bookmarks', views.BookmarkViewSet)
 router.register(r'bookmark_tags', views.BookmarkTagViewSet)
 
-urlpatterns = patterns('api.views',
+urlpatterns = patterns('shiori.api.views',
                        url(r'^', include(router.urls)),
                        )

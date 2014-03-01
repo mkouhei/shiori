@@ -13,7 +13,6 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
 
@@ -60,7 +59,7 @@ AUTHENTICATION_BACKENDS = (
 
 ROOT_URLCONF = 'shiori.core.urls'
 
-WSGI_APPLICATION = 'shiori.core.wsgi.application'
+WSGI_APPLICATION = 'core.wsgi.application'
 
 
 # Database
@@ -87,7 +86,7 @@ USE_L10N = True
 USE_TZ = True
 
 TEMPLATE_DIRS = (
-    os.path.join(BASE_DIR, 'templates'),
+    os.path.join(BASE_DIR, 'shiori/templates'),
 )
 
 

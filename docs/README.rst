@@ -14,6 +14,13 @@ The user registeration and login of this tool uses OpenID.
 It is written "栞" in Kanji, this caracter is 0x681E in Unicode.
 
 
+.. image:: https://secure.travis-ci.org/mkouhei/shiori.png?branch=devel
+   :target: http://travis-ci.org/mkouhei/shiori
+.. image:: https://coveralls.io/repos/mkouhei/shiori/badge.png?branch=devel
+   :target: https://coveralls.io/r/mkouhei/shiori?branch=devel
+.. image:: https://pypip.in/v/shiori/badge.png
+   :target: https://crate.io/packages/shiori
+
 
 Requirements
 ------------
@@ -155,4 +162,3 @@ See also
 * `django REST framework <http://www.django-rest-framework.org/>`_
 * `django-openid-auth README <http://bazaar.launchpad.net/~django-openid-auth/django-openid-auth/trunk/view/head:/README.txt>`_
 * `Backbone.js <http://backbonejs.org/>`_
-
