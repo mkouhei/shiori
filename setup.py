@@ -20,6 +20,7 @@ import os
 import sys
 from setuptools import setup
 from setuptools.command.test import test as TestCommand
+import multiprocessing
 
 
 class Tox(TestCommand):
