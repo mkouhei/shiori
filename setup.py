@@ -40,6 +40,11 @@ classifiers = [
     "License :: OSI Approved :: "
     "GNU General Public License v3 or later (GPLv3+)",
     "Programming Language :: Python",
+    "Programming Language :: Python :: 2.7",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+    "Topic :: Internet",
+    "Topic :: Internet :: WWW/HTTP",
     "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
 ]
 
@@ -57,7 +62,7 @@ requires = ['setuptools',
             'django-openid-auth']
 
 setup(name='shiori',
-      version='0.2.3',
+      version='0.2.4',
       description='bookmarking tool based on Web UI and JSON REST API',
       long_description=long_description,
       author='Kouhei Maeda',
@@ -71,4 +76,3 @@ setup(name='shiori',
       include_package_data=True,
       tests_require=['tox'],
       cmdclass={'test': Tox},)
-      #test_suite='shiori_tests.runtests.runtests',)
