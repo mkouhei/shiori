@@ -19,6 +19,20 @@
 import os
 import sys
 from setuptools import setup
+from setuptools.command.test import test as TestCommand
+
+
+class Tox(TestCommand):
+    def finalize_options(self):
+        TestCommand.finalize_options(self)
+        self.test_args = []
+        self.test_suite = True
+
+    def run_tests(self):
+        import tox
+        errno = tox.cmdline(self.test_args)
+        sys.exit(errno)
+
 
 classifiers = [
     "Development Status :: 3 - Alpha",
@@ -27,6 +41,7 @@ classifiers = [
     "Programming Language :: Python",
     "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
 ]
+
 
 long_description = \
     open(os.path.join("docs", "README.rst")).read() + \
@@ -53,4 +68,6 @@ setup(name='shiori',
       data_files=[],
       install_requires=requires,
       include_package_data=True,
-      test_suite='shiori_tests.runtests.runtests',)
+      tests_require=['tox'],
+      cmdclass={'test': Tox},)
+      #test_suite='shiori_tests.runtests.runtests',)

@@ -4,4 +4,4 @@ django >= 1.6
 djangorestframework
 django-shortuuidfield
 python-openid
-django-openid-auth
+-e bzr+http://bazaar.launchpad.net/~andrewsomething/django-openid-auth/1252445#egg=django-openid-auth
