@@ -3,9 +3,12 @@ from django.db.models import Q
 from django.utils.html import escape
 from django.contrib.auth.models import AnonymousUser
 from rest_framework import viewsets
+from rest_framework.response import Response
 from rest_framework.permissions import (IsAuthenticated,
                                         IsAuthenticatedOrReadOnly)
+from rest_framework.exceptions import NotAuthenticated
 from shiori.bookmark.models import Category, Tag, Bookmark, BookmarkTag
+from shiori.api.permissions import IsOwnerOrReadOnly
 from shiori.api.serializers import (CategorySerializer,
                                     TagSerializer,
                                     BookmarkSerializer,
@@ -34,10 +37,13 @@ class TagViewSet(viewsets.ModelViewSet):
 class BookmarkViewSet(viewsets.ModelViewSet):
     queryset = Bookmark.objects.all()
     serializer_class = BookmarkSerializer
-    permission_classes = (IsAuthenticatedOrReadOnly,)
+    permission_classes = (IsOwnerOrReadOnly,)
 
     def pre_save(self, obj):
-        obj.owner = self.request.user
+        if isinstance(self.request.user, AnonymousUser):
+            raise NotAuthenticated
+        else:
+            obj.owner = self.request.user
         obj.title = escape(self.request.DATA.get('title'))
         obj.description = escape(self.request.DATA.get('description'))
 

@@ -526,9 +526,14 @@ class APITest(TestCase):
         self.client.logout()
         self.client.login(username=v.username2, password=v.password2)
         response = self.client.delete('/v1/bookmarks/%s' % id)
+        self.assertEqual(response.status_code, 404)
+
+        response = self.client.delete('/v1/bookmarks/%s?is_all=true' % id)
         self.assertEqual(response.status_code, 403)
 
     # ToDo: put is allowed by owner user only.
+    # Url of bookmark is not unique in all users,
+    # but url by users should be unique.
     @unittest.skip("ToDo skipping")
     def test_put_bookmark_by_another_user(self):
         payload = {'category': v.category}
@@ -559,6 +564,7 @@ class APITest(TestCase):
         response = self.client.put('/v1/bookmarks/%s' % id,
                                    content_type='application/json',
                                    data=json.dumps(payload4))
+        print(response.content)
         self.assertEqual(response.status_code, 403)
 
     def test_post_bookmark_tags_by_anonymous(self):
