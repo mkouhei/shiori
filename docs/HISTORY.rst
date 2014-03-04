@@ -1,6 +1,13 @@
 History
 -------
 
+0.2.5 (2014-03-05)
+^^^^^^^^^^^^^^^^^^
+
+* Added test REST API for anonymous user and another user
+* Fixed #6 any authenticated users can change bookmarks
+* Fixed #8 invalid URL of login on logout page
+
 0.2.4 (2014-03-01)
 ^^^^^^^^^^^^^^^^^^
 
