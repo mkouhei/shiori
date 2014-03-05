@@ -32,7 +32,7 @@ class Tag(BaseObject):
 
 
 class Bookmark(BaseObject):
-    url = models.URLField(unique=True)
+    url = models.URLField()
     title = models.CharField(max_length=255)
     category = models.ForeignKey(Category)
     tags = models.ManyToManyField(Tag, through='BookmarkTag')
@@ -44,6 +44,7 @@ class Bookmark(BaseObject):
 
     class Meta:
         db_table = 'bookmark'
+        unique_together = ('url', 'owner')
 
     def __unicode__(self):
         return self.title
