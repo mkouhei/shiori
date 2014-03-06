@@ -361,15 +361,6 @@ $(function() {
 		events: {
 			'mouseover a.btn': 'loadBookmark'
 		},
-		/*
-		render: function() {
-			var that = this;
-			this.collection.each(function(item) {
-				this.appendItem(item);
-			}, this);
-			return this;
-		},
-		*/
 		appendItem: function(item) {
 			if (item.get('meta')) {
 				this.pagination(item.get('meta'));
