@@ -1,13 +1,10 @@
 # -*- coding: utf-8 -*-
 from django.conf.urls import patterns, include, url
-from shiori.bookmark.views import BookmarkListRedirectView
 from shiori.bookmark.feeds import LatestEntries
 
 
 urlpatterns = patterns('shiori.bookmark.views',
                        url(r'^$', 'index', name='index'),
-                       url(r'^index$', BookmarkListRedirectView.as_view(),
-                           name='index-toggle'),
                        url(r'^profile/$', 'profile'),
                        url(r'^add/$', 'add'),
                        url(r'^categories$', 'categories'),

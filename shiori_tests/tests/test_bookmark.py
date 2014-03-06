@@ -19,16 +19,6 @@ class BookmarkTest(TestCase):
         found = resolve('/shiori/')
         self.assertEqual(found.func, shiori.bookmark.views.index)
 
-    def test_index_url_resolve(self):
-        response = self.client.get('/shiori/index')
-        self.assertRedirects(response, '/shiori/',
-                             status_code=302, target_status_code=200)
-
-    def test_index_with_query_string_url_resolve(self):
-        response = self.client.get('/shiori/index?is_all=true')
-        self.assertRedirects(response, '/shiori/?is_all=true',
-                             status_code=302, target_status_code=200)
-
     def test_profile_url_resolve(self):
         found = resolve('/shiori/profile/')
         self.assertEqual(found.func, shiori.bookmark.views.profile)

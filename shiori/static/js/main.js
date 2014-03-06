@@ -1,4 +1,5 @@
 $(function() {
+	var url_root = '/shiori/';
     function urlX(url) {if(/^https?:\/\//.test(url)) {return url }}
     function idX(id) { return id }
 
@@ -579,7 +580,7 @@ $(function() {
 					$('div#category > a.btn', this.el)
 						.text(html_sanitize(item.get('category'), urlX, idX));
 					$('div#category > a.btn', this.el)
-						.attr('href', '/shiori/categories/' +
+						.attr('href', url_root + 'categories/' +
 							  html_sanitize(item.get('category_id'), urlX, idX));
 					if (item.get('tags').length > 0) {
 						for (var i = 0; i < item.get('tags').length; i++) {
@@ -649,11 +650,9 @@ $(function() {
 		},
 		toggle_view: function() {
 			if (is_all()) {
-				window.router.navigate('index', true);
-				return false;
+				location.href = location.pathname;
 			} else {
-				window.router.navigate('index?is_all=true', true);
-				return false;
+				location.href = '?is_all=true';
 			}
 		},
 		render : function() {
@@ -671,7 +670,6 @@ $(function() {
 	var Router = Backbone.Router.extend({
 		routes: {
 			"": "index",
-			"index?is_all=:is_all": "index",
 			"openid/login": "login",
 			"logout": "logout",
 			"b/:id": "bookmark",
@@ -680,8 +678,9 @@ $(function() {
 			"categories": "categories",
 			"categories/:id": "category",
 			"tags": "tags",
-			"tags/:id": "tag"
+			"tags/:id": "tag",
 		},
+
 		index: function() {
 			window.App.render();
 			var bookmarkListView = new BookmarkListView();
@@ -731,6 +730,6 @@ $(function() {
 
 	$(function() {
 		Backbone.history.start({hashChange: false,
-								root: "/shiori"})
+								root: url_root})
 	});
 });
