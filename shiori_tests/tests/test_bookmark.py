@@ -2,6 +2,7 @@
 from django.core.urlresolvers import resolve
 from django.test import TestCase
 from django.contrib.auth.models import User
+from django.views.generic import RedirectView
 import shiori.bookmark.views
 from shiori.bookmark.feeds import LatestEntries
 import shiori_tests.tests.vars as v
@@ -17,6 +18,16 @@ class BookmarkTest(TestCase):
     def test_shiori_url_resolve(self):
         found = resolve('/shiori/')
         self.assertEqual(found.func, shiori.bookmark.views.index)
+
+    def test_index_url_resolve(self):
+        response = self.client.get('/shiori/index')
+        self.assertRedirects(response, '/shiori/',
+                             status_code=302, target_status_code=200)
+
+    def test_index_with_query_string_url_resolve(self):
+        response = self.client.get('/shiori/index?is_all=true')
+        self.assertRedirects(response, '/shiori/?is_all=true',
+                             status_code=302, target_status_code=200)
 
     def test_profile_url_resolve(self):
         found = resolve('/shiori/profile/')

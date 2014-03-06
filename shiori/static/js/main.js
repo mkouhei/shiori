@@ -52,6 +52,22 @@ $(function() {
 		return pager;
 	}
 
+	function is_all() {
+		var s = location.search.substring(1);
+		var is_all = false;
+		if (s) {
+			var query = s.split('&');
+			if (query != '') {
+				for (var i = 0; i < query.length; i++) {
+					if (query[i].match(/^is_all=/)) {
+						is_all = query[i].split('=')[1];
+					}
+				}
+			}
+		}
+		return is_all;
+	}
+
 	var Category = Backbone.Model.extend({
 		urlRoot: '/v1/categories',
 		idAttribute: 'id',
@@ -339,7 +355,8 @@ $(function() {
 		initialize: function() {
 			this.collection = new BookmarkList();
 			this.listenTo(this.collection, 'add', this.appendItem);
-			this.collection.fetch({data: {"page": get_page()}});
+			this.collection.fetch({data: {"page": get_page(),
+										  "is_all": is_all()}});
 		},
 		events: {
 			'mouseover a.btn': 'loadBookmark'
@@ -602,7 +619,8 @@ $(function() {
 			'click a#add': 'add',
 			'click a#profile': 'profile',
 			'click a#categories': 'categories',
-			'click a#tags': 'tags'
+			'click a#tags': 'tags',
+			'click a#toggle-view': 'toggle_view',
 		},
 		initialize: function() {
 		},
@@ -638,16 +656,31 @@ $(function() {
 			window.router.navigate('tag', true);
 			return false;
 		},
+		toggle_view: function() {
+			if (is_all()) {
+				window.router.navigate('index', true);
+				return false;
+			} else {
+				window.router.navigate('index?is_all=true', true);
+				return false;
+			}
+		},
 		render : function() {
 			$('div#submenu', this.el)
 				.append('<a id="categories">Categories</a>')
 				.append('<a id="tags">Tags</a>');
+			if (is_all()) {
+				$('a#toggle-view').text('yours only');
+			} else {
+				$('a#toggle-view').text('view all');
+			}
 		}
 	});
 
 	var Router = Backbone.Router.extend({
 		routes: {
 			"": "index",
+			"index?is_all=:is_all": "index",
 			"openid/login": "login",
 			"logout": "logout",
 			"b/:id": "bookmark",
