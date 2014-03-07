@@ -279,8 +279,10 @@ $(function() {
 			this.bookmarks.fetch({
 				success: function() {
 					that.bookmarks.find(function(item) {
-						if (item.get('tags').indexOf(that.model.get('tag')) > -1) {
-							selected_bookmarks.push(item);
+						if (!item.get('meta')) {
+							if (item.get('tags').indexOf(that.model.get('tag')) > -1) {
+								selected_bookmarks.push(item);
+							}
 						}
 					});
 				}
