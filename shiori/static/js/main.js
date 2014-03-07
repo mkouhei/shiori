@@ -134,6 +134,7 @@ $(function() {
 				}
 			}, this);
 			this.bookmarks.fetch({
+				data: {"is_all": is_all()},
 				success: function() {
 					selected_bookmarks = that.bookmarks.where(
 						{'category': that.model.get('category')});
@@ -157,6 +158,7 @@ $(function() {
 			var that = this;
 			this.bookmark = new Bookmark({id: item.target.id});
 			this.bookmark.fetch({
+				data: {"is_all": is_all()},
 				success: function() {
 					that.popup(that.bookmark);
 				}
@@ -277,6 +279,7 @@ $(function() {
 				}
 			}, this);
 			this.bookmarks.fetch({
+				data: {"is_all": is_all()},
 				success: function() {
 					that.bookmarks.find(function(item) {
 						if (!item.get('meta')) {
@@ -304,6 +307,7 @@ $(function() {
 			var that = this;
 			this.bookmark = new Bookmark({id: item.target.id});
 			this.bookmark.fetch({
+				data: {"is_all": is_all()},
 				success: function() {
 					that.popup(that.bookmark);
 				}
@@ -382,6 +386,7 @@ $(function() {
 			var that = this;
 			this.bookmark = new Bookmark({id: item.target.id});
 			this.bookmark.fetch({
+				data: {"is_all": is_all()},
 				success: function() {
 					that.popup(that.bookmark);
 				}
@@ -570,6 +575,7 @@ $(function() {
 		render: function() {
 			var that = this;
 			this.model.fetch({
+				data: {"is_all": is_all()},
 				success: function(item) {
 					$('h2', this.el)
 						.text(html_sanitize(item.get('title'), urlX, idX));
