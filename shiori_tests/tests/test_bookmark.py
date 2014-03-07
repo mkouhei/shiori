@@ -2,6 +2,7 @@
 from django.core.urlresolvers import resolve
 from django.test import TestCase
 from django.contrib.auth.models import User
+from django.views.generic import RedirectView
 import shiori.bookmark.views
 from shiori.bookmark.feeds import LatestEntries
 import shiori_tests.tests.vars as v

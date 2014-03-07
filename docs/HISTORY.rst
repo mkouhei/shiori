@@ -1,6 +1,16 @@
 History
 -------
 
+0.2.6 (2014-03-08)
+^^^^^^^^^^^^^^^^^^
+
+* Added toggle switch to display all bookmarks
+* Fixed #12 Tags and categories that do not have a bookmark is displayed
+* Fixed #13 bookmarks does not appear in the tag view
+* Fixed #10 It is impossible to view the bookmarks of other users
+            in the login state in the UI
+* Fixed #7 URL of bookmark should be unique by user
+
 0.2.5 (2014-03-05)
 ^^^^^^^^^^^^^^^^^^
 

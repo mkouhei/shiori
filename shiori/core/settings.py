@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'rest_framework',
     'django_openid_auth',
+    'south',
     'shiori.bookmark',
     'shiori.api',
 )

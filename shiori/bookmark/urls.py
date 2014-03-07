@@ -4,7 +4,7 @@ from shiori.bookmark.feeds import LatestEntries
 
 
 urlpatterns = patterns('shiori.bookmark.views',
-                       url(r'^$', 'index'),
+                       url(r'^$', 'index', name='index'),
                        url(r'^profile/$', 'profile'),
                        url(r'^add/$', 'add'),
                        url(r'^categories$', 'categories'),

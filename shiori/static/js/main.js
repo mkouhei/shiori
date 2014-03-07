@@ -1,4 +1,5 @@
 $(function() {
+	var url_root = '/shiori/';
     function urlX(url) {if(/^https?:\/\//.test(url)) {return url }}
     function idX(id) { return id }
 
@@ -50,6 +51,22 @@ $(function() {
 					  get_page(meta.next) + '">next &rarr;</a></li>');
 		}
 		return pager;
+	}
+
+	function is_all() {
+		var s = location.search.substring(1);
+		var is_all = false;
+		if (s) {
+			var query = s.split('&');
+			if (query != '') {
+				for (var i = 0; i < query.length; i++) {
+					if (query[i].match(/^is_all=/)) {
+						is_all = query[i].split('=')[1];
+					}
+				}
+			}
+		}
+		return is_all;
 	}
 
 	var Category = Backbone.Model.extend({
@@ -117,6 +134,7 @@ $(function() {
 				}
 			}, this);
 			this.bookmarks.fetch({
+				data: {"is_all": is_all()},
 				success: function() {
 					selected_bookmarks = that.bookmarks.where(
 						{'category': that.model.get('category')});
@@ -140,6 +158,7 @@ $(function() {
 			var that = this;
 			this.bookmark = new Bookmark({id: item.target.id});
 			this.bookmark.fetch({
+				data: {"is_all": is_all()},
 				success: function() {
 					that.popup(that.bookmark);
 				}
@@ -260,10 +279,13 @@ $(function() {
 				}
 			}, this);
 			this.bookmarks.fetch({
+				data: {"is_all": is_all()},
 				success: function() {
 					that.bookmarks.find(function(item) {
-						if (item.get('tags').indexOf(that.model.get('tag')) > -1) {
-							selected_bookmarks.push(item);
+						if (!item.get('meta')) {
+							if (item.get('tags').indexOf(that.model.get('tag')) > -1) {
+								selected_bookmarks.push(item);
+							}
 						}
 					});
 				}
@@ -285,6 +307,7 @@ $(function() {
 			var that = this;
 			this.bookmark = new Bookmark({id: item.target.id});
 			this.bookmark.fetch({
+				data: {"is_all": is_all()},
 				success: function() {
 					that.popup(that.bookmark);
 				}
@@ -339,20 +362,12 @@ $(function() {
 		initialize: function() {
 			this.collection = new BookmarkList();
 			this.listenTo(this.collection, 'add', this.appendItem);
-			this.collection.fetch({data: {"page": get_page()}});
+			this.collection.fetch({data: {"page": get_page(),
+										  "is_all": is_all()}});
 		},
 		events: {
 			'mouseover a.btn': 'loadBookmark'
 		},
-		/*
-		render: function() {
-			var that = this;
-			this.collection.each(function(item) {
-				this.appendItem(item);
-			}, this);
-			return this;
-		},
-		*/
 		appendItem: function(item) {
 			if (item.get('meta')) {
 				this.pagination(item.get('meta'));
@@ -371,6 +386,7 @@ $(function() {
 			var that = this;
 			this.bookmark = new Bookmark({id: item.target.id});
 			this.bookmark.fetch({
+				data: {"is_all": is_all()},
 				success: function() {
 					that.popup(that.bookmark);
 				}
@@ -559,6 +575,7 @@ $(function() {
 		render: function() {
 			var that = this;
 			this.model.fetch({
+				data: {"is_all": is_all()},
 				success: function(item) {
 					$('h2', this.el)
 						.text(html_sanitize(item.get('title'), urlX, idX));
@@ -571,7 +588,7 @@ $(function() {
 					$('div#category > a.btn', this.el)
 						.text(html_sanitize(item.get('category'), urlX, idX));
 					$('div#category > a.btn', this.el)
-						.attr('href', '/shiori/categories/' +
+						.attr('href', url_root + 'categories/' +
 							  html_sanitize(item.get('category_id'), urlX, idX));
 					if (item.get('tags').length > 0) {
 						for (var i = 0; i < item.get('tags').length; i++) {
@@ -602,7 +619,8 @@ $(function() {
 			'click a#add': 'add',
 			'click a#profile': 'profile',
 			'click a#categories': 'categories',
-			'click a#tags': 'tags'
+			'click a#tags': 'tags',
+			'click a#toggle-view': 'toggle_view',
 		},
 		initialize: function() {
 		},
@@ -638,10 +656,22 @@ $(function() {
 			window.router.navigate('tag', true);
 			return false;
 		},
+		toggle_view: function() {
+			if (is_all()) {
+				location.href = location.pathname;
+			} else {
+				location.href = '?is_all=true';
+			}
+		},
 		render : function() {
 			$('div#submenu', this.el)
 				.append('<a id="categories">Categories</a>')
 				.append('<a id="tags">Tags</a>');
+			if (is_all()) {
+				$('a#toggle-view').text('yours only');
+			} else {
+				$('a#toggle-view').text('view all');
+			}
 		}
 	});
 
@@ -656,8 +686,9 @@ $(function() {
 			"categories": "categories",
 			"categories/:id": "category",
 			"tags": "tags",
-			"tags/:id": "tag"
+			"tags/:id": "tag",
 		},
+
 		index: function() {
 			window.App.render();
 			var bookmarkListView = new BookmarkListView();
@@ -707,6 +738,6 @@ $(function() {
 
 	$(function() {
 		Backbone.history.start({hashChange: false,
-								root: "/shiori"})
+								root: url_root})
 	});
 });
