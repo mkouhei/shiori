@@ -1,11 +1,46 @@
 # -*- coding: utf-8 -*-
 from django.core.urlresolvers import resolve
-from django.test import TestCase
+from django.test import TestCase, TransactionTestCase
 from django.contrib.auth.models import User
 from django.views.generic import RedirectView
+from django.db import IntegrityError
 import shiori.bookmark.views
+from shiori.bookmark.models import Category
 from shiori.bookmark.feeds import LatestEntries
 import shiori_tests.tests.vars as v
+
+
+class BookmarkTransactionTest(TransactionTestCase):
+    def setUp(self):
+        Category.objects.create(category=v.category0)
+        Category.objects.create(category=v.category1)
+
+    def test_category(self):
+        test0 = Category.objects.get(category=v.category0)
+        self.assertEqual(test0.__unicode__(), v.category0)
+        self.assertEqual(test0.__str__(), v.category0)
+
+        test1 = Category.objects.get(category=v.category1)
+        self.assertEqual(test1.__unicode__(), v.category1.decode('utf-8'))
+        self.assertEqual(test1.__str__(), v.category1)
+
+        with self.assertRaises(IntegrityError):
+            t = Category(id=test0.id, category=v.category1)
+            t.save()
+
+        t = Category(id=test0.id, category=v.category2)
+        t.save()
+
+        test2 = Category.objects.get(category=v.category2)
+        self.assertEqual(test2.__str__(), v.category2)
+        self.assertEqual(test2.id, test0.id)
+
+        test2.delete()
+        with self.assertRaises(Category.DoesNotExist):
+            Category.objects.get(category=v.category2)
+
+        with self.assertRaises(Category.DoesNotExist):
+            Category.objects.get(id=test0.id)
 
 
 class BookmarkTest(TestCase):
