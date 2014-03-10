@@ -10,11 +10,11 @@ from django.test.utils import get_runner
 from django.conf import settings as s
 
 
-def runtests():
+def run_tests():
     TestRunner = get_runner(s)
     test_runner = TestRunner(verbosity=1, interactive=True)
     failuers = test_runner.run_tests(['shiori_tests.tests'])
     sys.exit(bool(failuers))
 
 if __name__ == '__main__':
-    runtests()
+    run_tests()
