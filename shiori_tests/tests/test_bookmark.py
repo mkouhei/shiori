@@ -75,9 +75,9 @@ class BookmarkTransactionTest(TransactionTestCase):
 class BookmarkTest(TestCase):
 
     def setUp(self):
-        self.user = User.objects.create_user(v.username,
-                                             v.email,
-                                             v.password)
+        self.user = User.objects.create_user(v.username0,
+                                             v.email0,
+                                             v.password0)
 
     def test_shiori_url_resolve(self):
         found = resolve('/shiori/')
