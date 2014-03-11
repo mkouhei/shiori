@@ -506,8 +506,7 @@ class APITest(TestCase):
                                    data=json.dumps(payload4))
         self.assertEqual(response.status_code, 403)
 
-    # ToDo: delete is allowed by owner user only.
-    @unittest.skip("ToDo skipping")
+    # [Fixed] ToDo: delete is allowed by owner user only.
     def test_delete_bookmark_by_another_user(self):
         payload = {'category': v.category0}
         self.client.post('/v1/categories',
