@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.views.generic import RedirectView
 from django.db import IntegrityError
 import shiori.bookmark.views
-from shiori.bookmark.models import Category
+from shiori.bookmark.models import Category, Tag
 from shiori.bookmark.feeds import LatestEntries
 import shiori_tests.tests.vars as v
 
@@ -14,8 +14,10 @@ class BookmarkTransactionTest(TransactionTestCase):
     def setUp(self):
         Category.objects.create(category=v.category0)
         Category.objects.create(category=v.category1)
+        Tag.objects.create(tag=v.tag0)
+        Tag.objects.create(tag=v.tag1)
 
-    def test_category(self):
+    def test_categories(self):
         test0 = Category.objects.get(category=v.category0)
         self.assertEqual(test0.__unicode__(), v.category0)
         self.assertEqual(test0.__str__(), v.category0)
@@ -41,6 +43,33 @@ class BookmarkTransactionTest(TransactionTestCase):
 
         with self.assertRaises(Category.DoesNotExist):
             Category.objects.get(id=test0.id)
+
+    def test_tags(self):
+        test0 = Tag.objects.get(tag=v.tag0)
+        self.assertEqual(test0.__unicode__(), v.tag0)
+        self.assertEqual(test0.__str__(), v.tag0)
+
+        test1 = Tag.objects.get(tag=v.tag1)
+        self.assertEqual(test1.__unicode__(), v.tag1.decode('utf-8'))
+        self.assertEqual(test1.__str__(), v.tag1)
+
+        with self.assertRaises(IntegrityError):
+            t = Tag(id=test0.id, tag=v.tag1)
+            t.save()
+
+        t = Tag(id=test0.id, tag=v.tag2)
+        t.save()
+
+        test2 = Tag.objects.get(tag=v.tag2)
+        self.assertEqual(test2.__str__(), v.tag2)
+        self.assertEqual(test2.id, test0.id)
+
+        test2.delete()
+        with self.assertRaises(Tag.DoesNotExist):
+            Tag.objects.get(tag=v.tag2)
+
+        with self.assertRaises(Tag.DoesNotExist):
+            Tag.objects.get(id=test0.id)
 
 
 class BookmarkTest(TestCase):

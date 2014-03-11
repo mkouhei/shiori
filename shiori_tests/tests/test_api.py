@@ -33,14 +33,14 @@ class APITest(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_post_tag(self):
-        payload = {'tag': v.tag}
+        payload = {'tag': v.tag0}
         response = self.client.post('/v1/tags',
                                     content_type='application/json',
                                     data=json.dumps(payload))
         self.assertEqual(response.status_code, 201)
 
     def test_get_tags(self):
-        payload = {'tag': v.tag}
+        payload = {'tag': v.tag0}
         self.client.post('/v1/tags',
                          content_type='application/json',
                          data=json.dumps(payload))
@@ -48,7 +48,7 @@ class APITest(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_get_tag(self):
-        payload = {'tag': v.tag}
+        payload = {'tag': v.tag0}
         r = self.client.post('/v1/tags',
                              content_type='application/json',
                              data=json.dumps(payload))
@@ -57,7 +57,7 @@ class APITest(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_delete_tag(self):
-        payload = {'tag': v.tag}
+        payload = {'tag': v.tag0}
         r = self.client.post('/v1/tags',
                              content_type='application/json',
                              data=json.dumps(payload))
@@ -66,7 +66,7 @@ class APITest(TestCase):
         self.assertEqual(response.status_code, 204)
 
     def test_put_tag(self):
-        payload = {'tag': v.tag}
+        payload = {'tag': v.tag0}
         r = self.client.post('/v1/tags',
                              content_type='application/json',
                              data=json.dumps(payload))
@@ -79,7 +79,7 @@ class APITest(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_get_tags_by_anonymous(self):
-        payload = {'tag': v.tag}
+        payload = {'tag': v.tag0}
         self.client.post('/v1/tags',
                          content_type='application/json',
                          data=json.dumps(payload))
@@ -94,14 +94,14 @@ class APITest(TestCase):
 
     def test_post_tags_by_anonymous(self):
         self.client.logout()
-        payload = {'tag': v.tag}
+        payload = {'tag': v.tag0}
         response = self.client.post('/v1/tags',
                                     content_type='application/json',
                                     data=json.dumps(payload))
         self.assertEqual(response.status_code, 403)
 
     def test_delete_tag_by_anonymous(self):
-        payload = {'tag': v.tag}
+        payload = {'tag': v.tag0}
         r = self.client.post('/v1/tags',
                              content_type='application/json',
                              data=json.dumps(payload))
@@ -112,7 +112,7 @@ class APITest(TestCase):
         self.assertEqual(response.status_code, 403)
 
     def test_put_tag_by_anonymous(self):
-        payload = {'tag': v.tag}
+        payload = {'tag': v.tag0}
         r = self.client.post('/v1/tags',
                              content_type='application/json',
                              data=json.dumps(payload))
@@ -129,7 +129,7 @@ class APITest(TestCase):
     # ToDo: delete is allowed by owner user only.
     @unittest.skip("ToDo skipping")
     def test_delete_tag_by_another_user(self):
-        payload = {'tag': v.tag}
+        payload = {'tag': v.tag0}
         r = self.client.post('/v1/tags',
                              content_type='application/json',
                              data=json.dumps(payload))
@@ -143,7 +143,7 @@ class APITest(TestCase):
     # ToDo: put is allowed by owner user only.
     @unittest.skip("ToDo skipping")
     def test_put_tag_by_another_user(self):
-        payload = {'tag': v.tag}
+        payload = {'tag': v.tag0}
         r = self.client.post('/v1/tags',
                              content_type='application/json',
                              data=json.dumps(payload))
@@ -158,14 +158,14 @@ class APITest(TestCase):
         self.assertEqual(response.status_code, 403)
 
     def test_post_category(self):
-        payload = {'category': v.category}
+        payload = {'category': v.category0}
         response = self.client.post('/v1/categories',
                                     content_type='application/json',
                                     data=json.dumps(payload))
         self.assertEqual(response.status_code, 201)
 
     def test_delete_category(self):
-        payload = {'category': v.category}
+        payload = {'category': v.category0}
         r = self.client.post('/v1/categories',
                              content_type='application/json',
                              data=json.dumps(payload))
@@ -174,7 +174,7 @@ class APITest(TestCase):
         self.assertEqual(response.status_code, 204)
 
     def test_put_category(self):
-        payload = {'category': v.category}
+        payload = {'category': v.category0}
         r = self.client.post('/v1/categories',
                              content_type='application/json',
                              data=json.dumps(payload))
@@ -187,7 +187,7 @@ class APITest(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_get_categories_by_anonymous(self):
-        payload = {'category': v.category}
+        payload = {'category': v.category0}
         self.client.post('/v1/categories',
                          content_type='application/json',
                          data=json.dumps(payload))
@@ -202,14 +202,14 @@ class APITest(TestCase):
 
     def test_post_category_by_anonymous(self):
         self.client.logout()
-        payload = {'category': v.category}
+        payload = {'category': v.category0}
         response = self.client.post('/v1/categories',
                                     content_type='application/json',
                                     data=json.dumps(payload))
         self.assertEqual(response.status_code, 403)
 
     def test_delete_category_by_anonymous(self):
-        payload = {'category': v.category}
+        payload = {'category': v.category0}
         r = self.client.post('/v1/categories',
                              content_type='application/json',
                              data=json.dumps(payload))
@@ -220,7 +220,7 @@ class APITest(TestCase):
         self.assertEqual(response.status_code, 403)
 
     def test_put_category_by_anonymous(self):
-        payload = {'category': v.category}
+        payload = {'category': v.category0}
         r = self.client.post('/v1/categories',
                              content_type='application/json',
                              data=json.dumps(payload))
@@ -237,7 +237,7 @@ class APITest(TestCase):
     # ToDo: delete is allowed by owner user only.
     @unittest.skip("ToDo skipping")
     def test_delete_category_by_another_user(self):
-        payload = {'category': v.category}
+        payload = {'category': v.category0}
         r = self.client.post('/v1/categories',
                              content_type='application/json',
                              data=json.dumps(payload))
@@ -251,7 +251,7 @@ class APITest(TestCase):
     # ToDo: put is allowed by owner user only.
     @unittest.skip("ToDo skipping")
     def test_put_category_by_another_user(self):
-        payload = {'category': v.category}
+        payload = {'category': v.category0}
         r = self.client.post('/v1/categories',
                              content_type='application/json',
                              data=json.dumps(payload))
@@ -277,14 +277,14 @@ class APITest(TestCase):
         self.assertEqual(response.status_code, 400)
 
     def test_post_bookmark(self):
-        payload = {'category': v.category}
+        payload = {'category': v.category0}
         self.client.post('/v1/categories',
                          content_type='application/json',
                          data=json.dumps(payload))
 
         payload2 = {'url': v.url,
                     'title': v.title,
-                    'category': v.category,
+                    'category': v.category0,
                     'description': '',
                     'is_hide': False}
         response = self.client.post('/v1/bookmarks',
@@ -293,14 +293,14 @@ class APITest(TestCase):
         self.assertEqual(response.status_code, 201)
 
     def test_delete_bookmark(self):
-        payload = {'category': v.category}
+        payload = {'category': v.category0}
         self.client.post('/v1/categories',
                          content_type='application/json',
                          data=json.dumps(payload))
 
         payload2 = {'url': v.url,
                     'title': v.title,
-                    'category': v.category,
+                    'category': v.category0,
                     'description': '',
                     'is_hide': False}
         r = self.client.post('/v1/bookmarks',
@@ -311,7 +311,7 @@ class APITest(TestCase):
         self.assertEqual(response.status_code, 204)
 
     def test_put_bookmark(self):
-        payload = {'category': v.category}
+        payload = {'category': v.category0}
         self.client.post('/v1/categories',
                          content_type='application/json',
                          data=json.dumps(payload))
@@ -322,7 +322,7 @@ class APITest(TestCase):
 
         payload3 = {'url': v.url,
                     'title': v.title,
-                    'category': v.category,
+                    'category': v.category0,
                     'description': '',
                     'is_hide': False}
         r = self.client.post('/v1/bookmarks',
@@ -340,27 +340,27 @@ class APITest(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_post_bookmark_tags(self):
-        payload = {'category': v.category}
+        payload = {'category': v.category0}
         self.client.post('/v1/categories',
                          content_type='application/json',
                          data=json.dumps(payload))
 
         payload2 = {'url': v.url,
                     'title': v.title,
-                    'category': v.category,
+                    'category': v.category0,
                     'description': '',
                     'is_hide': False}
         self.client.post('/v1/bookmarks',
                          content_type='application/json',
                          data=json.dumps(payload2))
 
-        payload3 = {'tag': v.tag}
+        payload3 = {'tag': v.tag0}
         self.client.post('/v1/tags',
                          content_type='application/json',
                          data=json.dumps(payload3))
 
         payload4 = {'bookmark': v.url,
-                    'tag': v.tag}
+                    'tag': v.tag0}
 
         response = self.client.post('/v1/bookmark_tags',
                                     content_type='application/json',
@@ -368,27 +368,27 @@ class APITest(TestCase):
         self.assertEqual(response.status_code, 201)
 
     def test_delete_bookmark_tags(self):
-        payload = {'category': v.category}
+        payload = {'category': v.category0}
         self.client.post('/v1/categories',
                          content_type='application/json',
                          data=json.dumps(payload))
 
         payload2 = {'url': v.url,
                     'title': v.title,
-                    'category': v.category,
+                    'category': v.category0,
                     'description': '',
                     'is_hide': False}
         self.client.post('/v1/bookmarks',
                          content_type='application/json',
                          data=json.dumps(payload2))
 
-        payload3 = {'tag': v.tag}
+        payload3 = {'tag': v.tag0}
         self.client.post('/v1/tags',
                          content_type='application/json',
                          data=json.dumps(payload3))
 
         payload4 = {'bookmark': v.url,
-                    'tag': v.tag}
+                    'tag': v.tag0}
 
         r = self.client.post('/v1/bookmark_tags',
                              content_type='application/json',
@@ -399,21 +399,21 @@ class APITest(TestCase):
         self.assertEqual(response.status_code, 204)
 
     def test_put_bookmark_tags(self):
-        payload = {'category': v.category}
+        payload = {'category': v.category0}
         self.client.post('/v1/categories',
                          content_type='application/json',
                          data=json.dumps(payload))
 
         payload2 = {'url': v.url,
                     'title': v.title,
-                    'category': v.category,
+                    'category': v.category0,
                     'description': '',
                     'is_hide': False}
         self.client.post('/v1/bookmarks',
                          content_type='application/json',
                          data=json.dumps(payload2))
 
-        payload3 = {'tag': v.tag}
+        payload3 = {'tag': v.tag0}
         self.client.post('/v1/tags',
                          content_type='application/json',
                          data=json.dumps(payload3))
@@ -424,7 +424,7 @@ class APITest(TestCase):
                          data=json.dumps(payload4))
 
         payload4 = {'bookmark': v.url,
-                    'tag': v.tag}
+                    'tag': v.tag0}
 
         r = self.client.post('/v1/bookmark_tags',
                              content_type='application/json',
@@ -441,7 +441,7 @@ class APITest(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_post_bookmark_by_anonymous(self):
-        payload = {'category': v.category}
+        payload = {'category': v.category0}
         self.client.post('/v1/categories',
                          content_type='application/json',
                          data=json.dumps(payload))
@@ -449,7 +449,7 @@ class APITest(TestCase):
         self.client.logout()
         payload2 = {'url': v.url,
                     'title': v.title,
-                    'category': v.category,
+                    'category': v.category0,
                     'description': '',
                     'is_hide': False}
         response = self.client.post('/v1/bookmarks',
@@ -458,14 +458,14 @@ class APITest(TestCase):
         self.assertEqual(response.status_code, 403)
 
     def test_delete_bookmark_by_anonymous(self):
-        payload = {'category': v.category}
+        payload = {'category': v.category0}
         self.client.post('/v1/categories',
                          content_type='application/json',
                          data=json.dumps(payload))
 
         payload2 = {'url': v.url,
                     'title': v.title,
-                    'category': v.category,
+                    'category': v.category0,
                     'description': '',
                     'is_hide': False}
         r = self.client.post('/v1/bookmarks',
@@ -477,7 +477,7 @@ class APITest(TestCase):
         self.assertEqual(response.status_code, 403)
 
     def test_put_bookmark_by_anonymous(self):
-        payload = {'category': v.category}
+        payload = {'category': v.category0}
         self.client.post('/v1/categories',
                          content_type='application/json',
                          data=json.dumps(payload))
@@ -488,7 +488,7 @@ class APITest(TestCase):
 
         payload3 = {'url': v.url,
                     'title': v.title,
-                    'category': v.category,
+                    'category': v.category0,
                     'description': '',
                     'is_hide': False}
         r = self.client.post('/v1/bookmarks',
@@ -509,14 +509,14 @@ class APITest(TestCase):
     # ToDo: delete is allowed by owner user only.
     @unittest.skip("ToDo skipping")
     def test_delete_bookmark_by_another_user(self):
-        payload = {'category': v.category}
+        payload = {'category': v.category0}
         self.client.post('/v1/categories',
                          content_type='application/json',
                          data=json.dumps(payload))
 
         payload2 = {'url': v.url,
                     'title': v.title,
-                    'category': v.category,
+                    'category': v.category0,
                     'description': '',
                     'is_hide': False}
         r = self.client.post('/v1/bookmarks',
@@ -536,7 +536,7 @@ class APITest(TestCase):
     # but url by users should be unique.
     @unittest.skip("ToDo skipping")
     def test_put_bookmark_by_another_user(self):
-        payload = {'category': v.category}
+        payload = {'category': v.category0}
         self.client.post('/v1/categories',
                          content_type='application/json',
                          data=json.dumps(payload))
@@ -547,7 +547,7 @@ class APITest(TestCase):
 
         payload3 = {'url': v.url,
                     'title': v.title,
-                    'category': v.category,
+                    'category': v.category0,
                     'description': '',
                     'is_hide': False}
         r = self.client.post('/v1/bookmarks',
@@ -568,27 +568,27 @@ class APITest(TestCase):
         self.assertEqual(response.status_code, 403)
 
     def test_post_bookmark_tags_by_anonymous(self):
-        payload = {'category': v.category}
+        payload = {'category': v.category0}
         self.client.post('/v1/categories',
                          content_type='application/json',
                          data=json.dumps(payload))
 
         payload2 = {'url': v.url,
                     'title': v.title,
-                    'category': v.category,
+                    'category': v.category0,
                     'description': '',
                     'is_hide': False}
         self.client.post('/v1/bookmarks',
                          content_type='application/json',
                          data=json.dumps(payload2))
 
-        payload3 = {'tag': v.tag}
+        payload3 = {'tag': v.tag0}
         self.client.post('/v1/tags',
                          content_type='application/json',
                          data=json.dumps(payload3))
 
         payload4 = {'bookmark': v.url,
-                    'tag': v.tag}
+                    'tag': v.tag0}
 
         self.client.logout()
         response = self.client.post('/v1/bookmark_tags',
@@ -597,27 +597,27 @@ class APITest(TestCase):
         self.assertEqual(response.status_code, 403)
 
     def test_delete_bookmark_tags_by_anonymous(self):
-        payload = {'category': v.category}
+        payload = {'category': v.category0}
         self.client.post('/v1/categories',
                          content_type='application/json',
                          data=json.dumps(payload))
 
         payload2 = {'url': v.url,
                     'title': v.title,
-                    'category': v.category,
+                    'category': v.category0,
                     'description': '',
                     'is_hide': False}
         self.client.post('/v1/bookmarks',
                          content_type='application/json',
                          data=json.dumps(payload2))
 
-        payload3 = {'tag': v.tag}
+        payload3 = {'tag': v.tag0}
         self.client.post('/v1/tags',
                          content_type='application/json',
                          data=json.dumps(payload3))
 
         payload4 = {'bookmark': v.url,
-                    'tag': v.tag}
+                    'tag': v.tag0}
 
         r = self.client.post('/v1/bookmark_tags',
                              content_type='application/json',
@@ -629,21 +629,21 @@ class APITest(TestCase):
         self.assertEqual(response.status_code, 403)
 
     def test_put_bookmark_tags_by_anonymous(self):
-        payload = {'category': v.category}
+        payload = {'category': v.category0}
         self.client.post('/v1/categories',
                          content_type='application/json',
                          data=json.dumps(payload))
 
         payload2 = {'url': v.url,
                     'title': v.title,
-                    'category': v.category,
+                    'category': v.category0,
                     'description': '',
                     'is_hide': False}
         self.client.post('/v1/bookmarks',
                          content_type='application/json',
                          data=json.dumps(payload2))
 
-        payload3 = {'tag': v.tag}
+        payload3 = {'tag': v.tag0}
         self.client.post('/v1/tags',
                          content_type='application/json',
                          data=json.dumps(payload3))
@@ -654,7 +654,7 @@ class APITest(TestCase):
                          data=json.dumps(payload4))
 
         payload4 = {'bookmark': v.url,
-                    'tag': v.tag}
+                    'tag': v.tag0}
 
         r = self.client.post('/v1/bookmark_tags',
                              content_type='application/json',
@@ -674,27 +674,27 @@ class APITest(TestCase):
     # ToDo: delete is allowed by owner user only.
     @unittest.skip("ToDo skipping")
     def test_delete_bookmark_tags_by_another_user(self):
-        payload = {'category': v.category}
+        payload = {'category': v.category0}
         self.client.post('/v1/categories',
                          content_type='application/json',
                          data=json.dumps(payload))
 
         payload2 = {'url': v.url,
                     'title': v.title,
-                    'category': v.category,
+                    'category': v.category0,
                     'description': '',
                     'is_hide': False}
         self.client.post('/v1/bookmarks',
                          content_type='application/json',
                          data=json.dumps(payload2))
 
-        payload3 = {'tag': v.tag}
+        payload3 = {'tag': v.tag0}
         self.client.post('/v1/tags',
                          content_type='application/json',
                          data=json.dumps(payload3))
 
         payload4 = {'bookmark': v.url,
-                    'tag': v.tag}
+                    'tag': v.tag0}
 
         r = self.client.post('/v1/bookmark_tags',
                              content_type='application/json',
@@ -709,21 +709,21 @@ class APITest(TestCase):
     # ToDo: put is allowed by owner user only.
     @unittest.skip("ToDo skipping")
     def test_put_bookmark_tags_by_another_user(self):
-        payload = {'category': v.category}
+        payload = {'category': v.category0}
         self.client.post('/v1/categories',
                          content_type='application/json',
                          data=json.dumps(payload))
 
         payload2 = {'url': v.url,
                     'title': v.title,
-                    'category': v.category,
+                    'category': v.category0,
                     'description': '',
                     'is_hide': False}
         self.client.post('/v1/bookmarks',
                          content_type='application/json',
                          data=json.dumps(payload2))
 
-        payload3 = {'tag': v.tag}
+        payload3 = {'tag': v.tag0}
         self.client.post('/v1/tags',
                          content_type='application/json',
                          data=json.dumps(payload3))
@@ -734,7 +734,7 @@ class APITest(TestCase):
                          data=json.dumps(payload4))
 
         payload4 = {'bookmark': v.url,
-                    'tag': v.tag}
+                    'tag': v.tag0}
 
         r = self.client.post('/v1/bookmark_tags',
                              content_type='application/json',
