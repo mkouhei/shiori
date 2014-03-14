@@ -119,47 +119,54 @@ class BookmarkTest(TestCase):
         request = self.client.get('/shiori/')
         request.user = self.user
         response = shiori.bookmark.views.index(request)
-        self.assertTrue('logout' in response.content)
-        self.assertEqual(response.status_code, 200)
+        self.assertContains(response,
+                            'logout',
+                            status_code=200)
 
     def test_profile_view(self):
         request = self.client.get('/shiori/profile')
         request.user = self.user
         response = shiori.bookmark.views.profile(request)
-        self.assertTrue('date joined' in response.content)
-        self.assertEqual(response.status_code, 200)
+        self.assertContains(response,
+                            'date joined',
+                            status_code=200)
 
     def test_categories_view(self):
         request = self.client.get('/shiori/categories')
         request.user = self.user
         response = shiori.bookmark.views.categories(request)
-        self.assertTrue('categories_list' in response.content)
-        self.assertEqual(response.status_code, 200)
+        self.assertContains(response,
+                            'categories_list',
+                            status_code=200)
 
     def test_category_view(self):
         request = self.client.get('/shiori/category/dummy_id')
         request.user = self.user
         response = shiori.bookmark.views.category(request, 'dummy_id')
-        self.assertTrue('category_view' in response.content)
-        self.assertEqual(response.status_code, 200)
+        self.assertContains(response,
+                            'category_view',
+                            status_code=200)
 
     def test_tags_view(self):
         request = self.client.get('/shiori/tags')
         request.user = self.user
         response = shiori.bookmark.views.tags(request)
-        self.assertTrue('tags_list' in response.content)
-        self.assertEqual(response.status_code, 200)
+        self.assertContains(response,
+                            'tags_list',
+                            status_code=200)
 
     def test_tag_view(self):
         request = self.client.get('/shiori/tag/dummy_id')
         request.user = self.user
         response = shiori.bookmark.views.tag(request, 'dummy_id')
-        self.assertTrue('tag_view' in response.content)
-        self.assertEqual(response.status_code, 200)
+        self.assertContains(response,
+                            'tag_view',
+                            status_code=200)
 
     def test_bookmark_view(self):
         request = self.client.get('/shiori/b/dummy_id')
         request.user = self.user
         response = shiori.bookmark.views.bookmark(request, 'dummy_id')
-        self.assertTrue('bookmark_view' in response.content)
-        self.assertEqual(response.status_code, 200)
+        self.assertContains(response,
+                            'bookmark_view',
+                            status_code=200)
