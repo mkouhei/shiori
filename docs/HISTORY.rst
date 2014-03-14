@@ -1,6 +1,12 @@
 History
 -------
 
+0.2.7 (2014-03-15)
+^^^^^^^^^^^^^^^^^^
+
+* Fixed Fixed forbid deleting bookmark by not owner user
+* Added some unit test
+
 0.2.6 (2014-03-08)
 ^^^^^^^^^^^^^^^^^^
 
