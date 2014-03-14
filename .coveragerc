@@ -1,2 +1,4 @@
 [run]
-include = shiori/*
+include =
+		shiori/*
+		shiori_tests/*
