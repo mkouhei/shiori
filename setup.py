@@ -62,7 +62,7 @@ requires = ['setuptools',
             'django-openid-auth']
 
 setup(name='shiori',
-      version='0.2.6',
+      version='0.2.7',
       description='bookmarking tool based on Web UI and JSON REST API',
       long_description=long_description,
       author='Kouhei Maeda',

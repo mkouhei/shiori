@@ -1,0 +1,4 @@
+[run]
+include =
+		shiori/*
+		shiori_tests/*
