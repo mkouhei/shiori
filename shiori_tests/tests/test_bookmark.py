@@ -5,71 +5,144 @@ from django.contrib.auth.models import User
 from django.views.generic import RedirectView
 from django.db import IntegrityError
 import shiori.bookmark.views
-from shiori.bookmark.models import Category, Tag
+from shiori.bookmark.models import Category, Tag, Bookmark
 from shiori.bookmark.feeds import LatestEntries
 import shiori_tests.tests.vars as v
 
 
 class BookmarkTransactionTest(TransactionTestCase):
     def setUp(self):
-        Category.objects.create(category=v.category0)
-        Category.objects.create(category=v.category1)
-        Tag.objects.create(tag=v.tag0)
-        Tag.objects.create(tag=v.tag1)
+        self.user0 = User.objects.create_user(v.username0,
+                                              v.email0,
+                                              v.password0)
+        self.user1 = User.objects.create_user(v.username1,
+                                              v.email1,
+                                              v.password1)
+        self.category0 = Category.objects.create(category=v.category0)
+        self.category1 = Category.objects.create(category=v.category1)
+        self.tag0 = Tag.objects.create(tag=v.tag0)
+        self.tag1 = Tag.objects.create(tag=v.tag1)
+        self.bookmark = Bookmark.objects.create(url=v.url0,
+                                                title=v.title0,
+                                                category=self.category0,
+                                                description=v.description0,
+                                                owner=self.user0)
 
-    def test_categories(self):
-        test0 = Category.objects.get(category=v.category0)
-        self.assertEqual(test0.__unicode__(), v.category0)
-        self.assertEqual(test0.__str__(), v.category0)
+    def test_get_categories(self):
+        query = Category.objects.get(category=v.category0)
+        self.assertEqual(query.__unicode__(), v.category0)
+        self.assertEqual(query.__str__(), v.category0)
 
-        test1 = Category.objects.get(category=v.category1)
-        self.assertEqual(test1.__unicode__(), v.category1.decode('utf-8'))
-        self.assertEqual(test1.__str__(), v.category1)
+    def test_get_category_as_multibyte(self):
+        query = Category.objects.get(category=v.category1)
+        self.assertEqual(query.__unicode__(), v.category1.decode('utf-8'))
+        self.assertEqual(query.__str__(), v.category1)
 
+    def test_save_category_confilict(self):
         with self.assertRaises(IntegrityError):
-            t = Category(id=test0.id, category=v.category1)
-            t.save()
+            query = Category(category=v.category0)
+            query.save()
 
-        t = Category(id=test0.id, category=v.category2)
-        t.save()
+    def test_save_category(self):
+        query = Category(category=v.category2)
+        query.save()
 
-        test2 = Category.objects.get(category=v.category2)
-        self.assertEqual(test2.__str__(), v.category2)
-        self.assertEqual(test2.id, test0.id)
+        query2 = Category.objects.get(category=v.category2)
+        self.assertEqual(query.__str__(), v.category2)
 
-        test2.delete()
+    def test_update_category(self):
+        query = Category(id=self.category0.id, category=v.category2)
+        query.save()
+
+        query2 = Category.objects.get(category=v.category2)
+        self.assertEqual(query2.id, self.category0.id)
+
+    def test_delete_category(self):
+        self.category0.delete()
         with self.assertRaises(Category.DoesNotExist):
-            Category.objects.get(category=v.category2)
+            Category.objects.get(category=v.category0)
 
         with self.assertRaises(Category.DoesNotExist):
-            Category.objects.get(id=test0.id)
+            Category.objects.get(id=self.category0.id)
 
-    def test_tags(self):
-        test0 = Tag.objects.get(tag=v.tag0)
-        self.assertEqual(test0.__unicode__(), v.tag0)
-        self.assertEqual(test0.__str__(), v.tag0)
+    def test_get_tag(self):
+        query = Tag.objects.get(tag=v.tag0)
+        self.assertEqual(query.__unicode__(), v.tag0)
+        self.assertEqual(query.__str__(), v.tag0)
 
-        test1 = Tag.objects.get(tag=v.tag1)
-        self.assertEqual(test1.__unicode__(), v.tag1.decode('utf-8'))
-        self.assertEqual(test1.__str__(), v.tag1)
+    def test_get_tag_as_multibyte(self):
+        query = Tag.objects.get(tag=v.tag1)
+        self.assertEqual(query.__unicode__(), v.tag1.decode('utf-8'))
+        self.assertEqual(query.__str__(), v.tag1)
 
+    def test_save_tag_confilict(self):
         with self.assertRaises(IntegrityError):
-            t = Tag(id=test0.id, tag=v.tag1)
-            t.save()
+            query = Tag(tag=v.tag1)
+            query.save()
 
-        t = Tag(id=test0.id, tag=v.tag2)
-        t.save()
+    def test_save_tag(self):
+        query = Tag(tag=v.tag2)
+        query.save()
 
-        test2 = Tag.objects.get(tag=v.tag2)
-        self.assertEqual(test2.__str__(), v.tag2)
-        self.assertEqual(test2.id, test0.id)
+        query2 = Tag.objects.get(tag=v.tag2)
+        self.assertEqual(query2.__str__(), v.tag2)
 
-        test2.delete()
+    def test_update_tag(self):
+        query = Tag(id=self.tag0.id, tag=v.tag2)
+        query.save()
+        query2 = Tag.objects.get(tag=v.tag2)
+        self.assertEqual(query2.id, self.tag0.id)
+
+    def test_delete_tag(self):
+        self.tag0.delete()
         with self.assertRaises(Tag.DoesNotExist):
-            Tag.objects.get(tag=v.tag2)
+            Tag.objects.get(tag=v.tag0)
 
         with self.assertRaises(Tag.DoesNotExist):
-            Tag.objects.get(id=test0.id)
+            Tag.objects.get(id=self.tag0.id)
+
+    def test_get_bookmark(self):
+        query = Bookmark.objects.get(url=v.url0)
+        self.assertEqual(query.__str__(), v.title0)
+
+    def test_save_bookmark_conflict(self):
+        with self.assertRaises(IntegrityError):
+            query = Bookmark(url=v.url0,
+                             title=v.title0,
+                             category=self.category0,
+                             description=v.description0,
+                             owner=self.user0)
+            query.save()
+
+    def test_save_bookmark_same_url_by_another_user(self):
+        query = Bookmark(url=v.url0,
+                         title=v.title0,
+                         category=self.category0,
+                         description=v.description0,
+                         owner=self.user1)
+        query.save()
+        query = Bookmark.objects.get(url=v.url0, owner=self.user1)
+        self.assertEqual(query.__str__(), v.title0)
+
+    def test_update_bookmark(self):
+        query = Bookmark(id=self.bookmark.id,
+                         url=v.url1,
+                         title=v.title1,
+                         category=self.category1,
+                         description=v.description1,
+                         owner=self.user0)
+        query.save()
+
+        query2 = Bookmark.objects.get(url=v.url1, owner=self.user0)
+        self.assertEqual(query2.id, self.bookmark.id)
+
+    def test_delete_bookmark(self):
+        self.bookmark.delete()
+        with self.assertRaises(Bookmark.DoesNotExist):
+            Bookmark.objects.get(url=v.url0, owner=self.user0)
+
+        with self.assertRaises(Bookmark.DoesNotExist):
+            Bookmark.objects.get(id=self.bookmark.id, owner=self.user0)
 
 
 class BookmarkTest(TestCase):
