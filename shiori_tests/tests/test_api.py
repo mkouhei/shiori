@@ -107,13 +107,13 @@ class APITest(TestCase):
                             '"tag": "%s"' % v.tag0,
                             status_code=200)
 
-    def test_delete_tag(self):
+    def test_cannot_delete_tag(self):
         r = self.client.get('/v1/tags')
         id = json.loads(r.content).get('results')[0].get('id')
         response = self.client.delete('/v1/tags/%s' % id)
-        self.assertEqual(response.status_code, 204)
+        self.assertEqual(response.status_code, 403)
 
-    def test_put_tag(self):
+    def test_cannot_put_tag(self):
         r = self.client.get('/v1/tags')
         id = json.loads(r.content).get('results')[0].get('id')
         payload = {'id': id, 'tag': v.tag2}
@@ -121,8 +121,9 @@ class APITest(TestCase):
                                    content_type='application/json',
                                    data=json.dumps(payload))
         self.assertContains(response,
-                            '"tag": "%s"' % v.tag2,
-                            status_code=200)
+                            '{"detail": "You do not have permission to'
+                            ' perform this action."}',
+                            status_code=403)
 
     def test_get_tags_by_anonymous(self):
         self.client.logout()
@@ -163,28 +164,26 @@ class APITest(TestCase):
                                    data=json.dumps(payload))
         self.assertEqual(response.status_code, 403)
 
-    # ToDo: delete is allowed by admin user only.
-    @unittest.skip("ToDo skipping")
-    def test_delete_tag_by_another_user(self):
+    # [Fixed] ToDo: delete is allowed by admin user only.
+    def test_delete_tag_by_superuser(self):
         self.client.logout()
-        self.client.login(username=v.username1, password=v.password1)
+        self.client.login(username=v.username2, password=v.password2)
         r = self.client.get('/v1/tags')
         id = json.loads(r.content).get('results')[0].get('id')
         response = self.client.delete('/v1/tags/%s' % id)
-        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.status_code, 204)
 
-    # ToDo: put is allowed by admin user or anyone does not use.
-    @unittest.skip("ToDo skipping")
-    def test_put_tag_by_another_user(self):
+    # [Fixed] ToDo: put is allowed by admin user or anyone does not use.
+    def test_put_tag_by_superuser(self):
         self.client.logout()
-        self.client.login(username=v.username1, password=v.password1)
+        self.client.login(username=v.username2, password=v.password2)
         r = self.client.get('/v1/tags')
         id = json.loads(r.content).get('results')[0].get('id')
         payload = {'id': id, 'tag': v.tag2}
         response = self.client.put('/v1/tags/%s' % id,
                                    content_type='application/json',
                                    data=json.dumps(payload))
-        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.status_code, 200)
 
     def test_post_category(self):
         payload = {'category': v.category1}
