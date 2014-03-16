@@ -14,6 +14,7 @@ class APITest(TestCase):
     def setUp(self):
         User.objects.create_user(v.username0, v.email0, v.password0)
         User.objects.create_user(v.username1, v.email1, v.password1)
+        User.objects.create_superuser(v.username2, v.email2, v.password2)
         self.client.login(username=v.username0, password=v.password0)
 
         payload = {'category': v.category0}
@@ -208,13 +209,13 @@ class APITest(TestCase):
                             '"category": "%s"' % v.category0,
                             status_code=200)
 
-    def test_delete_category(self):
+    def test_cannot_delete_category(self):
         r = self.client.get('/v1/categories')
         id = json.loads(r.content).get('results')[0].get('id')
         response = self.client.delete('/v1/categories/%s' % id)
-        self.assertEqual(response.status_code, 204)
+        self.assertEqual(response.status_code, 403)
 
-    def test_put_category(self):
+    def test_cannot_put_category(self):
         r = self.client.get('/v1/categories')
         id = json.loads(r.content).get('results')[0].get('id')
         payload = {'id': id, 'category': v.category1}
@@ -222,8 +223,9 @@ class APITest(TestCase):
                                    content_type='application/json',
                                    data=json.dumps(payload))
         self.assertContains(response,
-                            '"category":',
-                            status_code=200)
+                            '{"detail": "You do not have permission to'
+                            ' perform this action."}',
+                            status_code=403)
 
     def test_get_categories_by_anonymous(self):
         self.client.logout()
@@ -266,28 +268,26 @@ class APITest(TestCase):
                                    data=json.dumps(payload))
         self.assertEqual(response.status_code, 403)
 
-    # ToDo: delete is allowed by admin user or anyone does not use.
-    @unittest.skip("ToDo skipping")
-    def test_delete_category_by_another_user(self):
+    # [Fixed] ToDo: delete is allowed by admin user or anyone does not use.
+    def test_delete_category_by_superuser(self):
         self.client.logout()
-        self.client.login(username=v.username1, password=v.password1)
+        self.client.login(username=v.username2, password=v.password2)
         r = self.client.get('/v1/categories')
         id = json.loads(r.content).get('results')[0].get('id')
         response = self.client.delete('/v1/categories/%s' % id)
-        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.status_code, 204)
 
-    # ToDo: put is allowed by admin user or anyone does not use.
-    @unittest.skip("ToDo skipping")
-    def test_put_category_by_another_user(self):
+    # [Fixed] ToDo: put is allowed by admin user or anyone does not use.
+    def test_put_category_by_superuser(self):
         self.client.logout()
-        self.client.login(username=v.username1, password=v.password1)
+        self.client.login(username=v.username2, password=v.password2)
         r = self.client.get('/v1/categories')
         id = json.loads(r.content).get('results')[0].get('id')
         payload = {'id': id, 'category': v.category1}
         response = self.client.put('/v1/categories/%s' % id,
                                    content_type='application/json',
                                    data=json.dumps(payload))
-        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.status_code, 200)
 
     def test_post_bookmark_without_category(self):
         payload = {'url': v.url2,
