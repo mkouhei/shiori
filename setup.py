@@ -59,7 +59,8 @@ requires = ['setuptools',
             'djangorestframework',
             'django-shortuuidfield',
             'python-openid',
-            'django-openid-auth']
+            'django-openid-auth',
+            'feedparser']
 
 setup(name='shiori',
       version='0.2.7',
