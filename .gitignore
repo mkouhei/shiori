@@ -6,4 +6,4 @@ shiori/static/twbs
 shiori/static/underscore
 .tox
 .coverage
-dummy_users.json
+dummy_*.json
