@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
 from rest_framework import serializers
-from shiori.bookmark.models import Category, Tag, Bookmark, BookmarkTag
+from shiori.bookmark.models import (Category,
+                                    Tag,
+                                    Bookmark,
+                                    BookmarkTag,
+                                    FeedSubscription)
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -40,3 +44,13 @@ class BookmarkTagSerializer(serializers.ModelSerializer):
     class Meta:
         model = BookmarkTag
         fields = ('id', 'bookmark', 'tag')
+
+
+class FeedSubscriptionSerializer(serializers.ModelSerializer):
+    owner = serializers.Field(source='owner.username')
+    category = serializers.SlugRelatedField(many=False, slug_field='category')
+    category_id = serializers.Field(source='category.id')
+
+    class Meta:
+        model = FeedSubscription
+        fields = ('id', 'url', 'name', 'owner', 'default_category')

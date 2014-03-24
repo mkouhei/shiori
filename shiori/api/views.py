@@ -8,13 +8,18 @@ from rest_framework.permissions import (IsAuthenticated,
                                         IsAuthenticatedOrReadOnly,
                                         IsAdminUser)
 from rest_framework.exceptions import NotAuthenticated
-from shiori.bookmark.models import Category, Tag, Bookmark, BookmarkTag
+from shiori.bookmark.models import (Category,
+                                    Tag,
+                                    Bookmark,
+                                    BookmarkTag,
+                                    FeedSubscription)
 from shiori.api.permissions import (IsOwnerOrReadOnly,
                                     IsAuthenticatedAndCreateReadOnly)
 from shiori.api.serializers import (CategorySerializer,
                                     TagSerializer,
                                     BookmarkSerializer,
-                                    BookmarkTagSerializer)
+                                    BookmarkTagSerializer,
+                                    FeedSubscriptionSerializer)
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
@@ -65,3 +70,18 @@ class BookmarkTagViewSet(viewsets.ModelViewSet):
     queryset = BookmarkTag.objects.all()
     serializer_class = BookmarkTagSerializer
     permission_classes = (IsAuthenticatedOrReadOnly,)
+
+
+class FeedSubscriptionViewSet(viewsets.ModelViewSet):
+    queryset = FeedSubscription.objects.all()
+    serializer_class = FeedSubscriptionSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def pre_save(self, obj):
+        if isinstance(self.request.user, AnonymousUser):
+            raise NotAuthenticated
+        else:
+            obj.owner = self.request.user
+
+    def get_queryset(self):
+        return FeedSubscription.objects.filter(owner=self.request.user)
