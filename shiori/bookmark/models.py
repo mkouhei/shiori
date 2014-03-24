@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 from django.db import models
+from django.db.models.signals import pre_save
 from django.contrib.auth.models import User
 from shortuuidfield import ShortUUIDField
+import feedparser
 
 
 class BaseObject(models.Model):
@@ -65,3 +67,34 @@ class BookmarkTag(models.Model):
     class Meta:
         db_table = 'bookmark_tag'
         unique_together = ('bookmark', 'tag')
+
+
+class FeedSubscription(BaseObject):
+    url = models.URLField()
+    name = models.CharField(max_length=255, editable=False)
+    owner = models.ForeignKey(User)
+    default_category = models.ForeignKey(Category)
+
+    class Meta:
+        db_table = 'feed_subscription'
+        unique_together = ('url', 'owner')
+
+    def __unicode__(self):
+        return self.url
+
+
+def update_title(sender, instance, **kwargs):
+    d = feedparser.parse(instance.url)
+    instance.name = d.get('feed').get('title')
+pre_save.connect(update_title, sender=FeedSubscription)
+
+
+class CrawlingHistory(BaseObject):
+    feed = models.ForeignKey(FeedSubscription)
+    update_datetime = models.DateTimeField()
+
+    class Meta:
+        db_table = 'crawling_history'
+
+    def __unicode__(self):
+        return self.id
