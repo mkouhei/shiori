@@ -605,6 +605,57 @@ $(function() {
 		}
 	});
 
+	var FeedSubscription = Backbone.Model.extend({
+		urlRoot: '/v1/feed_subscription',
+		idAttribute: 'id',
+		defaults: {
+			'url': '',
+			'default_category': ''
+		},
+		validate: function(attrs) {
+			if (!attrs.url) return "required url.";
+			if (!attrs.category) return "required category.";
+		}
+	});
+
+	var FeedSubscriptionList = Backbone.Collection.extend({
+		model: FeedSubscription,
+		url: '/v1/feed_subscription',
+		parse: function(res) {
+			res.results.push({'meta': {'count': res.count,
+									   'next': res.next,
+									   'previous': res.previous}});
+			return res.results;
+		}
+	});
+
+	var FeedSubscriptionView = Backbone.View.extend({
+		el: $('div#feed_subscription tbody'),
+		initialize: function() {
+			this.collection = new FeedSubscriptionList();
+			this.listenTo(this.collection, 'add', this.appendItem);
+			this.collection.fetch({data: {"page": get_page()}});
+		},
+		appendItem: function(item) {
+			if (item.get('meta')) {
+				this.pagination(item.get('meta'));
+			} else {
+				console.log(item);
+				$(this.el)
+					.append('<tr><td>' +
+							html_sanitize(item.get('name'), urlX, idX) +
+							'</td><td>' +
+							html_sanitize(item.get('url'), urlX, idX) +
+							'</td><td>' +
+							html_sanitize(item.get('default_category'), urlX, idX) +
+							'</td></tr>');
+			}
+		},
+		pagination: function(meta) {
+			$('ul.pager').append(render_pagination(meta));
+		}
+	});
+
 	var ProfileView = Backbone.Router.extend({
 		el: $('div#profile'),
 		render: function() {
@@ -687,6 +738,7 @@ $(function() {
 			"categories/:id": "category",
 			"tags": "tags",
 			"tags/:id": "tag",
+			"feed_subscription": "feed_subscription",
 		},
 
 		index: function() {
@@ -725,6 +777,10 @@ $(function() {
 		tag: function() {
 			window.App.render();
 			var tagView = new TagView();
+		},
+		feed_subscription: function() {
+			window.App.render();
+			var feedSubscriptionView = new FeedSubscriptionView();
 		}
 	});
 

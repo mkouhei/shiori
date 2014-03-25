@@ -59,3 +59,10 @@ def bookmark(request, bookmark_id):
                               {'is_authenticated':
                                request.user.is_authenticated()},
                               context_instance=RequestContext(request))
+
+
+def feed_subscription(request):
+    return render_to_response('bookmark/feed_subscription.html',
+                              {'is_authenticated':
+                               request.user.is_authenticated()},
+                              context_instance=RequestContext(request))
