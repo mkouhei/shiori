@@ -48,7 +48,8 @@ class BookmarkTagSerializer(serializers.ModelSerializer):
 
 class FeedSubscriptionSerializer(serializers.ModelSerializer):
     owner = serializers.Field(source='owner.username')
-    category = serializers.SlugRelatedField(many=False, slug_field='category')
+    default_category = serializers.SlugRelatedField(many=False,
+                                                    slug_field='category')
     category_id = serializers.Field(source='category.id')
 
     class Meta:
