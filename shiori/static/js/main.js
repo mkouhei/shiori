@@ -656,7 +656,7 @@ $(function() {
 		}
 	});
 
-	var ProfileView = Backbone.Router.extend({
+	var ProfileView = Backbone.View.extend({
 		el: $('div#profile'),
 		render: function() {
 		}
