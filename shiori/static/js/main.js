@@ -53,6 +53,14 @@ $(function() {
 		return pager;
 	}
 
+	function display_message(el, msg, alert_type) {
+		$('div#flash', el)
+			.append('<div class="alert ' +
+					alert_type + '">' +
+					'<a class="close" data-dismiss="alert">x</a>' +
+					msg + '</div>');
+	}
+
 	function is_all() {
 		var s = location.search.substring(1);
 		var is_all = false;
@@ -431,10 +439,7 @@ $(function() {
 			var registered_category;
 			var category = html_sanitize(this.$('input#category').val(), urlX, idX);
 			if (category.length == 0) {
-				$('div#flash', this.el)
-				.append('<div class="alert alert-error">' +
-						'<a class="close" data-dismiss="alert">x</a>' +
-						'required category.</div>');
+				display_message(this.el, 'required category.');
 				return false;
 			}
 
@@ -534,18 +539,11 @@ $(function() {
 						that.tagging_bookmark(_mdl.url, value.textContent);
 					});
 
-					$('div#flash', this.el)
-						.append('<div class="alert alert-success">' +
-								'<a class="close" data-dismiss="alert">x</a>' +
-								options.xhr.statusText + '</div>');
+					display_message(this.el, options.xhr.statusText, 'alert-success');
 				},
 				error: function(_coll, xhr, options) {
 					console.log(xhr.responseText);
-					$('div#flash', this.el)
-						.append('<div class="alert alert-error">' +
-								'<a class="close" data-dismiss="alert">x</a>' +
-								xhr.responseText + '</div>');
-
+					display_message(this.el, xhr.responseText, 'alert-error');
 				}
 			});
 		},
@@ -614,7 +612,7 @@ $(function() {
 		},
 		validate: function(attrs) {
 			if (!attrs.url) return "required url.";
-			if (!attrs.category) return "required category.";
+			if (!attrs.default_category) return "required category.";
 		}
 	});
 
@@ -630,29 +628,145 @@ $(function() {
 	});
 
 	var FeedSubscriptionView = Backbone.View.extend({
-		el: $('div#feed_subscription tbody'),
+		el: $('div#feed_subscription'),
 		initialize: function() {
 			this.collection = new FeedSubscriptionList();
+			this.feed_subscriptions = new FeedSubscriptionList();
 			this.listenTo(this.collection, 'add', this.appendItem);
+			this.listenTo(this.collection, 'remove', this.removeItem);
 			this.collection.fetch({data: {"page": get_page()}});
+			this.categories = new CategoriesList();
+		},
+		events: {
+			'click button#new_feed': 'show_modal',
+			'click a#save': 'save',
+			'click a#cancel': 'close_modal',
+			'click a.btn-warning': 'edit',
+			'click a.btn-danger': 'delete',
 		},
 		appendItem: function(item) {
 			if (item.get('meta')) {
 				this.pagination(item.get('meta'));
 			} else {
-				console.log(item);
-				$(this.el)
-					.append('<tr><td>' +
-							html_sanitize(item.get('name'), urlX, idX) +
-							'</td><td>' +
-							html_sanitize(item.get('url'), urlX, idX) +
-							'</td><td>' +
-							html_sanitize(item.get('default_category'), urlX, idX) +
-							'</td></tr>');
+				// This hack is prevent rendering without id, name;
+				if (item.get('id') != undefined) {
+					$('tbody', this.el)
+						.append('<tr id="' + item.get('id') +
+								'"><td><a href="' +
+								html_sanitize(item.get('url'), urlX, idX) +
+								'">' +
+								html_sanitize(item.get('name'), urlX, idX) +
+								'</a></td><td>' +
+								html_sanitize(item.get('default_category'),
+											  urlX, idX) +
+								'</td><td>' +
+								/*
+								  // Todo: should implement this
+								<a class="btn btn-warning" id="edit_' +
+								item.get('id') +
+								'">edit</a> ' +
+								*/
+								'<a class="btn btn-danger" id="delete_' +
+								item.get('id') +
+								'">delete</a></td></tr>');
+				}
 			}
 		},
 		pagination: function(meta) {
 			$('ul.pager').append(render_pagination(meta));
+		},
+		show_modal: function() {
+			$('div.modal', this.el).modal('show');
+		},
+		save: function() {
+			var that = this;
+			var registered_category;
+			var category = html_sanitize(this.$('input#category').val(), urlX, idX);
+			if (category.length == 0) {
+				display_message(this.el, 'required category.', 'alert-error');
+				return false;
+			}
+			this.categories.fetch({
+				success: function() {
+					registered_category =
+						that.categories.where({'category': category});
+				}
+			}).pipe(function() {
+				if (registered_category.length == 1) {
+					that.save_feed(category);
+				} else {
+					that.category = new Category({
+						category: category
+					}, {collection: that.categories});
+					that.category.save(null, {
+						success: function() {
+							that.categories.add(that.category);
+						},
+						error: function(model, xhr, options) {
+							var obj = JSON.parse(xhr.responseText).category[0];
+							if (obj == "Category with this Category already exists.") {
+								console.log(xhr.responseText);
+							}
+						}
+					}).pipe(function() {
+						that.save_feed(category);
+					}, this);
+				}
+			}, this);
+			return this;
+		},
+		save_feed: function(category) {
+
+			var that = this;
+			var url = this.$('input#url').val();
+			if (this.$('input#is_enabled').prop('checked')) {
+				var is_enabled = true;
+			} else {
+				var is_enabled = false;
+			}
+
+			this.collection.create({
+				url: url,
+				default_category: category,
+				is_enabled: is_enabled
+			}, {
+				validate: true,
+				success: function(_coll, _mdl, options) {
+					console.log(options.xhr.responseText);
+					display_message(this.el, options.xhr.statusText, 'alert-success');
+					// This hack is prevent rendering without id, name;
+					that.collection.add(that.collection.pop());
+				},
+				error: function(_coll, xhr, options) {
+					console.log(xhr.responseText);
+					display_message(this.el, xhr.responseText, 'alert-error');
+				}
+			});
+			this.close_modal();
+		},
+		close_modal: function() {
+			$('div.modal', this.el).modal('hide');
+			$('input#url').val('');
+			$('input#category').val('');
+			$('input#is_enabled').attr('checked', 'checked');
+		},
+		edit: function(event) {
+			console.log(event.target.id);
+		},
+		delete: function(event) {
+			var that = this;
+			var id = event.target.id.split('delete_')[1];
+			this.model = new FeedSubscription({id: id});
+			this.collection.remove(this.model);
+		},
+		removeItem: function() {
+			var that = this;
+			this.model.destroy({
+				success: function() {
+					console.log('deleted: ' + JSON.stringify(that.model));
+					$('tr#' + that.model.id, this.el).remove();
+				}
+			});
 		}
 	});
 
