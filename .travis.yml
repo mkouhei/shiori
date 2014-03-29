@@ -1,8 +1,11 @@
 language: python
 python: 2.7
-before_script:
-  - pip install python-coveralls
+env:
+  - TOX_ENV=py27
+  - TOX_ENV=pypy
+install:
+  - pip install python-coveralls tox
 script:
-  - python setup.py test
+  - tox -e $TOX_ENV
 after_success:
   - coveralls
