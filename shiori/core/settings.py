@@ -135,6 +135,7 @@ SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 BROKER_URL = 'amqp://guest:guest@localhost//'
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'UTC'
+CELERY_TIMEDELTA_MINUTES = 60
 
 
 # loopback addresses have been excluded in default.

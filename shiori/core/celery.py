@@ -6,7 +6,7 @@ from celery import Celery
 from django.conf import settings
 
 from shiori.core.settings import LOGIN_URL
-print(LOGIN_URL)
+
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'shiori.core.settings')
 
 app = Celery('core')

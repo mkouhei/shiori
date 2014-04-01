@@ -31,6 +31,10 @@ Requirements
 * django-shortuuidfield (>= 0.1.2)
 * python-openid (>= 2.2.5)
 * django_openid_auth (>= 0.5)
+* south
+* feedparser
+* netaddr
+* celery
 * jQuery (>= 1.7.2)
 * underscore.js (>= 1.5.2)
 * backbone.js (>= 1.1.0)
@@ -139,6 +143,11 @@ Execute syncdb.::
 Run server.::
 
   $ python /path/to/shiori/manage.py runserver
+
+
+Start Celery.::
+
+  $ celery -A shiori.core worker --beat -l info
 
 
 Development
