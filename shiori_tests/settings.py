@@ -129,3 +129,9 @@ OPENID_USE_EMAIL_FOR_USERNAME = True
 # Django 1.6 can't serialize openid.yadis.manager.YadisServiceManager objects
 # http://bazaar.launchpad.net/~strycore/django-openid-auth/trunk/revision/115
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
+
+
+# loopback addresses have been excluded in default.
+FEED_EXCLUDE_FQDN = (
+    # 'shiori.example.org',
+)

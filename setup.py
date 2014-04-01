@@ -60,7 +60,8 @@ requires = ['setuptools',
             'django-shortuuidfield',
             'python-openid',
             'django-openid-auth',
-            'feedparser']
+            'feedparser',
+            'netaddr']
 
 setup(name='shiori',
       version='0.2.7',

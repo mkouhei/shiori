@@ -5,4 +5,5 @@ djangorestframework
 django-shortuuidfield
 python-openid
 feedparser
+netaddr
 -e bzr+http://bazaar.launchpad.net/~andrewsomething/django-openid-auth/1252445#egg=django-openid-auth
