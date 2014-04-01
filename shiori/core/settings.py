@@ -8,11 +8,11 @@ https://docs.djangoproject.com/en/1.6/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.6/ref/settings/
 """
+from __future__ import absolute_import
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
@@ -26,7 +26,7 @@ DEBUG = True
 
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -131,3 +131,14 @@ OPENID_USE_EMAIL_FOR_USERNAME = True
 # Django 1.6 can't serialize openid.yadis.manager.YadisServiceManager objects
 # http://bazaar.launchpad.net/~strycore/django-openid-auth/trunk/revision/115
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
+
+BROKER_URL = 'amqp://guest:guest@localhost//'
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'UTC'
+CELERY_TIMEDELTA_MINUTES = 60
+
+
+# loopback addresses have been excluded in default.
+FEED_EXCLUDE_FQDN = (
+    # 'shiori.example.org',
+)

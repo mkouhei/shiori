@@ -439,7 +439,7 @@ $(function() {
 			var registered_category;
 			var category = html_sanitize(this.$('input#category').val(), urlX, idX);
 			if (category.length == 0) {
-				display_message(this.el, 'required category.');
+				display_message(this.el, 'required category.', 'alert-success');
 				return false;
 			}
 
@@ -763,7 +763,9 @@ $(function() {
 			var that = this;
 			this.model.destroy({
 				success: function() {
-					console.log('deleted: ' + JSON.stringify(that.model));
+					display_message(this.el,
+									'deleted: ' + that.model.get('id'),
+								   'alert-success');
 					$('tr#' + that.model.id, this.el).remove();
 				}
 			});

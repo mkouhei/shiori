@@ -5,6 +5,8 @@ from django.contrib.auth.models import User
 from shortuuidfield import ShortUUIDField
 import feedparser
 
+from shiori.bookmark import validators
+
 
 class BaseObject(models.Model):
     id = ShortUUIDField(primary_key=True, auto=True, verbose_name='UUID')
@@ -84,8 +86,12 @@ class FeedSubscription(BaseObject):
 
 
 def update_title(sender, instance, **kwargs):
-    d = feedparser.parse(instance.url)
-    instance.name = d.get('feed').get('title')
+    if validators.validate_url(instance.url):
+        d = feedparser.parse(instance.url)
+        instance.name = d.get('feed').get('title')
+    else:
+        raise ValueError("Cannot insert and updating in model saving.")
+
 pre_save.connect(update_title, sender=FeedSubscription)
 
 
