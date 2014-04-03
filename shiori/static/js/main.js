@@ -183,7 +183,10 @@ $(function() {
 										'icon-share') +
 						  elem(item.get('description'), 'icon-comment') +
 						  elem(item.get('tags'), 'icon-tags'),
-						  delay: {hide: 3000}
+						  trigger: 'manual',
+						  delay: {show: 100, hide: 100}
+						 }).click(function(e) {
+							 $(this).popover('toggle');
 						 });
 		}
 	});
@@ -333,7 +336,10 @@ $(function() {
 							   'icon-comment') +
 						  elem(html_sanitize(item.get('category'), urlX, idX),
 							   'icon-book'),
-						  delay: {hide: 3000}
+						  trigger: 'manual',
+						  delay: {show: 100, hide: 100}
+						 }).click(function(e) {
+							 $(this).popover('toggle');
 						 });
 		}
 	});
@@ -417,7 +423,10 @@ $(function() {
 							   'icon-book') +
 						  elem(html_sanitize(item.get('tags'), urlX, idX),
 							   'icon-tags'),
-						  delay: {hide: 3000}
+						  trigger: 'manual',
+						  delay: {show: 100, hide: 100}
+						 }).click(function(e) {
+							 $(this).popover('toggle');
 						 });
 		}
 	});
