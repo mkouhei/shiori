@@ -56,6 +56,7 @@ long_description = \
 requires = ['setuptools',
             'django',
             'djangorestframework',
+            'shortuuid == 0.3.2',
             'django-shortuuidfield',
             'python-openid',
             'django-openid-auth',

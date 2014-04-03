@@ -28,6 +28,8 @@ Requirements
 * Python 2.7
 * Django (>= 1.6)
 * Django REST framework (>= 2.3.12)
+* shortuuid (== 0.3.2)
+  (this is work-around for the garbage (v0.4 not released) is left in the PyPI.)
 * django-shortuuidfield (>= 0.1.2)
 * python-openid (>= 2.2.5)
 * django_openid_auth (>= 0.5)
@@ -61,7 +63,7 @@ Shiori depends on as following.::
   python-django-shortuuidfield python-django-auth-openid python-celery \
   python-lxml python-defusedxml python-netaddr python-django-south \
   libjs-jquery libjs-underscore libjs-json libjs-twitter-bootstrap \
-  libxml2-dev libxslt1-dev python-requests python-dev
+  libxml2-dev libxslt1-dev python-requests python-dev libpython2.7-dev
 
 
 Update and rebuild libjs-backbone
@@ -163,7 +165,7 @@ You copy pre-commit hook scripts after git clone.::
 Next install python 2.7 later and setuptools, pytest, pep8.
 Below way is for Debian GNU/Linux Sid system.::
 
-  $ sudo apt-get install python python-setuptools python-pytest pep8 libxml2-dev libxml2
+  $ sudo apt-get install python python-setuptools python-pytest pep8 libxml2-dev libxml2 python-dev
 
 Then checkout 'devel' branch for development, commit your changes.
 Before pull request, execute git rebase.

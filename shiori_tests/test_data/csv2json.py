@@ -37,11 +37,18 @@ def main():
     dirpath = os.path.dirname(os.path.abspath(__file__))
     csv_path = os.path.join(dirpath, 'FakeNameGenerator.com_2a6e893c.csv')
     json_path = os.path.join(dirpath, 'dummy_users.json')
-    with open(csv_path, 'rb') as f:
-        reader = csv.reader(f)
-        with open(json_path, 'w') as f:
-            f.write(json.dumps([convert_format(row) for row in reader
-                                if row[0] != '\xef\xbb\xbfNumber']))
+    if sys.version_info < (3, 0):
+        with open(csv_path, 'rb') as f:
+            reader = csv.reader(f)
+            with open(json_path, 'w') as f:
+                f.write(json.dumps([convert_format(row) for row in reader
+                                    if row[0] != '\xef\xbb\xbfNumber']))
+    else:
+        with open(csv_path, 'rt', encoding='utf-8') as f:
+            reader = csv.reader(f)
+            with open(json_path, 'w') as f:
+                f.write(json.dumps([convert_format(row) for row in reader
+                                    if row[0] != '\ufeffNumber']))
 
 
 if __name__ == "__main__":
