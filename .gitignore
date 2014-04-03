@@ -7,3 +7,4 @@ shiori/static/underscore
 .tox
 .coverage
 dummy_*.json
+celerybeat-schedule

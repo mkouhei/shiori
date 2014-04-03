@@ -3,8 +3,7 @@ from django.db import models
 from django.db.models.signals import pre_save
 from django.contrib.auth.models import User
 from shortuuidfield import ShortUUIDField
-import feedparser
-
+from shiori.bookmark.agents.feed_parser import FeedParser
 from shiori.bookmark import validators
 
 
@@ -87,8 +86,7 @@ class FeedSubscription(BaseObject):
 
 def update_title(sender, instance, **kwargs):
     if validators.validate_url(instance.url):
-        d = feedparser.parse(instance.url)
-        instance.name = d.get('feed').get('title')
+        instance.name = FeedParser(instance.url).title
     else:
         raise ValueError("Cannot insert and updating in model saving.")
 

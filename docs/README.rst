@@ -32,8 +32,10 @@ Requirements
 * python-openid (>= 2.2.5)
 * django_openid_auth (>= 0.5)
 * south
-* feedparser
 * netaddr
+* lxml
+* defusedxml
+* requests
 * celery
 * jQuery (>= 1.7.2)
 * underscore.js (>= 1.5.2)
@@ -56,9 +58,10 @@ Install Debian packages that Shiori depends on
 Shiori depends on as following.::
 
   $ sudo apt-get install python-django python-djangorestframework \
-  python-django-shortuuidfield python-django-auth-openid \
-  python-django-notification \
-  libjs-jquery libjs-underscore libjs-json libjs-twitter-bootstrap
+  python-django-shortuuidfield python-django-auth-openid python-celery \
+  python-lxml python-defusedxml python-netaddr python-django-south \
+  libjs-jquery libjs-underscore libjs-json libjs-twitter-bootstrap \
+  libxml2-dev libxslt1-dev python-requests python-dev
 
 
 Update and rebuild libjs-backbone
@@ -160,7 +163,7 @@ You copy pre-commit hook scripts after git clone.::
 Next install python 2.7 later and setuptools, pytest, pep8.
 Below way is for Debian GNU/Linux Sid system.::
 
-  $ sudo apt-get install python python-setuptools python-pytest pep8
+  $ sudo apt-get install python python-setuptools python-pytest pep8 libxml2-dev libxml2
 
 Then checkout 'devel' branch for development, commit your changes.
 Before pull request, execute git rebase.

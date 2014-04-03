@@ -42,7 +42,6 @@ classifiers = [
     "Programming Language :: Python",
     "Programming Language :: Python :: 2.7",
     "Programming Language :: Python :: Implementation :: CPython",
-    "Programming Language :: Python :: Implementation :: PyPy",
     "Topic :: Internet",
     "Topic :: Internet :: WWW/HTTP",
     "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
@@ -60,7 +59,9 @@ requires = ['setuptools',
             'django-shortuuidfield',
             'python-openid',
             'django-openid-auth',
-            'feedparser',
+            'lxml',
+            'defusedxml',
+            'requests',
             'netaddr']
 
 setup(name='shiori',

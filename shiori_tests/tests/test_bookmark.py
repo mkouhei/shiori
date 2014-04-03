@@ -6,7 +6,7 @@ from django.views.generic import RedirectView
 from django.db import IntegrityError
 import shiori.bookmark.views
 from shiori.bookmark.models import Category, Tag, Bookmark
-from shiori.bookmark.feeds import LatestEntries
+from shiori.bookmark.feed_generator import LatestEntries
 import shiori_tests.tests.vars as v
 
 

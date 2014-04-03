@@ -6,6 +6,8 @@ django-shortuuidfield
 python-openid
 south
 celery
-feedparser
+lxml
+defusedxml
+requests
 netaddr
 -e bzr+http://bazaar.launchpad.net/~andrewsomething/django-openid-auth/1252445#egg=django-openid-auth

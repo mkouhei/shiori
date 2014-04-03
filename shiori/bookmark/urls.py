@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.conf.urls import patterns, include, url
-from shiori.bookmark.feeds import LatestEntries
+from shiori.bookmark.feed_generator import LatestEntries
 
 
 urlpatterns = patterns('shiori.bookmark.views',
