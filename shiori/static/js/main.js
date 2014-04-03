@@ -78,7 +78,7 @@ $(function() {
 	}
 
 	var Category = Backbone.Model.extend({
-		urlRoot: '/v1/categories',
+		urlRoot: '/api/categories',
 		idAttribute: 'id',
 		defaults: {
 			'category': '',
@@ -90,7 +90,7 @@ $(function() {
 
 	var CategoriesList = Backbone.Collection.extend({
 		model: Category,
-		url: '/v1/categories',
+		url: '/api/categories',
 		parse: function(res) {
 			res.results.push({'meta': {'count': res.count,
 									   'next': res.next,
@@ -189,7 +189,7 @@ $(function() {
 	});
 
 	var BookmarkTags = Backbone.Model.extend({
-		urlRoot: '/v1/bookmark_tags',
+		urlRoot: '/api/bookmark_tags',
 		idAttribute: 'id',
 		defaults: {
 			'bookmark': '',
@@ -199,7 +199,7 @@ $(function() {
 
 	var BookmarkTagsList = Backbone.Collection.extend({
 		model: BookmarkTags,
-		url: '/v1/bookmark_tags',
+		url: '/api/bookmark_tags',
 		parse: function(res) {
 			res.results.push({'meta': {'count': res.count,
 									   'next': res.next,
@@ -209,7 +209,7 @@ $(function() {
 	});
 
 	var Tag = Backbone.Model.extend({
-		urlRoot: '/v1/tags',
+		urlRoot: '/api/tags',
 		idAttribute: 'id',
 		defaults: {
 			'tag': ''
@@ -218,7 +218,7 @@ $(function() {
 
 	var TagsList = Backbone.Collection.extend({
 		model: Tag,
-		url: '/v1/tags',
+		url: '/api/tags',
 		parse: function(res) {
 			res.results.push({'meta': {'count': res.count,
 									   'next': res.next,
@@ -339,7 +339,7 @@ $(function() {
 	});
 
 	var Bookmark = Backbone.Model.extend({
-		urlRoot: '/v1/bookmarks',
+		urlRoot: '/api/bookmarks',
 		idAttribute: 'id',
 		defaults: {
 			url: '',
@@ -356,7 +356,7 @@ $(function() {
 
 	var BookmarkList = Backbone.Collection.extend({
 		model: Bookmark,
-		url: '/v1/bookmarks',
+		url: '/api/bookmarks',
 		parse: function(res) {
 			res.results.push({'meta': {'count': res.count,
 									   'next': res.next,
@@ -604,7 +604,7 @@ $(function() {
 	});
 
 	var FeedSubscription = Backbone.Model.extend({
-		urlRoot: '/v1/feed_subscription',
+		urlRoot: '/api/feed_subscription',
 		idAttribute: 'id',
 		defaults: {
 			'url': '',
@@ -618,7 +618,7 @@ $(function() {
 
 	var FeedSubscriptionList = Backbone.Collection.extend({
 		model: FeedSubscription,
-		url: '/v1/feed_subscription',
+		url: '/api/feed_subscription',
 		parse: function(res) {
 			res.results.push({'meta': {'count': res.count,
 									   'next': res.next,
