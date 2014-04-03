@@ -3,6 +3,7 @@ from django.db import models
 from django.db.models.signals import pre_save
 from django.contrib.auth.models import User
 from shortuuidfield import ShortUUIDField
+import jsonfield
 from shiori.bookmark.agents.feed_parser import FeedParser
 from shiori.bookmark import validators
 
@@ -95,7 +96,9 @@ pre_save.connect(update_title, sender=FeedSubscription)
 
 class CrawlingHistory(BaseObject):
     feed = models.ForeignKey(FeedSubscription)
-    update_datetime = models.DateTimeField()
+    result = jsonfield.JSONField()
+    update_datetime = models.DateTimeField(auto_now=True,
+                                           auto_now_add=True)
 
     class Meta:
         db_table = 'crawling_history'

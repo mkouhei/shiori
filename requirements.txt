@@ -4,6 +4,7 @@ django >= 1.6
 djangorestframework
 shortuuid == 0.3.2
 django-shortuuidfield
+django-jsonfield
 python-openid
 south
 celery

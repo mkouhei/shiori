@@ -31,6 +31,7 @@ Requirements
 * shortuuid (== 0.3.2)
   (this is work-around for the garbage (v0.4 not released) is left in the PyPI.)
 * django-shortuuidfield (>= 0.1.2)
+* django-jsonfield
 * python-openid (>= 2.2.5)
 * django_openid_auth (>= 0.5)
 * south
@@ -63,7 +64,8 @@ Shiori depends on as following.::
   python-django-shortuuidfield python-django-auth-openid python-celery \
   python-lxml python-defusedxml python-netaddr python-django-south \
   libjs-jquery libjs-underscore libjs-json libjs-twitter-bootstrap \
-  libxml2-dev libxslt1-dev python-requests python-dev libpython2.7-dev
+  libxml2-dev libxslt1-dev python-requests python-dev libpython2.7-dev \
+  python-django-jsonfield
 
 
 Update and rebuild libjs-backbone
