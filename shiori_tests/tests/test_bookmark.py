@@ -6,22 +6,23 @@ from django.views.generic import RedirectView
 from django.db import IntegrityError
 import shiori.bookmark.views
 from shiori.bookmark.models import Category, Tag, Bookmark
-from shiori.bookmark.feeds import LatestEntries
+from shiori.bookmark.feed_generator import LatestEntries
 import shiori_tests.tests.vars as v
 
 
 class BookmarkTransactionTest(TransactionTestCase):
+    fixtures = ['shiori_tests/test_data/dummy_users.json',
+                'shiori_tests/test_data/dummy_data.json']
+
     def setUp(self):
-        self.user0 = User.objects.create_user(v.username0,
-                                              v.email0,
-                                              v.password0)
-        self.user1 = User.objects.create_user(v.username1,
-                                              v.email1,
-                                              v.password1)
-        self.category0 = Category.objects.create(category=v.category0)
-        self.category1 = Category.objects.create(category=v.category1)
-        self.tag0 = Tag.objects.create(tag=v.tag0)
-        self.tag1 = Tag.objects.create(tag=v.tag1)
+        self.user0 = User.objects.get(pk=1)
+        self.user1 = User.objects.get(pk=2)
+        categories = Category.objects.all()
+        self.category0 = categories[0]
+        self.category1 = categories[1]
+        tags = Tag.objects.all()
+        self.tag0 = tags[0]
+        self.tag1 = tags[1]
         self.bookmark = Bookmark.objects.create(url=v.url0,
                                                 title=v.title0,
                                                 category=self.category0,
@@ -29,18 +30,13 @@ class BookmarkTransactionTest(TransactionTestCase):
                                                 owner=self.user0)
 
     def test_get_categories(self):
-        query = Category.objects.get(category=v.category0)
-        self.assertEqual(query.__unicode__(), v.category0)
-        self.assertEqual(query.__str__(), v.category0)
-
-    def test_get_category_as_multibyte(self):
-        query = Category.objects.get(category=v.category1)
-        self.assertEqual(query.__unicode__(), v.category1.decode('utf-8'))
-        self.assertEqual(query.__str__(), v.category1)
+        query = Category.objects.get(category=self.category0.category)
+        self.assertEqual(query.__unicode__(), self.category0.category)
+        self.assertEqual(query.__str__(), self.category0.category)
 
     def test_save_category_confilict(self):
         with self.assertRaises(IntegrityError):
-            query = Category(category=v.category0)
+            query = Category(category=self.category0.category)
             query.save()
 
     def test_save_category(self):
@@ -60,24 +56,19 @@ class BookmarkTransactionTest(TransactionTestCase):
     def test_delete_category(self):
         self.category0.delete()
         with self.assertRaises(Category.DoesNotExist):
-            Category.objects.get(category=v.category0)
+            Category.objects.get(category=self.category0.category)
 
         with self.assertRaises(Category.DoesNotExist):
             Category.objects.get(id=self.category0.id)
 
     def test_get_tag(self):
-        query = Tag.objects.get(tag=v.tag0)
-        self.assertEqual(query.__unicode__(), v.tag0)
-        self.assertEqual(query.__str__(), v.tag0)
-
-    def test_get_tag_as_multibyte(self):
-        query = Tag.objects.get(tag=v.tag1)
-        self.assertEqual(query.__unicode__(), v.tag1.decode('utf-8'))
-        self.assertEqual(query.__str__(), v.tag1)
+        query = Tag.objects.get(tag=self.tag0.tag)
+        self.assertEqual(query.__unicode__(), self.tag0.tag)
+        self.assertEqual(query.__str__(), self.tag0.tag)
 
     def test_save_tag_confilict(self):
         with self.assertRaises(IntegrityError):
-            query = Tag(tag=v.tag1)
+            query = Tag(tag=self.tag1.tag)
             query.save()
 
     def test_save_tag(self):
@@ -96,7 +87,7 @@ class BookmarkTransactionTest(TransactionTestCase):
     def test_delete_tag(self):
         self.tag0.delete()
         with self.assertRaises(Tag.DoesNotExist):
-            Tag.objects.get(tag=v.tag0)
+            Tag.objects.get(tag=self.tag0.tag)
 
         with self.assertRaises(Tag.DoesNotExist):
             Tag.objects.get(id=self.tag0.id)

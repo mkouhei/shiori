@@ -9,7 +9,7 @@ BASE_PATH = os.path.dirname(os.path.dirname(
 
 class PEP8Test(unittest.TestCase):
     def test_pep8(self):
-        pep8.DEFAULT_EXCLUDE = '.tox,*.egg,migrations/'
+        pep8.DEFAULT_EXCLUDE = '.tox,*.egg,shiori/bookmark/migrations/'
         pep8style = pep8.StyleGuide([['statistics', True],
                                      ['show-sources', True],
                                      ['repeat', True],

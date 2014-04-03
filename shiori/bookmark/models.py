@@ -1,7 +1,11 @@
 # -*- coding: utf-8 -*-
 from django.db import models
+from django.db.models.signals import pre_save
 from django.contrib.auth.models import User
 from shortuuidfield import ShortUUIDField
+import jsonfield
+from shiori.bookmark.agents.feed_parser import FeedParser
+from shiori.bookmark import validators
 
 
 class BaseObject(models.Model):
@@ -65,3 +69,39 @@ class BookmarkTag(models.Model):
     class Meta:
         db_table = 'bookmark_tag'
         unique_together = ('bookmark', 'tag')
+
+
+class FeedSubscription(BaseObject):
+    url = models.URLField()
+    name = models.CharField(max_length=255, editable=False)
+    owner = models.ForeignKey(User)
+    default_category = models.ForeignKey(Category)
+
+    class Meta:
+        db_table = 'feed_subscription'
+        unique_together = ('url', 'owner')
+
+    def __unicode__(self):
+        return self.url
+
+
+def update_title(sender, instance, **kwargs):
+    if validators.validate_url(instance.url):
+        instance.name = FeedParser(instance.url).title
+    else:
+        raise ValueError("Cannot insert and updating in model saving.")
+
+pre_save.connect(update_title, sender=FeedSubscription)
+
+
+class CrawlingHistory(BaseObject):
+    feed = models.ForeignKey(FeedSubscription)
+    result = jsonfield.JSONField()
+    update_datetime = models.DateTimeField(auto_now=True,
+                                           auto_now_add=True)
+
+    class Meta:
+        db_table = 'crawling_history'
+
+    def __unicode__(self):
+        return self.id

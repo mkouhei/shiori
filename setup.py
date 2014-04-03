@@ -42,7 +42,6 @@ classifiers = [
     "Programming Language :: Python",
     "Programming Language :: Python :: 2.7",
     "Programming Language :: Python :: Implementation :: CPython",
-    "Programming Language :: Python :: Implementation :: PyPy",
     "Topic :: Internet",
     "Topic :: Internet :: WWW/HTTP",
     "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
@@ -57,12 +56,18 @@ long_description = \
 requires = ['setuptools',
             'django',
             'djangorestframework',
+            'shortuuid == 0.3.2',
             'django-shortuuidfield',
+            'django-jsonfield',
             'python-openid',
-            'django-openid-auth']
+            'django-openid-auth',
+            'lxml',
+            'defusedxml',
+            'requests',
+            'netaddr']
 
 setup(name='shiori',
-      version='0.2.7',
+      version='0.3.0',
       description='bookmarking tool based on Web UI and JSON REST API',
       long_description=long_description,
       author='Kouhei Maeda',

@@ -8,6 +8,7 @@ router.register(r'categories', views.CategoryViewSet)
 router.register(r'tags', views.TagViewSet)
 router.register(r'bookmarks', views.BookmarkViewSet)
 router.register(r'bookmark_tags', views.BookmarkTagViewSet)
+router.register(r'feed_subscription', views.FeedSubscriptionViewSet)
 
 urlpatterns = patterns('shiori.api.views',
                        url(r'^', include(router.urls)),

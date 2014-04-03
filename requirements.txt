@@ -2,6 +2,14 @@ pep8>=1.3
 pytest
 django >= 1.6
 djangorestframework
+shortuuid == 0.3.2
 django-shortuuidfield
+django-jsonfield
 python-openid
+south
+celery
+lxml
+defusedxml
+requests
+netaddr
 -e bzr+http://bazaar.launchpad.net/~andrewsomething/django-openid-auth/1252445#egg=django-openid-auth

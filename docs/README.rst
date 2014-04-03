@@ -28,9 +28,18 @@ Requirements
 * Python 2.7
 * Django (>= 1.6)
 * Django REST framework (>= 2.3.12)
+* shortuuid (== 0.3.2)
+  (this is work-around for the garbage (v0.4 not released) is left in the PyPI.)
 * django-shortuuidfield (>= 0.1.2)
+* django-jsonfield
 * python-openid (>= 2.2.5)
 * django_openid_auth (>= 0.5)
+* south
+* netaddr
+* lxml
+* defusedxml
+* requests
+* celery
 * jQuery (>= 1.7.2)
 * underscore.js (>= 1.5.2)
 * backbone.js (>= 1.1.0)
@@ -52,9 +61,11 @@ Install Debian packages that Shiori depends on
 Shiori depends on as following.::
 
   $ sudo apt-get install python-django python-djangorestframework \
-  python-django-shortuuidfield python-django-auth-openid \
-  python-django-notification \
-  libjs-jquery libjs-underscore libjs-json libjs-twitter-bootstrap
+  python-django-shortuuidfield python-django-auth-openid python-celery \
+  python-lxml python-defusedxml python-netaddr python-django-south \
+  libjs-jquery libjs-underscore libjs-json libjs-twitter-bootstrap \
+  libxml2-dev libxslt1-dev python-requests python-dev libpython2.7-dev \
+  python-django-jsonfield
 
 
 Update and rebuild libjs-backbone
@@ -141,6 +152,11 @@ Run server.::
   $ python /path/to/shiori/manage.py runserver
 
 
+Start Celery.::
+
+  $ celery -A shiori.core worker --beat -l info
+
+
 Development
 -----------
 
@@ -151,7 +167,7 @@ You copy pre-commit hook scripts after git clone.::
 Next install python 2.7 later and setuptools, pytest, pep8.
 Below way is for Debian GNU/Linux Sid system.::
 
-  $ sudo apt-get install python python-setuptools python-pytest pep8
+  $ sudo apt-get install python python-setuptools python-pytest pep8 libxml2-dev libxml2 python-dev
 
 Then checkout 'devel' branch for development, commit your changes.
 Before pull request, execute git rebase.

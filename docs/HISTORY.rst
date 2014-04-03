@@ -1,6 +1,21 @@
 History
 -------
 
+0.3.0 (2014-04-03)
+^^^^^^^^^^^^^^^^^^
+
+* Change API path /v1 to /api
+* Change behavior of Category API
+* Change behavior of Tag API
+* Added FeedSubscription and CralingHistory models
+* Added API of FeedSubscription
+* Added view of subscribed feeds list and manage view
+* Added register bookmarks from subscribed feeds
+* Added feed parser and register of bookmark from subscribed feed by celery
+* Added list display at Django admin
+* Using fake name generator for test
+* Change using fixtures for User, Category, Tag
+
 0.2.7 (2014-03-15)
 ^^^^^^^^^^^^^^^^^^
 
