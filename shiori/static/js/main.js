@@ -4,10 +4,10 @@ $(function() {
     function idX(id) { return id }
 
 	function elem(tags, icon) {
-		if (tags.length > 0) {
-			return '<p><i class="' + icon + '"></i> ' + tags + '</p>';
-		} else {
+		if (tags == undefined) {
 			return '';
+		} else {
+			return '<p><i class="' + icon + '"></i> ' + tags + '</p>';
 		}
 	}
 
