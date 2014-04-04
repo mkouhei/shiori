@@ -30,6 +30,27 @@ class CategoryViewSet(viewsets.ModelViewSet):
     def pre_save(self, obj):
         obj.category = escape(self.request.DATA.get('category'))
 
+    def get_queryset(self):
+        user = self.request.user
+        if (isinstance(user, AnonymousUser) or user.is_superuser):
+            categories = [category.get('category')
+                          for category
+                          in Bookmark.objects.values('category').distinct()]
+            return Category.objects.filter(id__in=categories)
+        else:
+            if self.request.QUERY_PARAMS.get('is_all') == 'true':
+                _q = Q(owner=user) | Q(is_hide=False)
+                categories = [category.get('category')
+                              for category
+                              in Bookmark.objects.values('category')
+                              .filter(_q).distinct()]
+            else:
+                categories = [category.get('category')
+                              for category
+                              in Bookmark.objects.values('category')
+                              .filter(owner=user).distinct()]
+            return Category.objects.filter(id__in=categories)
+
 
 class TagViewSet(viewsets.ModelViewSet):
     queryset = Tag.objects.all()
