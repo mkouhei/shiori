@@ -138,6 +138,12 @@ class BookmarkViewSet(viewsets.ModelViewSet):
 
         if category:
             q_obj = q_obj & Q(category=category)
+
+        if self.request.QUERY_PARAMS.get('search'):
+            search = self.request.QUERY_PARAMS.get('search')
+            q_obj = (q_obj & Q(title__icontains=search)
+                     | Q(description__icontains=search))
+
         return q_obj
 
 
