@@ -44,11 +44,14 @@ $(function() {
 		if (meta.previous) {
 			pager += ('<li><a href="?page=' +
 					  get_page(meta.previous) +
+					  '&is_all=' + is_all() +
 					  '">&larr; previous</a></li>');
 		}
 		if (meta.next) {
 			pager += ('<li><a href="?page=' +
-					  get_page(meta.next) + '">next &rarr;</a></li>');
+					  get_page(meta.next) +
+					  '&is_all=' + is_all() +
+					  '">next &rarr;</a></li>');
 		}
 		return pager;
 	}
@@ -104,7 +107,8 @@ $(function() {
 		initialize: function() {
 			this.collection = new CategoriesList();
 			this.listenTo(this.collection, 'add', this.appendItem);
-			this.collection.fetch({data: {"page": get_page()}});
+			this.collection.fetch({data: {"page": get_page(),
+										  "is_all": is_all()}});
 		},
 		appendItem: function(item) {
 			if (item.get('meta')) {
@@ -128,39 +132,30 @@ $(function() {
 			var id = location.pathname.split('/')[3];
 			this.model = new Category({id: id});
 			this.bookmarks = new BookmarkList();
-			this.render();
+			this.listenTo(this.bookmarks, 'add', this.appendItem);
+			this.listenTo(this.model, 'change', this.render);
+			this.model.fetch();
 		},
 		events: {
 			'mouseover a.btn': 'loadBookmark'
 		},
 		render: function() {
-			var that = this;
-			var selected_bookmarks = new Array();
-			this.model.fetch({
-				success: function() {
-					$('h4', this.el).append(that.model.get('category'));
-				}
-			}, this);
-			this.bookmarks.fetch({
-				data: {"is_all": is_all()},
-				success: function() {
-					selected_bookmarks = that.bookmarks.where(
-						{'category': that.model.get('category')});
-					
-				}
-			}).pipe(function() {
-				for (var i = 0; i < selected_bookmarks.length; i++) {
-					that.appendItem(selected_bookmarks[i]);
-				}
-			}, this);
-			return this;
+			var category = this.model.get('category');
+			$('h4', this.el).append(category);
+			this.bookmarks.fetch({data: {"page": get_page(),
+										 "is_all": is_all(),
+										 "category": category}});
 		},
 		appendItem: function(item) {
-			$(this.el)
-				.append('<a rel="popover" class="btn btn-success" id="' +
-						html_sanitize(item.get('id'), urlX, idX) + '">' +
-						html_sanitize(item.get('title'), urlX, idX) +
-						'</a> ');
+			if (item.get('meta')) {
+				this.pagination(item.get('meta'));
+			} else {
+				$(this.el)
+					.append('<a rel="popover" class="btn btn-success" id="' +
+							html_sanitize(item.get('id'), urlX, idX) + '">' +
+							html_sanitize(item.get('title'), urlX, idX) +
+							'</a> ');
+			}
 		},
 		loadBookmark: function(item) {
 			var that = this;
@@ -188,6 +183,9 @@ $(function() {
 						 }).click(function(e) {
 							 $(this).popover('toggle');
 						 });
+		},
+		pagination: function(meta) {
+			$('ul.pager').append(render_pagination(meta));
 		}
 	});
 
@@ -234,7 +232,6 @@ $(function() {
 		el: $('div#tags_list'),
 		initialize: function() {
 			this.collection = new TagsList();
-			this.collection.fetch({data: {"page": get_page()}});
 			this.bookmark_tags = new BookmarkTagsList();
 		},
 		render: function() {
@@ -245,9 +242,16 @@ $(function() {
 					used_tags = _.uniq(that.bookmark_tags.pluck('tag'));
 				}
 			}).pipe(function() {
-				that.collection.each(function(item) {
-					if (used_tags.indexOf(item.get('tag')) > -1) {
-						that.appendItem(item);
+				var the = that;
+				that.collection.fetch({
+					data: {"page": get_page(),
+						   "is_all": is_all()},
+					success: function(item) {
+						that.collection.each(function(item) {
+							if (used_tags.indexOf(item.get('tag')) > -1) {
+								that.appendItem(item);
+							}
+						});
 					}
 				});
 			}, this);

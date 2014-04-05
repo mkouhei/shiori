@@ -107,13 +107,33 @@ class BookmarkViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         user = self.request.user
         if isinstance(user, AnonymousUser):
-            return Bookmark.objects.filter(is_hide=False)
+            _q = self.set_filter(is_hide=False)
+        elif user.is_superuser:
+            _q = self.set_filter()
         else:
             if self.request.QUERY_PARAMS.get('is_all') == 'true':
-                _q = Q(is_hide=False) | Q(owner=user)
-                return Bookmark.objects.filter(_q)
+                _q = self.set_filter(is_hide=False, owner=user)
             else:
-                return Bookmark.objects.filter(owner=user)
+                _q = self.set_filter(owner=user)
+        return self.queryset.filter(_q)
+
+    def set_filter(self, is_hide=True, **kwargs):
+        q = Q(is_hide=is_hide)
+
+        category = None
+        if self.request.QUERY_PARAMS.get('category'):
+            try:
+                category = Category.objects.get(
+                    category=self.request.QUERY_PARAMS.get('category'))
+            except Category.DoesNotExist as e:
+                category = None
+
+        if kwargs.get('owner'):
+            q = q | Q(owner=kwargs.get('owner'))
+
+        if category:
+            q = q & Q(category=category)
+        return q
 
 
 class BookmarkTagViewSet(viewsets.ModelViewSet):
