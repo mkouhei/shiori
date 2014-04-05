@@ -107,19 +107,21 @@ class BookmarkViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         user = self.request.user
         if isinstance(user, AnonymousUser):
-            _q = self.set_filter(is_hide=False)
+            # anonymous can read all bookmarks except is_hide=True in default.
+            _q = self.set_filter(Q(is_hide=False))
         elif user.is_superuser:
-            _q = self.set_filter()
+            # superuser can read all bookmarks in default.
+            _q = self.set_filter(Q())
         else:
+            # general users can read own bookmarks only in default.
+            # they can read other users bookmarks when is_all=true.
             if self.request.QUERY_PARAMS.get('is_all') == 'true':
-                _q = self.set_filter(is_hide=False, owner=user)
+                _q = self.set_filter(Q(is_hide=False) | Q(owner=user))
             else:
-                _q = self.set_filter(owner=user)
+                _q = self.set_filter(Q(owner=user))
         return self.queryset.filter(_q)
 
-    def set_filter(self, is_hide=True, **kwargs):
-        q = Q(is_hide=is_hide)
-
+    def set_filter(self, q_obj):
         category = None
         if self.request.QUERY_PARAMS.get('category'):
             try:
@@ -128,12 +130,21 @@ class BookmarkViewSet(viewsets.ModelViewSet):
             except Category.DoesNotExist as e:
                 category = None
 
-        if kwargs.get('owner'):
-            q = q | Q(owner=kwargs.get('owner'))
+        bookmark_tag = None
+        if self.request.QUERY_PARAMS.get('tag'):
+            print(self.request.QUERY_PARAMS.get('tag'))
+            try:
+                bookmark_tag = BookmarkTag.objects.filter(
+                    tag=self.request.QUERY_PARAMS.get('tag'))
+            except BookmarkTag.DoesNotExist as e:
+                bookmark_tag = None
 
         if category:
-            q = q & Q(category=category)
-        return q
+            q_obj = q_obj & Q(category=category)
+
+        if bookmark_tag:
+            q_obj = q_obj & Q(tags__in=bookmark_tag)
+        return q_obj
 
 
 class BookmarkTagViewSet(viewsets.ModelViewSet):
