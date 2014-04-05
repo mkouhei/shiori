@@ -119,6 +119,12 @@ class BookmarkViewSet(viewsets.ModelViewSet):
                 _q = self.set_filter(Q(is_hide=False) | Q(owner=user))
             else:
                 _q = self.set_filter(Q(owner=user))
+        if self.request.QUERY_PARAMS.get('tag'):
+            try:
+                tag = Tag.objects.get(tag=self.request.QUERY_PARAMS.get('tag'))
+                self.queryset = tag.bookmark_set.all()
+            except Tag.DoesNotExist as e:
+                print(e)
         return self.queryset.filter(_q)
 
     def set_filter(self, q_obj):
@@ -130,20 +136,8 @@ class BookmarkViewSet(viewsets.ModelViewSet):
             except Category.DoesNotExist as e:
                 category = None
 
-        bookmark_tag = None
-        if self.request.QUERY_PARAMS.get('tag'):
-            print(self.request.QUERY_PARAMS.get('tag'))
-            try:
-                bookmark_tag = BookmarkTag.objects.filter(
-                    tag=self.request.QUERY_PARAMS.get('tag'))
-            except BookmarkTag.DoesNotExist as e:
-                bookmark_tag = None
-
         if category:
             q_obj = q_obj & Q(category=category)
-
-        if bookmark_tag:
-            q_obj = q_obj & Q(tags__in=bookmark_tag)
         return q_obj
 
 
