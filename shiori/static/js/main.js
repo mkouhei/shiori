@@ -145,6 +145,7 @@ $(function() {
 			this.bookmarks.fetch({data: {"page": get_page(),
 										 "is_all": is_all(),
 										 "category": category}});
+			return this;
 		},
 		appendItem: function(item) {
 			if (item.get('meta')) {
@@ -278,45 +279,38 @@ $(function() {
 			var id = location.pathname.split('/')[3];
 			this.model = new Tag({id: id});
 			this.bookmarks = new BookmarkList();
-			this.render();
+			this.listenTo(this.bookmarks, 'add', this.appendItem);
+			this.listenTo(this.model, 'change', this.render);
+			this.model.fetch()
 		},
 		events: {
 			'mouseover a.btn': 'loadBookmark'
 		},
 		render: function() {
 			var that = this;
-			var selected_bookmarks = new Array();
 			$(this.el).append('<h4>');
 			$(this.el).append('<div>');
-			this.model.fetch({
-				success: function() {
-					$('h4', this.el).append(that.model.get('tag'));
-				}
-			}, this);
-			this.bookmarks.fetch({
-				data: {"is_all": is_all()},
-				success: function() {
-					that.bookmarks.find(function(item) {
-						if (!item.get('meta')) {
-							if (item.get('tags').indexOf(that.model.get('tag')) > -1) {
-								selected_bookmarks.push(item);
-							}
-						}
-					});
-				}
-			}).pipe(function() {
-				for (var i = 0; i < selected_bookmarks.length; i++) {
-					that.appendItem(selected_bookmarks[i]);
-				}
-			}, this);
+			var tag = this.model.get('tag');
+			var tag_id = this.model.get('id');
+			$('h4', this.el).append(tag);
+			this.bookmarks.fetch({data: {"page": get_page(),
+										 "is_all": is_all(),
+										 "tag": tag}});
 			return this;
 		},
 		appendItem: function(item) {
-			$('div', this.el)
-				.append('<a rel="popover" class="btn btn-success" id="' +
-						html_sanitize(item.get('id'), urlX, idX) + '">' +
-						html_sanitize(item.get('title'), urlX, idX) +
-						'</a> ');
+			if (item.get('meta')) {
+				this.pagination(item.get('meta'));
+			} else {
+				$('div', this.el)
+					.append('<a rel="popover" class="btn btn-success" id="' +
+							html_sanitize(item.get('id'), urlX, idX) + '">' +
+							html_sanitize(item.get('title'), urlX, idX) +
+							'</a> ');
+			}
+		},
+		pagination: function(meta) {
+			$('ul.pager').append(render_pagination(meta));
 		},
 		loadBookmark: function(item) {
 			var that = this;
