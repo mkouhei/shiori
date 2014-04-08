@@ -66,3 +66,10 @@ def feed_subscription(request):
                               {'is_authenticated':
                                request.user.is_authenticated()},
                               context_instance=RequestContext(request))
+
+
+def search(request):
+    return render_to_response('bookmark/index.html',
+                              {'is_authenticated':
+                               request.user.is_authenticated()},
+                              context_instance=RequestContext(request))

@@ -80,6 +80,20 @@ $(function() {
 		return is_all;
 	}
 
+	function search_word() {
+		var s = location.search.substring(1);
+		var search_word = ''
+		if (query != '') {
+			var query = s.split('&');
+			for (var i = 0; i < query.length; i++) {
+				if (query[i].match(/^q=/)) {
+					search_word = query[i].split('=')[1];
+				}
+			}
+		}
+		return search_word;
+	}
+
 	var Category = Backbone.Model.extend({
 		urlRoot: '/api/categories',
 		idAttribute: 'id',
@@ -375,7 +389,8 @@ $(function() {
 			this.collection = new BookmarkList();
 			this.listenTo(this.collection, 'add', this.appendItem);
 			this.collection.fetch({data: {"page": get_page(),
-										  "is_all": is_all()}});
+										  "is_all": is_all(),
+										  "search": search_word()}});
 		},
 		events: {
 			'mouseover a.btn': 'loadBookmark'
@@ -795,6 +810,7 @@ $(function() {
 			'click a#categories': 'categories',
 			'click a#tags': 'tags',
 			'click a#toggle-view': 'toggle_view',
+			'click span#search-btn': 'search',
 		},
 		initialize: function() {
 		},
@@ -837,6 +853,14 @@ $(function() {
 				location.href = '?is_all=true';
 			}
 		},
+		search: function(e) {
+			if (location.pathname == '/shiori/search') {
+				Backbone.history.fragment = null;
+				Backbone.history.navigate(document.location.hash, true);
+			}
+			window.router.navigate('search?q=' + $('input#search-word').val(), {trigger: true});
+			return false;
+		},
 		render : function() {
 			$('div#submenu', this.el)
 				.append('<a id="categories">Categories</a>')
@@ -862,6 +886,7 @@ $(function() {
 			"tags": "tags",
 			"tags/:id": "tag",
 			"feed_subscription": "feed_subscription",
+			"search": "search"
 		},
 
 		index: function() {
@@ -904,6 +929,10 @@ $(function() {
 		feed_subscription: function() {
 			window.App.render();
 			var feedSubscriptionView = new FeedSubscriptionView();
+		},
+		search: function() {
+			window.App.render();
+			var bookmarkListView = new BookmarkListView();
 		}
 	});
 
