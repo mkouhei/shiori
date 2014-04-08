@@ -1,6 +1,13 @@
 History
 -------
 
+0.3.1 (2014-04-09)
+^^^^^^^^^^^^^^^^^^
+
+* Added search API and view
+* Fixed category and tag query
+* Changed behavior of popover
+
 0.3.0 (2014-04-03)
 ^^^^^^^^^^^^^^^^^^
 
