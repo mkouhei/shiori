@@ -30,6 +30,30 @@ class CategoryViewSet(viewsets.ModelViewSet):
     def pre_save(self, obj):
         obj.category = escape(self.request.DATA.get('category'))
 
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_superuser:
+            return self.queryset
+        elif isinstance(user, AnonymousUser):
+            categories = [category.get('category')
+                          for category
+                          in Bookmark.objects.values('category').distinct()]
+            return self.queryset.filter(id__in=categories)
+        else:
+            if self.request.QUERY_PARAMS.get('is_all') == 'true':
+
+                categories = [category.get('category')
+                              for category
+                              in Bookmark.objects.values('category')
+                              .filter(Q(owner=user) | Q(is_hide=False))
+                              .distinct()]
+            else:
+                categories = [category.get('category')
+                              for category
+                              in Bookmark.objects.values('category')
+                              .filter(owner=user).distinct()]
+            return self.queryset.filter(id__in=categories)
+
 
 class TagViewSet(viewsets.ModelViewSet):
     queryset = Tag.objects.all()
@@ -39,6 +63,32 @@ class TagViewSet(viewsets.ModelViewSet):
 
     def pre_save(self, obj):
         obj.tag = escape(self.request.DATA.get('tag'))
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_superuser:
+            return self.queryset
+        elif isinstance(user, AnonymousUser):
+            bookmark = [bookmark.get('id')
+                        for bookmark
+                        in Bookmark.objects.values('id')
+                        .filter(is_hide=False)]
+            return (self.queryset.filter(bookmarktag__bookmark__in=bookmark)
+                    .distinct())
+        else:
+            # authenticated user
+            if self.request.QUERY_PARAMS.get('is_all') == 'true':
+                bookmark = [bookmark.get('id')
+                            for bookmark
+                            in Bookmark.objects.values('id')
+                            .filter(Q(owner=user) | Q(is_hide=False))]
+            else:
+                bookmark = [bookmark.get('id')
+                            for bookmark
+                            in Bookmark.objects.values('id')
+                            .filter(owner=user)]
+            return self.queryset\
+                       .filter(bookmarktag__bookmark__in=bookmark).distinct()
 
 
 class BookmarkViewSet(viewsets.ModelViewSet):
@@ -57,13 +107,44 @@ class BookmarkViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         user = self.request.user
         if isinstance(user, AnonymousUser):
-            return Bookmark.objects.filter(is_hide=False)
+            # anonymous can read all bookmarks except is_hide=True in default.
+            _q = self.set_filter(Q(is_hide=False))
+        elif user.is_superuser:
+            # superuser can read all bookmarks in default.
+            _q = self.set_filter(Q())
         else:
+            # general users can read own bookmarks only in default.
+            # they can read other users bookmarks when is_all=true.
             if self.request.QUERY_PARAMS.get('is_all') == 'true':
-                _q = Q(is_hide=False) | Q(owner=user)
-                return Bookmark.objects.filter(_q)
+                _q = self.set_filter(Q(is_hide=False) | Q(owner=user))
             else:
-                return Bookmark.objects.filter(owner=user)
+                _q = self.set_filter(Q(owner=user))
+        if self.request.QUERY_PARAMS.get('tag'):
+            try:
+                tag = Tag.objects.get(tag=self.request.QUERY_PARAMS.get('tag'))
+                self.queryset = tag.bookmark_set.all()
+            except Tag.DoesNotExist as e:
+                print(e)
+        return self.queryset.filter(_q)
+
+    def set_filter(self, q_obj):
+        category = None
+        if self.request.QUERY_PARAMS.get('category'):
+            try:
+                category = Category.objects.get(
+                    category=self.request.QUERY_PARAMS.get('category'))
+            except Category.DoesNotExist as e:
+                category = None
+
+        if category:
+            q_obj = q_obj & Q(category=category)
+
+        if self.request.QUERY_PARAMS.get('search'):
+            search = self.request.QUERY_PARAMS.get('search')
+            q_obj = (q_obj & Q(title__icontains=search)
+                     | Q(description__icontains=search))
+
+        return q_obj
 
 
 class BookmarkTagViewSet(viewsets.ModelViewSet):

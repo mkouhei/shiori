@@ -14,4 +14,5 @@ urlpatterns = patterns('shiori.bookmark.views',
                        url(r'^tags/(?P<tag_id>[\w.]+)$', 'tag'),
                        url(r'^feeds$', LatestEntries()),
                        url(r'^feed_subscription$', 'feed_subscription'),
+                       url(r'^search$', 'search'),
                        url(r'^b/(?P<bookmark_id>[\w.]+)$', 'bookmark'),)

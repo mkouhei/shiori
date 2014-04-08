@@ -51,6 +51,7 @@ Recommends
 
 * MySQL
 * python-mysqldb
+* RabbitMQ
 
 Setup
 -----

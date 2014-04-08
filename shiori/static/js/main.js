@@ -4,10 +4,10 @@ $(function() {
     function idX(id) { return id }
 
 	function elem(tags, icon) {
-		if (tags.length > 0) {
-			return '<p><i class="' + icon + '"></i> ' + tags + '</p>';
-		} else {
+		if (tags == undefined) {
 			return '';
+		} else {
+			return '<p><i class="' + icon + '"></i> ' + tags + '</p>';
 		}
 	}
 
@@ -39,16 +39,29 @@ $(function() {
 		return page;
 	}
 
+	function search_link(){
+		var search_query = '';
+		if (search_word() !="") {
+			search_query = '&q=' + search_word();
+		}
+		return search_query;
+	}
+
 	function render_pagination(meta) {
 		var pager = '';
 		if (meta.previous) {
 			pager += ('<li><a href="?page=' +
 					  get_page(meta.previous) +
+					  '&is_all=' + is_all() +
+					  search_link() +
 					  '">&larr; previous</a></li>');
 		}
 		if (meta.next) {
 			pager += ('<li><a href="?page=' +
-					  get_page(meta.next) + '">next &rarr;</a></li>');
+					  get_page(meta.next) +
+					  '&is_all=' + is_all() +
+					  search_link() +
+					  '">next &rarr;</a></li>');
 		}
 		return pager;
 	}
@@ -63,7 +76,7 @@ $(function() {
 
 	function is_all() {
 		var s = location.search.substring(1);
-		var is_all = false;
+		var is_all;
 		if (s) {
 			var query = s.split('&');
 			if (query != '') {
@@ -74,7 +87,24 @@ $(function() {
 				}
 			}
 		}
+		if (is_all == undefined) {
+			is_all = "false";
+		}
 		return is_all;
+	}
+
+	function search_word() {
+		var s = location.search.substring(1);
+		var search_word = ''
+		if (query != '') {
+			var query = s.split('&');
+			for (var i = 0; i < query.length; i++) {
+				if (query[i].match(/^q=/)) {
+					search_word = query[i].split('=')[1];
+				}
+			}
+		}
+		return search_word;
 	}
 
 	var Category = Backbone.Model.extend({
@@ -104,7 +134,8 @@ $(function() {
 		initialize: function() {
 			this.collection = new CategoriesList();
 			this.listenTo(this.collection, 'add', this.appendItem);
-			this.collection.fetch({data: {"page": get_page()}});
+			this.collection.fetch({data: {"page": get_page(),
+										  "is_all": is_all()}});
 		},
 		appendItem: function(item) {
 			if (item.get('meta')) {
@@ -128,39 +159,31 @@ $(function() {
 			var id = location.pathname.split('/')[3];
 			this.model = new Category({id: id});
 			this.bookmarks = new BookmarkList();
-			this.render();
+			this.listenTo(this.bookmarks, 'add', this.appendItem);
+			this.listenTo(this.model, 'change', this.render);
+			this.model.fetch();
 		},
 		events: {
 			'mouseover a.btn': 'loadBookmark'
 		},
 		render: function() {
-			var that = this;
-			var selected_bookmarks = new Array();
-			this.model.fetch({
-				success: function() {
-					$('h4', this.el).append(that.model.get('category'));
-				}
-			}, this);
-			this.bookmarks.fetch({
-				data: {"is_all": is_all()},
-				success: function() {
-					selected_bookmarks = that.bookmarks.where(
-						{'category': that.model.get('category')});
-					
-				}
-			}).pipe(function() {
-				for (var i = 0; i < selected_bookmarks.length; i++) {
-					that.appendItem(selected_bookmarks[i]);
-				}
-			}, this);
+			var category = this.model.get('category');
+			$('h4', this.el).append(category);
+			this.bookmarks.fetch({data: {"page": get_page(),
+										 "is_all": is_all(),
+										 "category": category}});
 			return this;
 		},
 		appendItem: function(item) {
-			$(this.el)
-				.append('<a rel="popover" class="btn btn-success" id="' +
-						html_sanitize(item.get('id'), urlX, idX) + '">' +
-						html_sanitize(item.get('title'), urlX, idX) +
-						'</a> ');
+			if (item.get('meta')) {
+				this.pagination(item.get('meta'));
+			} else {
+				$(this.el)
+					.append('<a rel="popover" class="btn btn-success" id="' +
+							html_sanitize(item.get('id'), urlX, idX) + '">' +
+							html_sanitize(item.get('title'), urlX, idX) +
+							'</a> ');
+			}
 		},
 		loadBookmark: function(item) {
 			var that = this;
@@ -183,8 +206,14 @@ $(function() {
 										'icon-share') +
 						  elem(item.get('description'), 'icon-comment') +
 						  elem(item.get('tags'), 'icon-tags'),
-						  delay: {hide: 3000}
+						  trigger: 'manual',
+						  delay: {show: 100, hide: 100}
+						 }).click(function(e) {
+							 $(this).popover('toggle');
 						 });
+		},
+		pagination: function(meta) {
+			$('ul.pager').append(render_pagination(meta));
 		}
 	});
 
@@ -231,7 +260,6 @@ $(function() {
 		el: $('div#tags_list'),
 		initialize: function() {
 			this.collection = new TagsList();
-			this.collection.fetch({data: {"page": get_page()}});
 			this.bookmark_tags = new BookmarkTagsList();
 		},
 		render: function() {
@@ -242,9 +270,16 @@ $(function() {
 					used_tags = _.uniq(that.bookmark_tags.pluck('tag'));
 				}
 			}).pipe(function() {
-				that.collection.each(function(item) {
-					if (used_tags.indexOf(item.get('tag')) > -1) {
-						that.appendItem(item);
+				var the = that;
+				that.collection.fetch({
+					data: {"page": get_page(),
+						   "is_all": is_all()},
+					success: function(item) {
+						that.collection.each(function(item) {
+							if (used_tags.indexOf(item.get('tag')) > -1) {
+								that.appendItem(item);
+							}
+						});
 					}
 				});
 			}, this);
@@ -271,45 +306,38 @@ $(function() {
 			var id = location.pathname.split('/')[3];
 			this.model = new Tag({id: id});
 			this.bookmarks = new BookmarkList();
-			this.render();
+			this.listenTo(this.bookmarks, 'add', this.appendItem);
+			this.listenTo(this.model, 'change', this.render);
+			this.model.fetch()
 		},
 		events: {
 			'mouseover a.btn': 'loadBookmark'
 		},
 		render: function() {
 			var that = this;
-			var selected_bookmarks = new Array();
 			$(this.el).append('<h4>');
 			$(this.el).append('<div>');
-			this.model.fetch({
-				success: function() {
-					$('h4', this.el).append(that.model.get('tag'));
-				}
-			}, this);
-			this.bookmarks.fetch({
-				data: {"is_all": is_all()},
-				success: function() {
-					that.bookmarks.find(function(item) {
-						if (!item.get('meta')) {
-							if (item.get('tags').indexOf(that.model.get('tag')) > -1) {
-								selected_bookmarks.push(item);
-							}
-						}
-					});
-				}
-			}).pipe(function() {
-				for (var i = 0; i < selected_bookmarks.length; i++) {
-					that.appendItem(selected_bookmarks[i]);
-				}
-			}, this);
+			var tag = this.model.get('tag');
+			var tag_id = this.model.get('id');
+			$('h4', this.el).append(tag);
+			this.bookmarks.fetch({data: {"page": get_page(),
+										 "is_all": is_all(),
+										 "tag": tag}});
 			return this;
 		},
 		appendItem: function(item) {
-			$('div', this.el)
-				.append('<a rel="popover" class="btn btn-success" id="' +
-						html_sanitize(item.get('id'), urlX, idX) + '">' +
-						html_sanitize(item.get('title'), urlX, idX) +
-						'</a> ');
+			if (item.get('meta')) {
+				this.pagination(item.get('meta'));
+			} else {
+				$('div', this.el)
+					.append('<a rel="popover" class="btn btn-success" id="' +
+							html_sanitize(item.get('id'), urlX, idX) + '">' +
+							html_sanitize(item.get('title'), urlX, idX) +
+							'</a> ');
+			}
+		},
+		pagination: function(meta) {
+			$('ul.pager').append(render_pagination(meta));
 		},
 		loadBookmark: function(item) {
 			var that = this;
@@ -333,7 +361,10 @@ $(function() {
 							   'icon-comment') +
 						  elem(html_sanitize(item.get('category'), urlX, idX),
 							   'icon-book'),
-						  delay: {hide: 3000}
+						  trigger: 'manual',
+						  delay: {show: 100, hide: 100}
+						 }).click(function(e) {
+							 $(this).popover('toggle');
 						 });
 		}
 	});
@@ -371,7 +402,8 @@ $(function() {
 			this.collection = new BookmarkList();
 			this.listenTo(this.collection, 'add', this.appendItem);
 			this.collection.fetch({data: {"page": get_page(),
-										  "is_all": is_all()}});
+										  "is_all": is_all(),
+										  "search": search_word()}});
 		},
 		events: {
 			'mouseover a.btn': 'loadBookmark'
@@ -417,7 +449,10 @@ $(function() {
 							   'icon-book') +
 						  elem(html_sanitize(item.get('tags'), urlX, idX),
 							   'icon-tags'),
-						  delay: {hide: 3000}
+						  trigger: 'manual',
+						  delay: {show: 100, hide: 100}
+						 }).click(function(e) {
+							 $(this).popover('toggle');
 						 });
 		}
 	});
@@ -748,7 +783,7 @@ $(function() {
 			$('div.modal', this.el).modal('hide');
 			$('input#url').val('');
 			$('input#category').val('');
-			$('input#is_enabled').attr('checked', 'checked');
+			$('input#is_enabled').attr('checked', true);
 		},
 		edit: function(event) {
 			console.log(event.target.id);
@@ -787,7 +822,8 @@ $(function() {
 			'click a#profile': 'profile',
 			'click a#categories': 'categories',
 			'click a#tags': 'tags',
-			'click a#toggle-view': 'toggle_view',
+			'click span#search-btn': 'search',
+			'click input#is_all': 'toggle_view',
 		},
 		initialize: function() {
 		},
@@ -823,21 +859,32 @@ $(function() {
 			window.router.navigate('tag', true);
 			return false;
 		},
-		toggle_view: function() {
-			if (is_all()) {
+		toggle_view: function(event) {
+			if (is_all() == "true") {
 				location.href = location.pathname;
 			} else {
 				location.href = '?is_all=true';
 			}
 		},
+		search: function(e) {
+			if (location.pathname == '/shiori/search') {
+				Backbone.history.fragment = null;
+				Backbone.history.navigate(document.location.hash, true);
+			}
+			var path = 'search?q=' +
+				$('input#search-word').val() +
+				'&is_all=' + is_all();
+			window.router.navigate(path, true);
+			return false;
+		},
 		render : function() {
 			$('div#submenu', this.el)
 				.append('<a id="categories">Categories</a>')
 				.append('<a id="tags">Tags</a>');
-			if (is_all()) {
-				$('a#toggle-view').text('yours only');
+			if (is_all() == "true") {
+				$('input#is_all').attr('checked', true);
 			} else {
-				$('a#toggle-view').text('view all');
+				$('input#is_all').attr('checked', false);
 			}
 		}
 	});
@@ -855,6 +902,7 @@ $(function() {
 			"tags": "tags",
 			"tags/:id": "tag",
 			"feed_subscription": "feed_subscription",
+			"search": "search"
 		},
 
 		index: function() {
@@ -897,6 +945,10 @@ $(function() {
 		feed_subscription: function() {
 			window.App.render();
 			var feedSubscriptionView = new FeedSubscriptionView();
+		},
+		search: function() {
+			window.App.render();
+			var bookmarkListView = new BookmarkListView();
 		}
 	});
 
