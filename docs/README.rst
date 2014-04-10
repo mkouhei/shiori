@@ -168,7 +168,7 @@ You copy pre-commit hook scripts after git clone.::
 Next install python 2.7 later and setuptools, pytest, pep8.
 Below way is for Debian GNU/Linux Sid system.::
 
-  $ sudo apt-get install python python-setuptools python-pytest pep8 libxml2-dev libxml2 python-dev
+  $ sudo apt-get install python python-setuptools python-pytest pep8 libxml2-dev libxml2 python-dev closure-linter
 
 Then checkout 'devel' branch for development, commit your changes.
 Before pull request, execute git rebase.
