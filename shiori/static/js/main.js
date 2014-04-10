@@ -30,11 +30,11 @@ $(function() {
         if (s) {
             var query = s.split('&');
             if (query != '') {
-                for (var i = 0; i < query.length; i++) {
-                    if (query[i].match(/^page=/)) {
-                        page = query[i].split('=')[1];
+                query.forEach(function(val, index) {
+                    if (query[index].match(/^page=/)) {
+                        page = query[index].split('=')[1];
                     }
-                }
+                });
             }
         }
         return page;
@@ -81,11 +81,11 @@ $(function() {
         if (s) {
             var query = s.split('&');
             if (query != '') {
-                for (var i = 0; i < query.length; i++) {
-                    if (query[i].match(/^is_all=/)) {
-                        is_all = query[i].split('=')[1];
+                query.forEach(function(val, index) {
+                    if (query[index].match(/^is_all=/)) {
+                        is_all = query[index].split('=')[1];
                     }
-                }
+                });
             }
         }
         if (is_all == undefined) {
@@ -99,11 +99,11 @@ $(function() {
         var search_word = '';
         if (query != '') {
             var query = s.split('&');
-            for (var i = 0; i < query.length; i++) {
-                if (query[i].match(/^q=/)) {
-                    search_word = query[i].split('=')[1];
+            query.forEach(function(val, index) {
+                if (query[index].match(/^q=/)) {
+                    search_word = query[index].split('=')[1];
                 }
-            }
+            });
         }
         return search_word;
     }
@@ -643,12 +643,12 @@ $(function() {
                               html_sanitize(item.get('category_id'),
                                             urlX, idX));
                     if (item.get('tags').length > 0) {
-                        for (var i = 0; i < item.get('tags').length; i++) {
+                        item.get('tags').forEach(function(val, index) {
                             $('div#tags', this.el)
                                 .append('<a class="btn btn-info"></a>');
                             $('div#tags > a.btn', this.el)
-                                .text(html_sanitize(item.get('tags')[i]));
-                        }
+                                .text(html_sanitize(item.get('tags')[index]));
+                        });
                     }
 
                 }
