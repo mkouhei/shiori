@@ -1,6 +1,13 @@
 History
 -------
 
+0.3.2 (2014-04-18)
+^^^^^^^^^^^^^^^^^^
+
+* Fixed #25 can not search for multi-byte string.
+* Applied closure-linter, and fixed invalid Google JavaScript Style Guide.
+* Fixed exclude directory for PEP8 test.
+
 0.3.1 (2014-04-09)
 ^^^^^^^^^^^^^^^^^^
 

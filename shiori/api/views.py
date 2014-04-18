@@ -2,6 +2,11 @@
 from django.db.models import Q
 from django.utils.html import escape
 from django.contrib.auth.models import AnonymousUser
+import sys
+if sys.version_info < (3, 0):
+    from urllib2 import unquote
+else:
+    from urllib.parse import uniquote
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.permissions import (IsAuthenticated,
@@ -140,7 +145,9 @@ class BookmarkViewSet(viewsets.ModelViewSet):
             q_obj = q_obj & Q(category=category)
 
         if self.request.QUERY_PARAMS.get('search'):
-            search = self.request.QUERY_PARAMS.get('search')
+            _search = self.request.QUERY_PARAMS.get('search')
+            search = unquote(_search).encode(
+                'raw_unicode_escape').decode('utf-8')
             q_obj = (q_obj & Q(title__icontains=search)
                      | Q(description__icontains=search))
 
