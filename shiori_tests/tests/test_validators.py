@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import unittest
 from django.core.exceptions import ValidationError
-from socket import gaierror
 from shiori.bookmark import validators
 
 
