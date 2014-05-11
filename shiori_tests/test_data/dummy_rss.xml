@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>Shiori new bookmarks</title><link>http://localhost:8000/shiori/</link><description>Updates on changes and additions to Shiori.</description><atom:link href="http://localhost:8000/shiori/feeds" rel="self"></atom:link><language>en-us</language><lastBuildDate>Sun, 11 May 2014 01:07:25 -0000</lastBuildDate><item><title>How to build custom Debian package automatically by Jenkins</title><link>http://localhost:8000/shiori/b/h6xWZg6qMFKU4hyeySZppi</link><description>&lt;div&gt;
+  &lt;h3&gt;category: &lt;span class="category"&gt;test&lt;/span&gt;&lt;/h3&gt;
+  &lt;p&gt;&lt;/p&gt;
+&lt;/div&gt;
+</description><guid>http://localhost:8000/shiori/b/h6xWZg6qMFKU4hyeySZppi</guid></item><item><title>Retrieve and generate debian package of Oracle JDK</title><link>http://localhost:8000/shiori/b/mP3J7ECygP4Va3MLFgYgfP</link><description>&lt;div&gt;
+  &lt;h3&gt;category: &lt;span class="category"&gt;test&lt;/span&gt;&lt;/h3&gt;
+  &lt;p&gt;&lt;/p&gt;
+&lt;/div&gt;
+</description><guid>http://localhost:8000/shiori/b/mP3J7ECygP4Va3MLFgYgfP</guid></item><item><title>Manage multiple distributions with reprepro</title><link>http://localhost:8000/shiori/b/2jhgpAkPNU9M8uZZ8uq6gV</link><description>&lt;div&gt;
+  &lt;h3&gt;category: &lt;span class="category"&gt;test&lt;/span&gt;&lt;/h3&gt;
+  &lt;p&gt;&lt;/p&gt;
+&lt;/div&gt;
+</description><guid>http://localhost:8000/shiori/b/2jhgpAkPNU9M8uZZ8uq6gV</guid></item><item><title>Infinite loop using chord of Celery</title><link>http://localhost:8000/shiori/b/FQ47A8MSpMg3gwqKt9cEC6</link><description>&lt;div&gt;
+  &lt;h3&gt;category: &lt;span class="category"&gt;test&lt;/span&gt;&lt;/h3&gt;
+  &lt;p&gt;&lt;/p&gt;
+&lt;/div&gt;
+</description><guid>http://localhost:8000/shiori/b/FQ47A8MSpMg3gwqKt9cEC6</guid></item><item><title>OBS266はやっぱり綺麗だなぁ。</title><link>http://localhost:8000/shiori/b/zyvKxw3eQseShLjmd7Rrwe</link><description>&lt;div&gt;
+  &lt;h3&gt;category: &lt;span class="category"&gt;computer&lt;/span&gt;&lt;/h3&gt;
+  &lt;p&gt;テストhogeだす。&lt;/p&gt;
+&lt;/div&gt;
+</description><guid>http://localhost:8000/shiori/b/zyvKxw3eQseShLjmd7Rrwe</guid></item></channel></rss>
