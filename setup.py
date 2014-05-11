@@ -48,10 +48,10 @@ classifiers = [
 ]
 
 
-long_description = \
-    open(os.path.join("docs", "README.rst")).read() + \
-    open(os.path.join("docs", "HISTORY.rst")).read() + \
-    open(os.path.join("docs", "TODO.rst")).read()
+long_description = (
+    open("README.rst").read() +
+    open(os.path.join("docs", "HISTORY.rst")).read() +
+    open(os.path.join("docs", "TODO.rst")).read())
 
 requires = ['setuptools',
             'django',
