@@ -20,11 +20,13 @@ def validate_url(value):
         if IPAddress(hostname).is_loopback():
             raise ValidationError('loopback address is prohibited.')
     except AddrFormatError:
-        if getaddr(hostname) is None:
+        if getaddr(hostname) == []:
             raise ValidationError('%s is not found.' % value)
         for ip in getaddr(hostname):
             if IPAddress(ip).is_loopback():
                 raise ValidationError('loopback address is prohibited.')
+    if getaddr(hostname) == []:
+        raise ValidationError('%s is not found.' % value)
     return True
 
 
@@ -38,6 +40,8 @@ def getaddr(hostname):
         print(e)
     try:
         addresses.append(getaddrinfo(hostname, None, AF_INET6)[0][4][0])
+    except TypeError as e:
+        print(e)
     except gaierror as e:
         print(e)
     return addresses

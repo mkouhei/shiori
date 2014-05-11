@@ -168,7 +168,7 @@ You copy pre-commit hook scripts after git clone.::
 Next install python 2.7 later and setuptools, pytest, pep8.
 Below way is for Debian GNU/Linux Sid system.::
 
-  $ sudo apt-get install python python-setuptools python-pytest pep8 libxml2-dev libxml2 python-dev closure-linter
+  $ sudo apt-get install python python-setuptools python-pytest pep8 libxml2-dev libxml2 python-dev closure-linter python-tox
 
 Then checkout 'devel' branch for development, commit your changes.
 Before pull request, execute git rebase.
@@ -179,3 +179,4 @@ See also
 * `django REST framework <http://www.django-rest-framework.org/>`_
 * `django-openid-auth README <http://bazaar.launchpad.net/~django-openid-auth/django-openid-auth/trunk/view/head:/README.txt>`_
 * `Backbone.js <http://backbonejs.org/>`_
+

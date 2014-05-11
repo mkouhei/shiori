@@ -48,10 +48,10 @@ classifiers = [
 ]
 
 
-long_description = \
-    open(os.path.join("docs", "README.rst")).read() + \
-    open(os.path.join("docs", "HISTORY.rst")).read() + \
-    open(os.path.join("docs", "TODO.rst")).read()
+long_description = (
+    open("README.rst").read() +
+    open(os.path.join("docs", "HISTORY.rst")).read() +
+    open(os.path.join("docs", "TODO.rst")).read())
 
 requires = ['setuptools',
             'django',
@@ -67,7 +67,7 @@ requires = ['setuptools',
             'netaddr']
 
 setup(name='shiori',
-      version='0.3.2',
+      version='0.3.3',
       description='bookmarking tool based on Web UI and JSON REST API',
       long_description=long_description,
       author='Kouhei Maeda',
