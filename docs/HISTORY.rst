@@ -1,6 +1,12 @@
 History
 -------
 
+0.3.3 (2014-05-12)
+^^^^^^^^^^^^^^^^^^
+
+* Fixed bug of validators.
+* Added unit test of feed_parser.
+
 0.3.2 (2014-04-18)
 ^^^^^^^^^^^^^^^^^^
 
