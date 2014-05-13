@@ -30,7 +30,7 @@ class FeedParserTests(unittest.TestCase):
         parser = feed_parser.FeedParser('http://example.org/rss')
         self.assertEqual({'atom': 'http://www.w3.org/2005/Atom'},
                          parser.nsmap)
-        self.assertEqual('', parser.ns)
+        self.assertEqual('', parser.namespace)
         self.assertEqual('Sun, 11 May 2014 01:07:25 -0000',
                          parser.updated)
         self.assertEqual('Shiori new bookmarks', parser.title)

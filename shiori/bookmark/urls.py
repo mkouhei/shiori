@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-from django.conf.urls import patterns, include, url
+""" routing of bookmark app """
+from django.conf.urls import patterns, url
 from shiori.bookmark.feed_generator import LatestEntries
 
 

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+""" routing for API """
 from django.conf.urls import patterns, include, url
 from rest_framework import routers
 from shiori.api import views
