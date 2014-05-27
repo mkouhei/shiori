@@ -54,10 +54,10 @@ long_description = (
     open(os.path.join("docs", "TODO.rst")).read())
 
 requires = ['setuptools',
-            'django',
+            'Django',
             'djangorestframework',
             'shortuuid == 0.3.2',
-            'django-shortuuidfield',
+            'django_shortuuidfield',
             'django-jsonfield',
             'python-openid',
             'django-openid-auth',
