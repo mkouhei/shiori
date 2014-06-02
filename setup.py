@@ -54,10 +54,10 @@ long_description = (
     open(os.path.join("docs", "TODO.rst")).read())
 
 requires = ['setuptools',
-            'django',
+            'Django',
             'djangorestframework',
             'shortuuid == 0.3.2',
-            'django-shortuuidfield',
+            'django_shortuuidfield',
             'django-jsonfield',
             'python-openid',
             'django-openid-auth',
@@ -67,7 +67,7 @@ requires = ['setuptools',
             'netaddr']
 
 setup(name='shiori',
-      version='0.3.3',
+      version='0.3.4',
       description='bookmarking tool based on Web UI and JSON REST API',
       long_description=long_description,
       author='Kouhei Maeda',

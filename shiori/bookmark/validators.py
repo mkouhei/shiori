@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+""" module for validataion of agent """
 from django.core.exceptions import ValidationError
 import sys
 if sys.version_info > (3, 0):
@@ -11,6 +12,12 @@ from shiori.core.settings import FEED_EXCLUDE_FQDN
 
 
 def validate_url(value):
+    """
+    Argument:
+        value: url (eg. http://example.org/rss)
+    Return:
+        True or raise exceptions
+    """
     hostname = urlparse(value).netloc
     if ':' in hostname:
         hostname = hostname.split(':')[0]
@@ -22,8 +29,8 @@ def validate_url(value):
     except AddrFormatError:
         if getaddr(hostname) == []:
             raise ValidationError('%s is not found.' % value)
-        for ip in getaddr(hostname):
-            if IPAddress(ip).is_loopback():
+        for ipaddr in getaddr(hostname):
+            if IPAddress(ipaddr).is_loopback():
                 raise ValidationError('loopback address is prohibited.')
     if getaddr(hostname) == []:
         raise ValidationError('%s is not found.' % value)
@@ -31,17 +38,23 @@ def validate_url(value):
 
 
 def getaddr(hostname):
+    """
+    Argument:
+        hostname: FQDN (eg. example.org)
+    Return:
+        list of IPv4 or/and IPv6 addresses
+    """
     addresses = []
     try:
         addresses.append(gethostbyname(hostname))
-    except TypeError as e:
-        print(e)
-    except gaierror as e:
-        print(e)
+    except TypeError as error:
+        print(error)
+    except gaierror as error:
+        print(error)
     try:
         addresses.append(getaddrinfo(hostname, None, AF_INET6)[0][4][0])
-    except TypeError as e:
-        print(e)
-    except gaierror as e:
-        print(e)
+    except TypeError as error:
+        print(error)
+    except gaierror as error:
+        print(error)
     return addresses

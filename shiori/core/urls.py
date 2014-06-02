@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+""" global routing """
 from django.conf.urls import patterns, include, url
 from django.views.generic import RedirectView
 from django.contrib import admin

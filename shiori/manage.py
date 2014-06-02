@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+"""
+ manager of django.
+ 'DJANGO_SETTINGS_MODULES' has changed from in default.
+"""
 import os
 import sys
 

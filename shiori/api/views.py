@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+""" View of API """
 from django.db.models import Q
 from django.utils.html import escape
 from django.contrib.auth.models import AnonymousUser
@@ -6,12 +7,10 @@ import sys
 if sys.version_info < (3, 0):
     from urllib2 import unquote
 else:
-    from urllib.parse import uniquote
+    from urllib.parse import unquote
 from rest_framework import viewsets
-from rest_framework.response import Response
 from rest_framework.permissions import (IsAuthenticated,
-                                        IsAuthenticatedOrReadOnly,
-                                        IsAdminUser)
+                                        IsAuthenticatedOrReadOnly)
 from rest_framework.exceptions import NotAuthenticated
 from shiori.bookmark.models import (Category,
                                     Tag,
@@ -28,6 +27,7 @@ from shiori.api.serializers import (CategorySerializer,
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
+    """ View of Category API """
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
     permission_classes = (IsAuthenticatedAndCreateReadOnly,)
@@ -61,6 +61,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
 
 
 class TagViewSet(viewsets.ModelViewSet):
+    """ View of Tag API """
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
     permission_classes = (IsAuthenticatedAndCreateReadOnly,)
@@ -97,6 +98,7 @@ class TagViewSet(viewsets.ModelViewSet):
 
 
 class BookmarkViewSet(viewsets.ModelViewSet):
+    """ View of Bookmark API """
     queryset = Bookmark.objects.all()
     serializer_class = BookmarkSerializer
     permission_classes = (IsOwnerOrReadOnly,)
@@ -113,32 +115,33 @@ class BookmarkViewSet(viewsets.ModelViewSet):
         user = self.request.user
         if isinstance(user, AnonymousUser):
             # anonymous can read all bookmarks except is_hide=True in default.
-            _q = self.set_filter(Q(is_hide=False))
+            _query = self.set_filter(Q(is_hide=False))
         elif user.is_superuser:
             # superuser can read all bookmarks in default.
-            _q = self.set_filter(Q())
+            _query = self.set_filter(Q())
         else:
             # general users can read own bookmarks only in default.
             # they can read other users bookmarks when is_all=true.
             if self.request.QUERY_PARAMS.get('is_all') == 'true':
-                _q = self.set_filter(Q(is_hide=False) | Q(owner=user))
+                _query = self.set_filter(Q(is_hide=False) | Q(owner=user))
             else:
-                _q = self.set_filter(Q(owner=user))
+                _query = self.set_filter(Q(owner=user))
         if self.request.QUERY_PARAMS.get('tag'):
             try:
                 tag = Tag.objects.get(tag=self.request.QUERY_PARAMS.get('tag'))
                 self.queryset = tag.bookmark_set.all()
-            except Tag.DoesNotExist as e:
-                print(e)
-        return self.queryset.filter(_q)
+            except Tag.DoesNotExist as exp:
+                print(exp)
+        return self.queryset.filter(_query)
 
     def set_filter(self, q_obj):
+        """ filtering with query parameter """
         category = None
         if self.request.QUERY_PARAMS.get('category'):
             try:
                 category = Category.objects.get(
                     category=self.request.QUERY_PARAMS.get('category'))
-            except Category.DoesNotExist as e:
+            except Category.DoesNotExist:
                 category = None
 
         if category:
@@ -155,12 +158,14 @@ class BookmarkViewSet(viewsets.ModelViewSet):
 
 
 class BookmarkTagViewSet(viewsets.ModelViewSet):
+    """ View of BookmarkTag API """
     queryset = BookmarkTag.objects.all()
     serializer_class = BookmarkTagSerializer
     permission_classes = (IsAuthenticatedOrReadOnly,)
 
 
 class FeedSubscriptionViewSet(viewsets.ModelViewSet):
+    """ View of FeedSubscription API """
     queryset = FeedSubscription.objects.all()
     serializer_class = FeedSubscriptionSerializer
     permission_classes = (IsAuthenticated,)
