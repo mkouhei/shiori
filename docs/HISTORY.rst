@@ -1,6 +1,12 @@
 History
 -------
 
+0.3.4 (2014-06-02)
+^^^^^^^^^^^^^^^^^^
+
+* Fixed pylint violations.
+* Fixed the name of the dependent Python packages.
+
 0.3.3 (2014-05-12)
 ^^^^^^^^^^^^^^^^^^
 
