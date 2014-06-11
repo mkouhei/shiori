@@ -21,10 +21,11 @@ $(function() {
     }
 
     function get_page(url) {
+        var s;
         if (url) {
-            var s = url.split('?')[1];
+            s = url.split('?')[1];
         } else {
-            var s = location.search.substring(1);
+            s = location.search.substring(1);
         }
         var page;
         if (s) {
@@ -118,6 +119,7 @@ $(function() {
             if (!attrs.category) {
                 return 'required category.';
             }
+            return true;
         }
     });
 
@@ -387,6 +389,7 @@ $(function() {
         validate: function(attrs) {
             if (!attrs.url) return 'required url.';
             if (!attrs.category) return 'required category.';
+            return true;
         }
     });
 
@@ -568,10 +571,11 @@ $(function() {
 
             var description = html_sanitize(
                 this.$('textarea#description').val(), urlX, idX);
+            var is_hide;
             if (this.$('input#is_hide').prop('checked')) {
-                var is_hide = true;
+                is_hide = true;
             } else {
-                var is_hide = false;
+                is_hide = false;
             }
 
             this.bookmarks.create({
@@ -667,6 +671,7 @@ $(function() {
         validate: function(attrs) {
             if (!attrs.url) return 'required url.';
             if (!attrs.default_category) return 'required category.';
+            return true;
         }
     });
 
