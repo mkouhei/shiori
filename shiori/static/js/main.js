@@ -119,7 +119,6 @@ $(function() {
             if (!attrs.category) {
                 return 'required category.';
             }
-            return true;
         }
     });
 
@@ -389,7 +388,6 @@ $(function() {
         validate: function(attrs) {
             if (!attrs.url) return 'required url.';
             if (!attrs.category) return 'required category.';
-            return true;
         }
     });
 
@@ -671,7 +669,6 @@ $(function() {
         validate: function(attrs) {
             if (!attrs.url) return 'required url.';
             if (!attrs.default_category) return 'required category.';
-            return true;
         }
     });
 
