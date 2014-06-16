@@ -64,6 +64,7 @@ requires = ['setuptools',
             'lxml',
             'defusedxml',
             'requests',
+            'pyquery',
             'netaddr']
 
 setup(name='shiori',

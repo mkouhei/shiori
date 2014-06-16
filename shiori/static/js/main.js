@@ -597,7 +597,15 @@ $(function() {
                 },
                 error: function(_coll, xhr, options) {
                     console.log(xhr.responseText);
-                    display_message(this.el, xhr.responseText, 'alert-error');
+                    if (xhr.responseText.search('IntegrityError') == 0) {
+                        display_message(this.el,
+                                        'Input title why cannot get title.',
+                                        'alert-error');
+                    } else {
+                        display_message(this.el,
+                                        xhr.responseText,
+                                        'alert-error');
+                    }
                 }
             });
         },
