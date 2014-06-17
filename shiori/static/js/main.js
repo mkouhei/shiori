@@ -182,12 +182,11 @@ $(function() {
             if (item.get('meta')) {
                 this.pagination(item.get('meta'));
             } else {
-                $('ul', this.el)
-                    .append('<li>' +
-                            '<a rel="popover" class="btn btn-success" id="' +
+                $(this.el)
+                    .append('<a rel="popover" class="btn btn-success" id="' +
                             html_sanitize(item.get('id'), urlX, idX) + '">' +
                             html_sanitize(item.get('title'), urlX, idX) +
-                            '</a></li>');
+                            '</a> ');
             }
         },
         loadBookmark: function(item) {
@@ -321,6 +320,8 @@ $(function() {
         },
         render: function() {
             var that = this;
+            $(this.el).append('<h4>');
+            $(this.el).append('<div>');
             var tag = this.model.get('tag');
             var tag_id = this.model.get('id');
             $('h4', this.el).append(tag);
@@ -333,12 +334,11 @@ $(function() {
             if (item.get('meta')) {
                 this.pagination(item.get('meta'));
             } else {
-                $('ul', this.el)
-                    .append('<li>' +
-                            '<a rel="popover" class="btn btn-success" id="' +
+                $('div', this.el)
+                    .append('<a rel="popover" class="btn btn-success" id="' +
                             html_sanitize(item.get('id'), urlX, idX) + '">' +
                             html_sanitize(item.get('title'), urlX, idX) +
-                            '</a></li>');
+                            '</a> ');
             }
         },
         pagination: function(meta) {
@@ -418,12 +418,11 @@ $(function() {
             if (item.get('meta')) {
                 this.pagination(item.get('meta'));
             } else {
-                $('ul', this.el)
-                    .append('<li>' +
-                            '<a rel="popover" class="btn btn-success" id="' +
+                $(this.el)
+                    .append('<a rel="popover" class="btn btn-success" id="' +
                             html_sanitize(item.get('id'), urlX, idX) + '">' +
                             html_sanitize(item.get('title'), urlX, idX) +
-                            '</a></li>');
+                            '</a> ');
             }
         },
         pagination: function(meta) {
