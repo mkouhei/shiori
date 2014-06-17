@@ -168,7 +168,7 @@ $(function() {
             this.model.fetch();
         },
         events: {
-            'mouseover a.btn': 'loadBookmark'
+            'click a.btn': 'loadBookmark'
         },
         render: function() {
             var category = this.model.get('category');
@@ -212,9 +212,8 @@ $(function() {
                           elem(item.get('tags'), 'icon-tags'),
                           trigger: 'manual',
                           delay: {show: 100, hide: 100}
-                         }).click(function(e) {
-                             $(this).popover('toggle');
                          });
+            $('a#' + item.id, this.el).popover('toggle');
         },
         pagination: function(meta) {
             $('ul.pager').append(render_pagination(meta));
@@ -316,7 +315,7 @@ $(function() {
             this.model.fetch();
         },
         events: {
-            'mouseover a.btn': 'loadBookmark'
+            'click a.btn': 'loadBookmark'
         },
         render: function() {
             var that = this;
@@ -368,10 +367,8 @@ $(function() {
                           elem(html_sanitize(item.get('category'), urlX, idX),
                                'icon-book'),
                           trigger: 'manual',
-                          delay: {show: 100, hide: 100}
-                         }).click(function(e) {
-                             $(this).popover('toggle');
-                         });
+                          delay: {show: 100, hide: 100}});
+            $('a#' + item.id, this.el).popover('toggle');
         }
     });
 
@@ -412,7 +409,7 @@ $(function() {
                                           'search': search_word()}});
         },
         events: {
-            'mouseover a.btn': 'loadBookmark'
+            'click a.btn': 'loadBookmark'
         },
         appendItem: function(item) {
             if (item.get('meta')) {
@@ -459,9 +456,8 @@ $(function() {
                                'icon-tags'),
                           trigger: 'manual',
                           delay: {show: 100, hide: 100}
-                         }).click(function(e) {
-                             $(this).popover('toggle');
                          });
+            $('a#' + item.id, this.el).popover('toggle');
         }
     });
 
