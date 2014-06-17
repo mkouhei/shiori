@@ -7,7 +7,7 @@ if sys.version_info > (3, 0):
 else:
     from urlparse import urlparse
 from netaddr import IPAddress, AddrFormatError
-from socket import gaierror, gethostbyname, getaddrinfo, AF_INET6
+import socket
 from shiori.core.settings import FEED_EXCLUDE_FQDN
 
 
@@ -46,15 +46,17 @@ def getaddr(hostname):
     """
     addresses = []
     try:
-        addresses.append(gethostbyname(hostname))
+        addresses.append(socket.gethostbyname(hostname))
     except TypeError as error:
         print(error)
-    except gaierror as error:
+    except socket.gaierror as error:
         print(error)
     try:
-        addresses.append(getaddrinfo(hostname, None, AF_INET6)[0][4][0])
+        addresses.append(socket.getaddrinfo(hostname,
+                                            None,
+                                            socket.AF_INET6)[0][4][0])
     except TypeError as error:
         print(error)
-    except gaierror as error:
+    except socket.gaierror as error:
         print(error)
     return addresses

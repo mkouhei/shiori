@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 import unittest
 import json
 from httpretty import HTTPretty, httprettified
+from mock import patch
 from shiori.api.views import CategoryViewSet
 import shiori_tests.tests.vars as v
 
@@ -324,7 +325,8 @@ class APITest(TestCase):
         self.assertEqual(response.status_code, 400)
 
     @httprettified
-    def test_post_bookmark_without_title(self):
+    @patch('shiori.bookmark.validators.validate_url', return_vaule=True)
+    def test_post_bookmark_without_title(self, _mock):
         payload = {'url': v.url,
                    'title': '',
                    'category': v.category0,
