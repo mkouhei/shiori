@@ -908,9 +908,10 @@ $(function() {
             return false;
         },
         render: function() {
-            $('div#submenu', this.el)
-                .append('<a id="categories">Categories</a>')
-                .append('<a id="tags">Tags</a>');
+            $('div#submenu ul', this.el)
+                .append('<li><a id="categories" data-toggle="pill">' +
+                        'Categories</a></li>')
+                .append('<li><a id="tags" data-toggle="pill">Tags</a></li>');
             if (is_all() == 'true') {
                 $('input#is_all').attr('checked', true);
             } else {
