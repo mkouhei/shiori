@@ -8,25 +8,35 @@
 	  {% csrf_token %}
 	  <fieldset>
 		<div class="form-group">
-		  <label class="sr-only" for="url">url</label>
-		  <input id="url" class="form-control" name="url" type="url" placeholder="url: ex. http://example.org/some" required/>
-		  <label class="sr-only" for="category">category</label>
-		  <input id="category" class="form-control" name="category" type="text" placeholder="category" required />
-		  <label class="sr-only" for="title">title</label>
-		  <input id="title" class="form-control" name="title" type="text" placeholder="title"/>
-		  <label class="sr-only" for="tags">tags</label>
-		  <input id="tags" class="form-control" name="tags" type="text" placeholder="tags: add a new tag when keydown &quot;Enter&quot; key." />
-		  <label class="sr-only" for="description">description</label>
-		  <textarea id="description" class="form-control" name="description" placeholder="description"></textarea>
+          <div class="input-group">
+		    <span class="glyphicon glyphicon-link input-group-addon" for="url"></span>
+		    <input id="url" class="form-control" name="url" type="url" placeholder="url: ex. http://example.org/some" required/>
+          </div>
+          <div class="input-group">
+		    <span class="glyphicon glyphicon-book input-group-addon" for="category"></span>
+		    <input id="category" class="form-control" name="category" type="text" placeholder="category" required />
+          </div>
+          <div class="input-group">
+		    <span class="glyphicon glyphicon-pencil input-group-addon" for="title"></span>
+		    <input id="title" class="form-control" name="title" type="text" placeholder="title"/>
+          </div>
+          <div class="input-group">
+		    <span class="glyphicon glyphicon-tags input-group-addon" for="tags"></span>
+		    <input id="tags" class="form-control" name="tags" type="text" placeholder="tags: add a new tag when keydown &quot;Enter&quot; key." />
+          </div>
+          <div class="input-group">
+		    <label class="glyphicon glyphicon-comment input-group-addon" for="description"></label>
+		    <textarea id="description" class="form-control" name="description" placeholder="description"></textarea>
+          </div>
           <div class="checkbox">
             <label class="checkbox-inline" for="is_hide">
 		      <input id="is_hide" name="is_hide" type="checkbox" /> hide? (public mode when not check in default.
             </label>
-		</div>
+		  </div>
 		</div>
 		<div class="form-group">
-		  <button type="submit" class="btn btn-primary">add</button>
-		  <button type="reset" class="btn">cancel</button>
+		  <button type="submit" class="btn btn-primary">add <span class="glyphicon glyphicon-bookmark"></span></button>
+		  <button type="reset" class="btn"><span class="glyphicon glyphicon-remove"></span> cancel</button>
 		</div>
 	  </fieldset>
 	</div>

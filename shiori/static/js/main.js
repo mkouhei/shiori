@@ -8,13 +8,14 @@ $(function() {
         if (tags == undefined) {
             return '';
         } else {
-            return '<p><i class="' + icon + '"></i> ' + tags + '</p>';
+            return '<p><span class="glyphicon glyphicon-' + icon + '">' +
+                '</span> ' + tags + '</p>';
         }
     }
 
     function protect(state) {
         if (state) {
-            return '<i class="icon-lock"></i> ';
+            return '<span class="glyphicon glyphicon-lock"></span> ';
         } else {
             return '';
         }
@@ -207,9 +208,9 @@ $(function() {
                           content: elem('<a href="' + item.get('url') +
                                         '">' +
                                         item.get('url') + '</a>',
-                                        'icon-share') +
-                          elem(item.get('description'), 'icon-comment') +
-                          elem(item.get('tags'), 'icon-tags'),
+                                        'link') +
+                          elem(item.get('description'), 'comment') +
+                          elem(item.get('tags'), 'tags'),
                           trigger: 'manual',
                           delay: {show: 100, hide: 100}
                          });
@@ -360,12 +361,12 @@ $(function() {
                           content: elem('<a href="' + item.get('url') +
                                         '">' +
                                         item.get('url') + '</a>',
-                                        'icon-share') +
+                                        'link') +
                           elem(html_sanitize(item.get('description'),
                                              urlX, idX),
-                               'icon-comment') +
+                               'comment') +
                           elem(html_sanitize(item.get('category'), urlX, idX),
-                               'icon-book'),
+                               'book'),
                           trigger: 'manual',
                           delay: {show: 100, hide: 100}});
             $('a#' + item.id, this.el).popover('toggle');
@@ -442,18 +443,18 @@ $(function() {
                           content: elem('<a href="' + item.get('url') +
                                         '">' +
                                         item.get('url') + '</a>',
-                                        'icon-share') +
+                                        'link') +
                           elem(html_sanitize(item.get('description'),
                                              urlX, idX),
-                               'icon-comment') +
+                               'comment') +
                           elem('<a href="categories/' +
                                html_sanitize(item.get('category_id'),
                                              urlX, idX) +
                                '">' + html_sanitize(item.get('category'),
                                                     urlX, idX) + '</a>',
-                               'icon-book') +
+                               'book') +
                           elem(html_sanitize(item.get('tags'), urlX, idX),
-                               'icon-tags'),
+                               'tags'),
                           trigger: 'manual',
                           delay: {show: 100, hide: 100}
                          });
@@ -852,7 +853,7 @@ $(function() {
             'click a#profile': 'profile',
             'click a#categories': 'categories',
             'click a#tags': 'tags',
-            'click span#search-btn': 'search',
+            'click button#search-btn': 'search',
             'click input#is_all': 'toggle_view'
         },
         initialize: function() {
