@@ -176,7 +176,7 @@ $(function() {
             $('h4', this.el).append(category);
             this.bookmarks.fetch({data: {'page': get_page(),
                                          'is_all': is_all(),
-                                         'categor': category}});
+                                         'category': category}});
             return this;
         },
         appendItem: function(item) {
