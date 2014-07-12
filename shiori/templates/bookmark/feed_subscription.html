@@ -16,42 +16,44 @@
 	  </tbody>
 	</table>
 	<button id="new_feed" class="btn btn-primary">new feed</button>
-	<div class="modal hide fade">
-	  <div class="modal-header">
-		<a class="close" data-dismiss="modal">x</a>
-		<h3>new subscribe feed</h3>
-	  </div>
-	  <div class="modal-body">
-		<div class="form-horizontal">
-		  <fieldset>
-		  {% csrf_token %}
-			<div class="control-group">
-			  <label class="control-label" for="url">url</label>
-			  <div class="controls">
-				<input id="url" name="url" type="url" placeholder="ex. http://example.org/some" required/>
-				<span class="help">required</span>
-			  </div>
-			  <label class="control-label" for="category">default category</label>
-			  <div class="controls">
-				<input id="category" name="category" type="text" required />
-				<span class="help">required</span>
-			  </div>
-			  <!--
-				  // ToDo: should implement this
-			  <label class="control-label" for="is_enabled">enabled?</label>
-			  <div class="controls">
-				<input id="is_enabled" name="is_enabled" type="checkbox" checked />
-				<span class="help">enabled when check in default.</span>
-			  </div>
-			  -->
-			</div>
-		  </fieldset>
-		</div>
-	  </div>
-	  <div class="modal-footer">
-		<a id="save" class="btn btn-primary" href="#">add</a>
-		<a id="cancel" class="btn" href="#">cancel</a>
-	  </div>
+	<div class="modal fade">
+      <div class="modal-dialog">
+        <div class="modal-content">
+	      <div class="modal-header">
+		    <a class="close" data-dismiss="modal">x</a>
+		    <h4 class="modal-title">new subscribe feed</h4>
+	      </div>
+	      <div class="modal-body">
+		    <div class="form-horizontal">
+		      <fieldset>
+		        {% csrf_token %}
+			    <div class="control-group">
+			      <div class="input-group">
+                    <span class="glyphicon glyphicon-link input-group-addon"></span>
+				    <input id="url" class="form-control" name="url" type="url" placeholder="ex. http://example.org/some" required/>
+			      </div>
+			      <div class="input-group">
+                    <span class="glyphicon glyphicon-tag input-group-addon"></span>
+				    <input id="category" class="form-control" name="category" type="text" placeholder="default category" required/>
+			      </div>
+			      <!--
+				      // ToDo: should implement this
+			          <label class="control-label" for="is_enabled">enabled?</label>
+			          <div class="controls">
+				        <input id="is_enabled" name="is_enabled" type="checkbox" checked />
+				        <span class="help">enabled when check in default.</span>
+			          </div>
+			          -->
+			    </div>
+		      </fieldset>
+		    </div>
+	      </div>
+	      <div class="modal-footer">
+		    <a id="save" class="btn btn-primary" href="#">add</a>
+		    <a id="cancel" class="btn" href="#">cancel</a>
+	      </div>
+        </div>
+      </div>
 	</div>
 	{% endif %}
   </div>
