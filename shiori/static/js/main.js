@@ -148,7 +148,9 @@ $(function() {
             } else {
                 $(this.el)
                     .append('<a class="btn btn-primary" href="categories/' +
-                            item.get('id') + '">' +
+                            item.get('id') +
+                            '?is_all=' + is_all() +
+                            '">' +
                             html_sanitize(item.get('category'), urlX, idX) +
                             '</a> ');
             }
@@ -166,7 +168,8 @@ $(function() {
             this.bookmarks = new BookmarkList();
             this.listenTo(this.bookmarks, 'add', this.appendItem);
             this.listenTo(this.model, 'change', this.render);
-            this.model.fetch();
+            this.model.fetch({data: {'page': get_page(),
+                                     'is_all': is_all()}});
         },
         events: {
             'click a.btn': 'loadBookmark'
@@ -295,7 +298,9 @@ $(function() {
             } else {
                 $(this.el)
                     .append('<a class="btn btn-info" href="tags/' +
-                            item.get('id') + '">' +
+                            item.get('id') +
+                            '?is_all=' + is_all() +
+                            '">' +
                             html_sanitize(item.get('tag'), urlX, idX) +
                             '</a> ');
             }
@@ -313,7 +318,7 @@ $(function() {
             this.bookmarks = new BookmarkList();
             this.listenTo(this.bookmarks, 'add', this.appendItem);
             this.listenTo(this.model, 'change', this.render);
-            this.model.fetch();
+            this.model.fetch({data: {'is_all': is_all()}});
         },
         events: {
             'click a.btn': 'loadBookmark'
@@ -959,7 +964,6 @@ $(function() {
         categories: function() {
             window.App.render();
             var categoriesListView = new CategoriesListView();
-            categoriesListView.render();
         },
         category: function(id) {
             window.App.render();
