@@ -70,7 +70,7 @@ requires = ['setuptools',
             'netaddr']
 
 setup(name='shiori',
-      version='0.3.4',
+      version='0.4.0',
       description='bookmarking tool based on Web UI and JSON REST API',
       long_description=long_description,
       author='Kouhei Maeda',

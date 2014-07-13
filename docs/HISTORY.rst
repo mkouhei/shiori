@@ -1,6 +1,15 @@
 History
 -------
 
+
+0.4.0 (2014-07-13)
+^^^^^^^^^^^^^^^^^^
+
+* Applied Bootstrap 3.
+* Fixed link of category and tag.
+* Fixed jslint violations.
+* Improved loading bookmark.
+
 0.3.4 (2014-06-02)
 ^^^^^^^^^^^^^^^^^^
 
