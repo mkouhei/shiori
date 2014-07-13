@@ -8,23 +8,25 @@ $(function() {
         if (tags == undefined) {
             return '';
         } else {
-            return '<p><i class="' + icon + '"></i> ' + tags + '</p>';
+            return '<p><span class="glyphicon glyphicon-' + icon + '">' +
+                '</span> ' + tags + '</p>';
         }
     }
 
     function protect(state) {
         if (state) {
-            return '<i class="icon-lock"></i> ';
+            return '<span class="glyphicon glyphicon-lock"></span> ';
         } else {
             return '';
         }
     }
 
     function get_page(url) {
+        var s;
         if (url) {
-            var s = url.split('?')[1];
+            s = url.split('?')[1];
         } else {
-            var s = location.search.substring(1);
+            s = location.search.substring(1);
         }
         var page;
         if (s) {
@@ -146,7 +148,9 @@ $(function() {
             } else {
                 $(this.el)
                     .append('<a class="btn btn-primary" href="categories/' +
-                            item.get('id') + '">' +
+                            item.get('id') +
+                            '?is_all=' + is_all() +
+                            '">' +
                             html_sanitize(item.get('category'), urlX, idX) +
                             '</a> ');
             }
@@ -164,17 +168,18 @@ $(function() {
             this.bookmarks = new BookmarkList();
             this.listenTo(this.bookmarks, 'add', this.appendItem);
             this.listenTo(this.model, 'change', this.render);
-            this.model.fetch();
+            this.model.fetch({data: {'page': get_page(),
+                                     'is_all': is_all()}});
         },
         events: {
-            'mouseover a.btn': 'loadBookmark'
+            'click a.btn': 'loadBookmark'
         },
         render: function() {
             var category = this.model.get('category');
             $('h4', this.el).append(category);
             this.bookmarks.fetch({data: {'page': get_page(),
                                          'is_all': is_all(),
-                                         'categor': category}});
+                                         'category': category}});
             return this;
         },
         appendItem: function(item) {
@@ -206,14 +211,13 @@ $(function() {
                           content: elem('<a href="' + item.get('url') +
                                         '">' +
                                         item.get('url') + '</a>',
-                                        'icon-share') +
-                          elem(item.get('description'), 'icon-comment') +
-                          elem(item.get('tags'), 'icon-tags'),
+                                        'link') +
+                          elem(item.get('description'), 'comment') +
+                          elem(item.get('tags'), 'tags'),
                           trigger: 'manual',
                           delay: {show: 100, hide: 100}
-                         }).click(function(e) {
-                             $(this).popover('toggle');
                          });
+            $('a#' + item.id, this.el).popover('toggle');
         },
         pagination: function(meta) {
             $('ul.pager').append(render_pagination(meta));
@@ -294,7 +298,9 @@ $(function() {
             } else {
                 $(this.el)
                     .append('<a class="btn btn-info" href="tags/' +
-                            item.get('id') + '">' +
+                            item.get('id') +
+                            '?is_all=' + is_all() +
+                            '">' +
                             html_sanitize(item.get('tag'), urlX, idX) +
                             '</a> ');
             }
@@ -312,10 +318,10 @@ $(function() {
             this.bookmarks = new BookmarkList();
             this.listenTo(this.bookmarks, 'add', this.appendItem);
             this.listenTo(this.model, 'change', this.render);
-            this.model.fetch();
+            this.model.fetch({data: {'is_all': is_all()}});
         },
         events: {
-            'mouseover a.btn': 'loadBookmark'
+            'click a.btn': 'loadBookmark'
         },
         render: function() {
             var that = this;
@@ -360,17 +366,15 @@ $(function() {
                           content: elem('<a href="' + item.get('url') +
                                         '">' +
                                         item.get('url') + '</a>',
-                                        'icon-share') +
+                                        'link') +
                           elem(html_sanitize(item.get('description'),
                                              urlX, idX),
-                               'icon-comment') +
+                               'comment') +
                           elem(html_sanitize(item.get('category'), urlX, idX),
-                               'icon-book'),
+                               'book'),
                           trigger: 'manual',
-                          delay: {show: 100, hide: 100}
-                         }).click(function(e) {
-                             $(this).popover('toggle');
-                         });
+                          delay: {show: 100, hide: 100}});
+            $('a#' + item.id, this.el).popover('toggle');
         }
     });
 
@@ -411,7 +415,7 @@ $(function() {
                                           'search': search_word()}});
         },
         events: {
-            'mouseover a.btn': 'loadBookmark'
+            'click a.btn': 'loadBookmark'
         },
         appendItem: function(item) {
             if (item.get('meta')) {
@@ -444,23 +448,22 @@ $(function() {
                           content: elem('<a href="' + item.get('url') +
                                         '">' +
                                         item.get('url') + '</a>',
-                                        'icon-share') +
+                                        'link') +
                           elem(html_sanitize(item.get('description'),
                                              urlX, idX),
-                               'icon-comment') +
+                               'comment') +
                           elem('<a href="categories/' +
                                html_sanitize(item.get('category_id'),
                                              urlX, idX) +
                                '">' + html_sanitize(item.get('category'),
                                                     urlX, idX) + '</a>',
-                               'icon-book') +
+                               'book') +
                           elem(html_sanitize(item.get('tags'), urlX, idX),
-                               'icon-tags'),
+                               'tags'),
                           trigger: 'manual',
                           delay: {show: 100, hide: 100}
-                         }).click(function(e) {
-                             $(this).popover('toggle');
                          });
+            $('a#' + item.id, this.el).popover('toggle');
         }
     });
 
@@ -568,10 +571,11 @@ $(function() {
 
             var description = html_sanitize(
                 this.$('textarea#description').val(), urlX, idX);
+            var is_hide;
             if (this.$('input#is_hide').prop('checked')) {
-                var is_hide = true;
+                is_hide = true;
             } else {
-                var is_hide = false;
+                is_hide = false;
             }
 
             this.bookmarks.create({
@@ -594,7 +598,15 @@ $(function() {
                 },
                 error: function(_coll, xhr, options) {
                     console.log(xhr.responseText);
-                    display_message(this.el, xhr.responseText, 'alert-error');
+                    if (xhr.responseText.search('IntegrityError') == 0) {
+                        display_message(this.el,
+                                        'Input title why cannot get title.',
+                                        'alert-error');
+                    } else {
+                        display_message(this.el,
+                                        xhr.responseText,
+                                        'alert-error');
+                    }
                 }
             });
         },
@@ -846,7 +858,7 @@ $(function() {
             'click a#profile': 'profile',
             'click a#categories': 'categories',
             'click a#tags': 'tags',
-            'click span#search-btn': 'search',
+            'click button#search-btn': 'search',
             'click input#is_all': 'toggle_view'
         },
         initialize: function() {
@@ -902,9 +914,10 @@ $(function() {
             return false;
         },
         render: function() {
-            $('div#submenu', this.el)
-                .append('<a id="categories">Categories</a>')
-                .append('<a id="tags">Tags</a>');
+            $('div#submenu ul', this.el)
+                .append('<li><a id="categories" data-toggle="pill">' +
+                        'Categories</a></li>')
+                .append('<li><a id="tags" data-toggle="pill">Tags</a></li>');
             if (is_all() == 'true') {
                 $('input#is_all').attr('checked', true);
             } else {
@@ -951,7 +964,6 @@ $(function() {
         categories: function() {
             window.App.render();
             var categoriesListView = new CategoriesListView();
-            categoriesListView.render();
         },
         category: function(id) {
             window.App.render();

@@ -5,6 +5,7 @@ from django.db.models.signals import pre_save
 from django.contrib.auth.models import User
 from shortuuidfield import ShortUUIDField
 import jsonfield
+from pyquery import PyQuery
 from shiori.bookmark.agents.feed_parser import FeedParser
 from shiori.bookmark import validators
 
@@ -65,6 +66,24 @@ class Bookmark(BaseObject):
     def get_absolute_url(self):
         """ bookmark permalink path """
         return "/shiori/b/%s" % self.id
+
+
+def retrieve_title(sender, instance, **kwargs):
+    """ Retreive title of specified url.
+
+    Arguments:
+        sender: :model (Bookmark)
+        instance: Bookmark instance
+        **kwargs: not use
+    """
+    if instance.title:
+        return instance.title
+    else:
+        if validators.validate_url(instance.url):
+            data = PyQuery(instance.url)
+            instance.title = data('head title').text()
+
+pre_save.connect(retrieve_title, sender=Bookmark)
 
 
 class BookmarkTag(models.Model):

@@ -4,7 +4,8 @@ from django.test import TestCase
 from django.contrib.auth.models import User
 import unittest
 import json
-
+from httpretty import HTTPretty, httprettified
+from mock import patch
 from shiori.api.views import CategoryViewSet
 import shiori_tests.tests.vars as v
 
@@ -323,16 +324,25 @@ class APITest(TestCase):
                                     data=json.dumps(payload))
         self.assertEqual(response.status_code, 400)
 
-    def test_post_bookmark_without_title(self):
-        payload = {'url': v.url2,
+    @httprettified
+    @patch('shiori.bookmark.validators.validate_url', return_vaule=True)
+    def test_post_bookmark_without_title(self, _mock):
+        payload = {'url': v.url,
                    'title': '',
                    'category': v.category0,
                    'description': v.description2,
                    'is_hide': False}
+        HTTPretty.register_uri(
+            HTTPretty.GET,
+            v.url,
+            body='<html><head><title>%s</title></head><html>' % v.title2)
         response = self.client.post('/api/bookmarks',
                                     content_type='application/json',
                                     data=json.dumps(payload))
-        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(
+            json.loads(response.content).get('title').encode('utf-8'),
+            v.title2)
 
     def test_post_bookmark_without_description(self):
         payload = {'url': v.url2,

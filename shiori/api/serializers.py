@@ -28,7 +28,7 @@ class TagSerializer(serializers.ModelSerializer):
 
 class BookmarkSerializer(serializers.ModelSerializer):
     """ Serializer for shiori.bookmark.models.Bookmark """
-
+    title = serializers.Field(source='title')
     category = serializers.SlugRelatedField(many=False, slug_field='category')
     category_id = serializers.Field(source='category.id')
     tags = serializers.SlugRelatedField(many=True, slug_field='tag',

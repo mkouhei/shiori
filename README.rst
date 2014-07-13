@@ -40,11 +40,11 @@ Requirements
 * defusedxml
 * requests
 * celery
-* jQuery (>= 1.7.2)
+* jQuery (>= 2.1.1)
 * underscore.js (>= 1.5.2)
 * backbone.js (>= 1.1.0)
 * JSON in JavaScript
-* Twitter bootstrap (>= 2.0.2)
+* Twitter bootstrap (>= 3.2.0)
 
 Recommends
 ----------
@@ -64,7 +64,7 @@ Shiori depends on as following.::
   $ sudo apt-get install python-django python-djangorestframework \
   python-django-shortuuidfield python-django-auth-openid python-celery \
   python-lxml python-defusedxml python-netaddr python-django-south \
-  libjs-jquery libjs-underscore libjs-json libjs-twitter-bootstrap \
+  libjs-jquery libjs-underscore libjs-json \
   libxml2-dev libxslt1-dev python-requests python-dev libpython2.7-dev \
   python-django-jsonfield
 

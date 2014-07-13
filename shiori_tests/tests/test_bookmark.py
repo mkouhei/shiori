@@ -192,7 +192,7 @@ class BookmarkTest(TestCase):
         request.user = self.user
         response = shiori.bookmark.views.profile(request)
         self.assertContains(response,
-                            'date joined',
+                            'glyphicon-log-out',
                             status_code=200)
 
     def test_categories_view(self):
