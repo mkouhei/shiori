@@ -56,7 +56,7 @@ long_description = (
 requires = ['setuptools',
             'Django',
             'djangorestframework',
-            'shortuuid == 0.3.2',
+            'shortuuid',
             'django_shortuuidfield',
             'django-jsonfield',
             'south',
