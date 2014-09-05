@@ -126,6 +126,7 @@ OPENID_USE_AS_ADMIN_LOGIN = False
 OPENID_STRICT_USERNAMES = True
 OPENID_USE_EMAIL_FOR_USERNAME = True
 
+ANONYMOUS_USER_ID = -1
 
 # Modify temporarily the session serializer because the json serializer in
 # Django 1.6 can't serialize openid.yadis.manager.YadisServiceManager objects
