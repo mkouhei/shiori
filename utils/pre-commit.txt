@@ -25,4 +25,5 @@ pylint --ignore=migrations \
     -d catching-non-exception \
     -d duplicate-code \
     -d unexpected-keyword-arg \
+    -d no-init \
     shiori
