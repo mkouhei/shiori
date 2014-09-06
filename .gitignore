@@ -8,3 +8,4 @@ shiori/static/underscore
 .coverage
 dummy_*.json
 celerybeat-schedule
+*.egg
